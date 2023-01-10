@@ -1,0 +1,83 @@
+@import 'antd/es/style/themes/default.less';
+@import 'antd/dist/antd.less';
+@primary-color:#F57F17;
+@border-radius-base: 8px;
+@label-color: #666666;
+#root {
+    width: 100%;
+    display: block;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+a{
+    color: #444444;
+}
+label{
+    font-weight: 700;
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 10px;
+    display: block;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield !important;
+}
+.title{
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #3D3D3D;
+}
+.hr{
+  height: 1px;
+  background-color: #eeeeee;
+  width: 100%;
+  display: block;
+  margin: 10px 0 ;
+}
+.ant-input-number-handler-wrap { 
+  visibility: hidden;
+  display: none;
+}
+.text{
+  &-right{
+    text-align: right !important;
+  }
+  &-left{
+    text-align: left !important;
+  }
+  &-center{
+    text-align: center !important;
+  }
+  &-danger{
+    color: #F44336 !important;
+  }
+  &-success{
+    color: #137466 !important;
+  }
+  &-password{
+    -webkit-text-security: disc;
+  }
+  &-primary{
+    color: @primary-color !important;
+  }
+}
+.pointer{
+  cursor: pointer;
+}
+.ant-form-item-optional{
+  display: none !important;
+}
