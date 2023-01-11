@@ -4,11 +4,11 @@ import Logo from '../Assets/images/logo.png';
 import userDefault from '../Assets/icon/user.png';
 import { Col, Row } from '../Grid';
 import HeaderStyle from './header.style';
-// import ModalHeader from '../Modal/ModalHeader';
-// import ChangePassword from '../Modal/ModalHeader/ChangePassword';
-// import EmailVerification from '../Modal/ModalHeader/EmailVerification';
-// // import { useGetMyCompanyQuery } from '../../app/actions/companyApi';
-// import { notification } from 'antd';
+import ModalHeader from '../Modal/ModalHeader';
+import ChangePassword from '../Modal/ModalHeader/ChangePassword';
+import EmailVerification from '../Modal/ModalHeader/EmailVerification';
+// import { useGetMyCompanyQuery } from '../../app/actions/companyApi';
+import { notification } from 'antd';
 const Header = () => {
     const [isOpen, setOpen] = React.useState(false);
     const navigate = useNavigate();
@@ -22,22 +22,22 @@ const Header = () => {
     //     fakeAuthProvider: 'myCompany'
     // });
     // const dataProfile = data?.data || '';
-    // const changePassword = () => {
-    //     setChangePass(true);
-    //     setOpen(!isOpen);
-    // };
-    // const closeChangePassword = () => {
-    //     setChangePass(false);
-    //     setOpen(!isOpen);
-    // };
-    // const verifyEmail = () => {
-    //     setVerifyEmail(true);
-    //     setOpen(!isOpen);
-    // };
-    // const closeCVerifyEmail = () => {
-    //     setVerifyEmail(false);
-    //     setOpen(!isOpen);
-    // };
+    const changePassword = () => {
+        setChangePass(true);
+        setOpen(!isOpen);
+    };
+    const closeChangePassword = () => {
+        setChangePass(false);
+        setOpen(!isOpen);
+    };
+    const verifyEmail = () => {
+        setVerifyEmail(true);
+        setOpen(!isOpen);
+    };
+    const closeCVerifyEmail = () => {
+        setVerifyEmail(false);
+        setOpen(!isOpen);
+    };
     // React.useEffect(() => {
     //     if (unComplateCompany && isFirstLoad) {
     //         setFirstLoad(false);
@@ -80,7 +80,7 @@ const Header = () => {
                     </div>
                 </Col>
             </Row>
-            {/* <ModalHeader
+            <ModalHeader
                 isOpen={isOpen}
                 onClose={showModal}
                 changePassword={changePassword}
@@ -93,7 +93,7 @@ const Header = () => {
             <EmailVerification
                 isOpen={isVerifyEmail}
                 onClose={closeCVerifyEmail}
-            /> */}
+            />
         </HeaderStyle>
     );
 };

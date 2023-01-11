@@ -46,23 +46,10 @@ const TapHeader = () => {
             activeColor: '#FDDFC5',
             activeLink: 'shortlisted-candidates'
         },
+
         {
             total: 0,
-            label: 'Interview Candidates',
-            icon: <ChatIcon active />,
-            activeColor: '#C7F0EA',
-            activeLink: 'interview-candidates'
-        },
-        {
-            total: 0,
-            label: 'Hired Candidates',
-            icon: <CheckIcon active />,
-            activeColor: '#C7F0EA',
-            activeLink: 'hired-candidates'
-        },
-        {
-            total: 0,
-            label: 'Rejected Candidates',
+            label: 'Archived',
             icon: <CloseIcon active />,
             activeColor: '#FCD0CD',
             activeLink: 'rejected-candidates'

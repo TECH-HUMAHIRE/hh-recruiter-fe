@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "hh-recruiter-fe",
+			"path": "../../.."
+		},
+		{
+			"name": "app",
+			"path": "../../../../huma-hire-employee/src/app"
+		}
+	],
+	"settings": {}
+}

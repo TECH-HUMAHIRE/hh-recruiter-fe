@@ -12,6 +12,7 @@ import HomeIcon from '../Icon/Home';
 import { NavLink } from 'react-router-dom';
 import { color } from '../Utils/variable';
 import { useLocation } from 'react-router-dom';
+import UsersIcon from '../Icon/Users';
 
 const Sidebar = (props) => {
     const location = useLocation();
@@ -28,17 +29,17 @@ const Sidebar = (props) => {
             Icon: <HomeIcon active={activeIcon === 'dashboard'} />
         },
         {
-            uniqName: 'postjob',
-            label: 'Post Job',
-            path: '/post-job',
+            uniqName: 'jobList',
+            label: 'Job List',
+            path: '/job-list',
             Icon: <DraftIcon active={activeIcon === 'postjob'} />
         },
 
         {
-            uniqName: 'my-company',
-            label: 'My Company',
-            path: '/my-company',
-            Icon: <CompanyIcon active={activeIcon === 'my-company'} />
+            uniqName: 'candidates',
+            label: 'Candidates',
+            path: '/candidates',
+            Icon: <UsersIcon active={activeIcon === 'my-company'} />
         },
 
         {
@@ -51,6 +52,12 @@ const Sidebar = (props) => {
             uniqName: 'wallet',
             label: 'Wallet',
             path: '/wallet',
+            Icon: <WalletIcon active={activeIcon === 'wallet'} />
+        },
+        {
+            uniqName: 'humapoint',
+            label: 'Huma Point',
+            path: '/huma-point',
             Icon: <WalletIcon active={activeIcon === 'wallet'} />
         },
         {

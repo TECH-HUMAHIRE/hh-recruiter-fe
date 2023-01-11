@@ -18,7 +18,7 @@ export const MenuLink = styled(Link)`
     position: relative;
     display: flex;
     align-items: center;
-    width: 16.66%;
+    width: 22%;
     padding: 15px;
     justify-content: center;
     margin-right: 10px;

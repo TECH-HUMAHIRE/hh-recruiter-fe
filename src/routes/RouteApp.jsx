@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import { AuthProvider, RequireAuth } from './authProvider';
 import AuthLayout from '../layout/authLayout';
 import DashboardLayout from '../layout/dashboardLayout';
+import MyTask from '../features/auth/Dashboard/MyTask';
+import Inbox from '../features/auth/Inbox';
 
 const App = () => {
     return (
@@ -14,11 +16,19 @@ const App = () => {
                             path="/"
                             element={
                                 <RequireAuth>
-                                    <div>Dashboard</div>
+                                    <MyTask />
                                 </RequireAuth>
                             }
                         />
                     </Route>
+                    <Route
+                        path="/inbox"
+                        element={
+                            <RequireAuth>
+                                <Inbox />
+                            </RequireAuth>
+                        }
+                    />
                 </Route>
                 {/* <Route element={<GuestLayout />}>
                     <Route

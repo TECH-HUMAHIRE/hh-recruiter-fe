@@ -1,0 +1,113 @@
+import React from 'react';
+import Style from './modal-header.style';
+import ArrowLeft from '../../Assets/icon/arrow-left.png';
+import Button from '../../Button';
+import { Form, Input } from 'antd';
+import LockIcon from '../../Assets/icon/lock.png';
+import { Row } from '../../Grid';
+import { Col } from '../../Grid';
+
+const ChangePassword = ({ isOpen = false, onClose = () => {} }) => {
+    const [form] = Form.useForm();
+    const [, forceUpdate] = React.useState({});
+
+    React.useEffect(() => {
+        forceUpdate({});
+    }, []);
+    const onFinish = (values) => {
+        console.log('Finish:', values);
+    };
+    return (
+        <Style
+            open={isOpen}
+            footer={null}
+            closable={false}
+            title={
+                <>
+                    <h3 className="title modal-header">
+                        <img
+                            src={ArrowLeft}
+                            alt=""
+                            onClick={onClose}
+                            className="close-icon"
+                        />{' '}
+                        Change Password
+                    </h3>
+                </>
+            }>
+            <div className="modal-body">
+                <Form
+                    requiredMark={'optional'}
+                    form={form}
+                    layout="vertical"
+                    name="change_password"
+                    onFinish={onFinish}>
+                    <Row>
+                        <Col xl={12}>
+                            <Form.Item
+                                name="current_password"
+                                label="Current password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message:
+                                            'Please input your current password!'
+                                    }
+                                ]}>
+                                <Input.Password
+                                    prefix={<img src={LockIcon} alt="" />}
+                                    type={'password'}
+                                    size="large"
+                                    placeholder="Current password"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col xl={12}>
+                            <Form.Item
+                                name="new_password"
+                                label="New password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message:
+                                            'Please input your new password!'
+                                    }
+                                ]}>
+                                <Input.Password
+                                    prefix={<img src={LockIcon} alt="" />}
+                                    type={'password'}
+                                    size="large"
+                                    placeholder="New password"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col xl={12}>
+                            <div className="text-right">
+                                <Form.Item shouldUpdate>
+                                    {() => (
+                                        <Button
+                                            block
+                                            color="outline-primary"
+                                            htmlType="submit"
+                                            disabled={
+                                                !form.isFieldsTouched(true) ||
+                                                !!form
+                                                    .getFieldsError()
+                                                    .filter(
+                                                        ({ errors }) =>
+                                                            errors.length
+                                                    ).length
+                                            }>
+                                            Change Password
+                                        </Button>
+                                    )}
+                                </Form.Item>
+                            </div>
+                        </Col>
+                    </Row>
+                </Form>
+            </div>
+        </Style>
+    );
+};
+export default ChangePassword;
