@@ -13,6 +13,7 @@ import { NavLink } from 'react-router-dom';
 import { color } from '../Utils/variable';
 import { useLocation } from 'react-router-dom';
 import UsersIcon from '../Icon/Users';
+import StarIcon from '../Icon/Star';
 
 const Sidebar = (props) => {
     const location = useLocation();
@@ -32,14 +33,14 @@ const Sidebar = (props) => {
             uniqName: 'jobList',
             label: 'Job List',
             path: '/job-list',
-            Icon: <DraftIcon active={activeIcon === 'postjob'} />
+            Icon: <DraftIcon active={activeIcon === 'jobList'} />
         },
 
         {
             uniqName: 'candidates',
             label: 'Candidates',
             path: '/candidates',
-            Icon: <UsersIcon active={activeIcon === 'my-company'} />
+            Icon: <UsersIcon active={activeIcon === 'candidates'} />
         },
 
         {
@@ -58,7 +59,7 @@ const Sidebar = (props) => {
             uniqName: 'humapoint',
             label: 'Huma Point',
             path: '/huma-point',
-            Icon: <WalletIcon active={activeIcon === 'wallet'} />
+            Icon: <StarIcon active={activeIcon === 'humapoint'} />
         },
         {
             uniqName: 'help',
@@ -75,7 +76,7 @@ const Sidebar = (props) => {
         let activeMenu = isActive;
         if (item.uniqName === 'dashboard') {
             var regex =
-                /referred-candidates|interview-candidates|hired-candidates|rejected-candidates|shortlisted-candidates/;
+                /referred-candidates|invited-candidates|hired-candidates|archived|shortlisted-candidates/;
             if (regex.test(location.pathname.split('/'))) {
                 activeMenu = true;
             }

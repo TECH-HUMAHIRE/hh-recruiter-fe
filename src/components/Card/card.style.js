@@ -9,8 +9,8 @@ export const CardMenu = styled.div`
     font-weight: 400;
     color: #444444;
     cursor: pointer;
-    width: 150px;
     padding: 8px 15px;
+    width: max-content;
     img,
     span {
         margin-right: 10px;
@@ -20,6 +20,7 @@ export const CardMenu = styled.div`
 export const CardJobStyle = styled(Card)`
     border-radius: 8px;
     margin-bottom: 30px;
+    padding-top: 30px;
     .ant-card-head,
     .ant-card-body {
         padding-right: 15px;
@@ -42,11 +43,58 @@ export const CardJobStyle = styled(Card)`
         }
     }
     .card {
+        &-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            &__info {
+                &-location {
+                    font-weight: 400;
+                    font-size: 10px;
+                    color: #666666;
+                }
+            }
+            &__right {
+                display: flex;
+            }
+            &__logo {
+                width: 65px;
+                margin-right: 10px;
+            }
+        }
         &-action {
             cursor: pointer;
         }
+        &-earn {
+            &__price {
+                position: absolute;
+                right: 0;
+                background: linear-gradient(
+                    229.81deg,
+                    #304ffe 0%,
+                    #00bcd4 100%
+                );
+                border-radius: 0px 9px 0px 32px;
+                top: 0;
+                padding: 3px 30px;
+                color: #fff;
+                font-weight: 600;
+                width: max-content;
+                span {
+                    font-weight: 300;
+                }
+            }
+        }
         &-status {
             margin-bottom: 27px;
+            font-size: 10px;
+            margin-bottom: 5px;
+            color: #666666;
+            display: flex;
+            align-items: center;
+            font-style: normal;
+            font-weight: 400;
             img {
                 width: 20px;
                 margin-right: 10px;

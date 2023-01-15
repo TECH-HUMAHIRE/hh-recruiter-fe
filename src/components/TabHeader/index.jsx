@@ -26,7 +26,7 @@ const TapHeader = () => {
     const [menu, setMenu] = React.useState([
         {
             total: 0,
-            label: 'Active Jobs',
+            label: 'My Tasks',
             icon: <BagIcon active />,
             activeColor: '#CBD3FF',
             activeLink: '',
@@ -34,15 +34,22 @@ const TapHeader = () => {
         },
         {
             total: 0,
-            label: 'Referred Candidates',
+            label: 'Invited Candidates',
             icon: <UsersIcon active />,
+            activeColor: '#FCD0CD',
+            activeLink: 'invited-candidates'
+        },
+        {
+            total: 0,
+            label: 'Referred Candidates',
+            icon: <StartIcon active />,
             activeColor: '#FDDFC5',
             activeLink: 'referred-candidates'
         },
         {
             total: 0,
             label: 'Shortlisted Candidates',
-            icon: <StartIcon active />,
+            icon: <CheckIcon active />,
             activeColor: '#FDDFC5',
             activeLink: 'shortlisted-candidates'
         },
@@ -52,7 +59,7 @@ const TapHeader = () => {
             label: 'Archived',
             icon: <CloseIcon active />,
             activeColor: '#FCD0CD',
-            activeLink: 'rejected-candidates'
+            activeLink: 'archived'
         }
     ]);
 

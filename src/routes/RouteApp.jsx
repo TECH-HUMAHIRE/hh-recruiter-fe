@@ -5,6 +5,10 @@ import AuthLayout from '../layout/authLayout';
 import DashboardLayout from '../layout/dashboardLayout';
 import MyTask from '../features/auth/Dashboard/MyTask';
 import Inbox from '../features/auth/Inbox';
+import InviteCandidates from '../features/auth/Dashboard/InviteCandidates';
+import ReferredCandidates from '../features/auth/Dashboard/ReferredCandidates';
+import ShortlistedCandidates from '../features/auth/Dashboard/ShortlistedCandidates';
+import Archived from '../features/auth/Dashboard/Archived';
 
 const App = () => {
     return (
@@ -17,6 +21,39 @@ const App = () => {
                             element={
                                 <RequireAuth>
                                     <MyTask />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/invited-candidates"
+                            element={
+                                <RequireAuth>
+                                    <InviteCandidates />
+                                </RequireAuth>
+                            }
+                        />
+
+                        <Route
+                            path="/referred-candidates"
+                            element={
+                                <RequireAuth>
+                                    <ReferredCandidates />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/shortlisted-candidates"
+                            element={
+                                <RequireAuth>
+                                    <ShortlistedCandidates />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/archived"
+                            element={
+                                <RequireAuth>
+                                    <Archived />
                                 </RequireAuth>
                             }
                         />
