@@ -21,11 +21,9 @@ import CloseIcon from '../Icon/Close';
 
 const CardTask = ({
     onEdit = () => {},
-    onDelete = () => {},
+    onDetailJob = () => {},
     onPause = () => {},
-    onPreview = () => {},
-    onResume = () => {},
-    successUpdateJob = false,
+
     job
 }) => {
     const actionDropdown = [
@@ -41,7 +39,7 @@ const CardTask = ({
         {
             key: '2',
             label: (
-                <CardMenu onClick={() => onResume(job)}>
+                <CardMenu onClick={() => onDetailJob(job)}>
                     <img src={PreviewIcon} alt="" />
                     View Job Detail
                 </CardMenu>

@@ -4,8 +4,16 @@ import { Col, Row } from '../../../../components/Grid';
 import { MyTaskStyle } from '../style';
 import EmptyJob from '../../../../components/EmptyJob';
 import CardTask from '../../../../components/Card/CardTask';
+import JobDetail from '../../../../components/Modal/JobDetail';
+import ReferCandidates from '../../../../components/Modal/ReferCandidates';
 
 const MyTask = () => {
+    const [isOpen, setOpen] = React.useState(false);
+    const [data, setData] = React.useState(null);
+    const onDetailJob = (detail) => {
+        setData(detail);
+        setOpen(!isOpen);
+    };
     return (
         <MyTaskStyle>
             <Row>
@@ -16,7 +24,10 @@ const MyTask = () => {
                             {dataDummy.map((item, key) => {
                                 return (
                                     <Col md={4} key={key}>
-                                        <CardTask job={item} />
+                                        <CardTask
+                                            onDetailJob={onDetailJob}
+                                            job={item}
+                                        />
                                     </Col>
                                 );
                             })}
@@ -24,6 +35,8 @@ const MyTask = () => {
                     </Card>
                 </Col>
             </Row>
+            <JobDetail onClose={onDetailJob} isOpen={isOpen} />
+            <ReferCandidates isRefer={true} />
         </MyTaskStyle>
     );
 };
