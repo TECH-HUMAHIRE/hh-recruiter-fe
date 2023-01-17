@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '../../Button';
 import { Row, Col } from '../../Grid';
 
-const EmailTab = () => {
+const EmailTab = ({ onClose = () => {} }) => {
     const [form] = Form.useForm();
     const [, forceUpdate] = React.useState({});
     React.useEffect(() => {
@@ -62,7 +62,9 @@ const EmailTab = () => {
                 <Col xl={12}>
                     <div className="refer-email__action">
                         <Form.Item style={{ marginRight: 10 }}>
-                            <Button color="outline-primary">Cancel</Button>
+                            <Button color="outline-primary" onClick={onClose}>
+                                Cancel
+                            </Button>
                         </Form.Item>
 
                         <Form.Item shouldUpdate>

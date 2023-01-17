@@ -14,6 +14,27 @@ export const DashboardCandidatesStyle = styled.div`
             min-height: 570px;
             border-radius: 8px;
         }
+        &-earn {
+            &__price {
+                position: absolute;
+                right: 0;
+                background: linear-gradient(
+                    229.81deg,
+                    #304ffe 0%,
+                    #00bcd4 100%
+                );
+                border-radius: 0px 9px 0px 32px;
+                top: 0;
+                padding: 3px 30px;
+                color: #fff;
+                font-weight: 600;
+                width: max-content;
+                font-size: 14px;
+                span {
+                    font-weight: 300;
+                }
+            }
+        }
     }
     .ant-tabs-tab {
         border-bottom: 1px solid #e8e8e8;
@@ -25,20 +46,44 @@ export const DashboardCandidatesStyle = styled.div`
         }
     }
     .referred {
-        &-tabs {
-            text-align: left;
-            &__title {
-                font-weight: 600;
-                font-size: 12px;
-                color: #444444;
-                margin-bottom: 5px;
-            }
-            &__postdate {
-                font-weight: 400;
-                font-size: 10px;
-                color: #666666;
+        &-card {
+            display: flex;
+            align-items: flex-start;
+            img {
+                width: 60px;
+                margin-right: 10px;
             }
         }
+        &-tabs {
+            text-align: left;
+            padding-top: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            color: #444444;
+            margin-bottom: 5px;
+            &__header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .ant-dropdown-trigger {
+                    margin: 0;
+                }
+            }
+            &__company {
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 18px;
+                color: #666666;
+            }
+            &__city {
+                font-weight: 300;
+                font-size: 12px;
+                line-height: 18px;
+                color: #666666;
+                margin-bottom: 15px;
+            }
+        }
+
         &-filter {
             color: #444444;
             border-color: #444444;

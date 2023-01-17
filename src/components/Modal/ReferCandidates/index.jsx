@@ -11,6 +11,7 @@ const ReferCandidates = ({ isRefer = false, onClose = () => {} }) => {
         <ReferCandidatesStyle
             open={isRefer}
             footer={null}
+            onCancel={onClose}
             width={760}
             title="Refer Candidates">
             <Card style={{ marginBottom: 32 }}>
@@ -36,12 +37,12 @@ const ReferCandidates = ({ isRefer = false, onClose = () => {} }) => {
                     {
                         label: `Email`,
                         key: 'email',
-                        children: <EmailTab />
+                        children: <EmailTab onClose={onClose} />
                     },
                     {
                         label: `Referral Link`,
                         key: 'referral',
-                        children: <ReferralLinkTab />
+                        children: <ReferralLinkTab onClose={onClose} />
                     }
                 ]}
             />

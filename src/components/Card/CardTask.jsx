@@ -20,17 +20,16 @@ import { formatMoney } from '../Utils/formatMoney';
 import CloseIcon from '../Icon/Close';
 
 const CardTask = ({
-    onEdit = () => {},
     onDetailJob = () => {},
-    onPause = () => {},
-
+    onDeclineTask = () => {},
+    onReferCandidate = () => {},
     job
 }) => {
     const actionDropdown = [
         {
             key: '1',
             label: (
-                <CardMenu onClick={() => onEdit(job)}>
+                <CardMenu onClick={() => onReferCandidate(job)}>
                     <img src={ShareIcon} alt="" />
                     Refer Candidates
                 </CardMenu>
@@ -48,7 +47,7 @@ const CardTask = ({
         {
             key: '3',
             label: (
-                <CardMenu onClick={() => onPause(job)}>
+                <CardMenu onClick={() => onDeclineTask(job)}>
                     <CloseOutlined />
                     Decline
                 </CardMenu>

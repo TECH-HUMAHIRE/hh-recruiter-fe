@@ -26,7 +26,6 @@ export const Row = styled.div`
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
-    width: 100%;
     justify-content: ${(props) => props.justify || 'start'};
     position: relative;
     align-items: ${(props) => props.align || 'unset'};

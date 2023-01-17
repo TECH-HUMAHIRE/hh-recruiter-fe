@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../Button';
 
-const ReferralLinkTab = () => {
+const ReferralLinkTab = ({ onClose = () => {} }) => {
     const [form] = Form.useForm();
     const [messageApi, contextHolder] = message.useMessage();
     const onCopyLink = (e) => {
@@ -40,7 +40,9 @@ const ReferralLinkTab = () => {
             </div>
             <div className="refer-email__action">
                 <Form.Item style={{ marginRight: 10 }}>
-                    <Button color="outline-primary">Close</Button>
+                    <Button color="outline-primary" onClick={onClose}>
+                        Close
+                    </Button>
                 </Form.Item>
             </div>
         </Form>

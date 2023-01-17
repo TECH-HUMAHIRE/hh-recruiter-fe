@@ -6,13 +6,22 @@ import EmptyJob from '../../../../components/EmptyJob';
 import CardTask from '../../../../components/Card/CardTask';
 import JobDetail from '../../../../components/Modal/JobDetail';
 import ReferCandidates from '../../../../components/Modal/ReferCandidates';
+import DeclineTask from '../../../../components/Modal/DeclineTask';
 
 const MyTask = () => {
     const [isOpen, setOpen] = React.useState(false);
     const [data, setData] = React.useState(null);
+    const [isRefer, setRefer] = React.useState(false);
+    const [isDecline, setDecline] = React.useState(false);
     const onDetailJob = (detail) => {
         setData(detail);
         setOpen(!isOpen);
+    };
+    const onReferCandidate = () => {
+        setRefer(!isRefer);
+    };
+    const onDeclineTask = () => {
+        setDecline(!isDecline);
     };
     return (
         <MyTaskStyle>
@@ -25,6 +34,8 @@ const MyTask = () => {
                                 return (
                                     <Col md={4} key={key}>
                                         <CardTask
+                                            onDeclineTask={onDeclineTask}
+                                            onReferCandidate={onReferCandidate}
                                             onDetailJob={onDetailJob}
                                             job={item}
                                         />
@@ -35,8 +46,9 @@ const MyTask = () => {
                     </Card>
                 </Col>
             </Row>
-            <JobDetail onClose={onDetailJob} isOpen={isOpen} />
-            <ReferCandidates isRefer={true} />
+            <JobDetail onClose={onDetailJob} isOpen={isOpen} data={data} />
+            <ReferCandidates isRefer={isRefer} onClose={onReferCandidate} />
+            <DeclineTask isOpen={isDecline} onClose={onDeclineTask} />
         </MyTaskStyle>
     );
 };
