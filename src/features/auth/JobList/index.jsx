@@ -11,8 +11,33 @@ import CandidateDetail from '../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../components/Modal/CancelInvitation';
 import moneyIcon from '../../../components/Assets/icon/money.png';
 import unionIcon from '../../../components/Assets/icon/union.png';
+import SectionDetail from './partial/SectionDetail';
+import Bookmark from '../../../components/Assets/icon/Bookmark.png';
+import ShareIcon from '../../../components/Assets/icon/share.png';
+import { CardMenu } from '../../../components/Card/card.style';
 
 const Jobist = () => {
+    const actionDropdown = [
+        {
+            key: '1',
+            label: (
+                <CardMenu onClick={() => onReferCandidate(job)}>
+                    <img src={Bookmark} alt="" />
+                    Add to My Task
+                </CardMenu>
+            )
+        },
+        {
+            key: '2',
+            label: (
+                <CardMenu onClick={() => onDetailJob(job)}>
+                    <img src={ShareIcon} alt="" />
+                    Refer
+                </CardMenu>
+            )
+        }
+    ];
+    const [items, setItems] = React.useState(actionDropdown);
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
@@ -47,7 +72,7 @@ const Jobist = () => {
                                             </div>
                                         </div>
                                         <Dropdown
-                                            menu={[]}
+                                            menu={{ items }}
                                             placement="bottomCenter"
                                             trigger="click">
                                             <MoreOutlined className="card-action" />
@@ -69,15 +94,7 @@ const Jobist = () => {
                         </div>
                     ),
                     key: `${item.id}`,
-                    children: (
-                        <div>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Nesciunt praesentium placeat minus recusandae
-                            voluptatem obcaecati, deleniti dolore quis
-                            repudiandae accusantium ratione aperiam officia
-                            omnis cupiditate esse ad aliquid sunt eum!
-                        </div>
-                    )
+                    children: <SectionDetail data={item} />
                 };
             })
         );

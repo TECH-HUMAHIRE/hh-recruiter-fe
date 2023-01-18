@@ -45,12 +45,12 @@ const InviteCandidates = () => {
                                                 Jakarta, Indonesia
                                             </div>
                                         </div>
-                                        <Dropdown
+                                        {/* <Dropdown
                                             menu={[]}
                                             placement="bottomCenter"
-                                            trigger="click">
-                                            <MoreOutlined className="card-action" />
-                                        </Dropdown>
+                                            trigger="click"> */}
+                                        <MoreOutlined className="card-action" />
+                                        {/* </Dropdown> */}
                                     </div>
                                     <div className="referred-tabs__city">
                                         Posted 11 Jun 2022 • Expired: 9 Jul 2022
