@@ -9,6 +9,7 @@ import InviteCandidates from '../features/auth/Dashboard/InviteCandidates';
 import ReferredCandidates from '../features/auth/Dashboard/ReferredCandidates';
 import ShortlistedCandidates from '../features/auth/Dashboard/ShortlistedCandidates';
 import Archived from '../features/auth/Dashboard/Archived';
+import JobList from '../features/auth/JobList';
 
 const App = () => {
     return (
@@ -63,6 +64,14 @@ const App = () => {
                         element={
                             <RequireAuth>
                                 <Inbox />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/job-list"
+                        element={
+                            <RequireAuth>
+                                <JobList />
                             </RequireAuth>
                         }
                     />

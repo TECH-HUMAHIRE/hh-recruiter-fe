@@ -2,7 +2,7 @@ import { Card } from 'antd';
 import React from 'react';
 import { Col, Row } from '../../../../components/Grid';
 import { MyTaskStyle } from '../style';
-import EmptyJob from '../../../../components/EmptyJob';
+// import EmptyJob from '../../../../components/EmptyJob';
 import CardTask from '../../../../components/Card/CardTask';
 import JobDetail from '../../../../components/Modal/JobDetail';
 import ReferCandidates from '../../../../components/Modal/ReferCandidates';

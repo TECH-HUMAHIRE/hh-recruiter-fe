@@ -1,12 +1,13 @@
-import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import { Form, Input, Select } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Form, Input } from 'antd';
 import React from 'react';
-import Button from '../Button';
 import CardCandidates from '../Card/CardCandidates';
-import CardReferred from '../Card/CardCandidates';
 import { Col, Row } from '../Grid';
 // const { Search } = Input;
-const CandidatesList = ({ code, actionText }) => {
+const CandidatesList = ({
+    onViewDetail = () => {},
+    onCancelInvitation = () => {}
+}) => {
     return (
         <div style={{ minHeight: 300 }}>
             <Row>
@@ -25,7 +26,11 @@ const CandidatesList = ({ code, actionText }) => {
                 {dataCandidates?.data?.map((item, key) => {
                     return (
                         <Col xl={6} md={6} sm={6} key={key}>
-                            <CardCandidates data={item} />
+                            <CardCandidates
+                                data={item}
+                                onViewDetail={onViewDetail}
+                                onCancelInvitation={onCancelInvitation}
+                            />
                         </Col>
                     );
                 })}

@@ -13,7 +13,6 @@ import { useUpdateJobMutation } from '../../../../../app/actions/jobsApi';
 import { dataUpdateJob } from '../../../../../helper';
 import InfiniteScroll from '../../../../../components/InfiniteScroll';
 import { Spin, Skeleton } from 'antd';
-import UpdateStatusCandidate from '../../../../../components/Modal/UpdateStatusCandidate';
 const JobList = ({
     textSubmit = 'Save changes',
     action = [],

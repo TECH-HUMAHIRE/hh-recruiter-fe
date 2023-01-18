@@ -1,4 +1,4 @@
-import { MoreOutlined, StarFilled } from '@ant-design/icons';
+import { CloseOutlined, MoreOutlined, StarFilled } from '@ant-design/icons';
 import { CardReferredStyle, CardMenu } from './card.style';
 import React from 'react';
 import { Dropdown } from 'antd';
@@ -7,65 +7,36 @@ import WalletIcon from '../Icon/Wallet';
 import DressIcon from '../Icon/Dress';
 import FoundedIcon from '../Icon/Founded';
 import { formatMoney } from '../Utils/formatMoney';
+import PreviewIcon from '../Assets/icon/preview.png';
 
-const CardCandidates = ({ onDetail = () => {}, data }) => {
+const CardCandidates = ({
+    onViewDetail = () => {},
+    onCancelInvitation = () => {},
+    data
+}) => {
     const actionDropdown = [
         {
             key: '1',
             label: (
-                <CardMenu onClick={() => onDetail(data, 'shortlisted')}>
-                    Unlock to contact
+                <CardMenu onClick={() => onViewDetail(data)}>
+                    <img src={PreviewIcon} alt="" />
+                    View Detail
                 </CardMenu>
             )
         },
         {
             key: '2',
             label: (
-                <CardMenu onClick={() => onDelete(data)}>
-                    Unlock to download CV
+                <CardMenu onClick={() => onCancelInvitation(data)}>
+                    <CloseOutlined />
+                    Cancel Invitation
                 </CardMenu>
             )
-        },
-        {
-            key: '3',
-            label: <CardMenu onClick={() => onResume(data)}>Print</CardMenu>
         }
     ];
     const [items, setItems] = React.useState(actionDropdown);
-    React.useEffect(() => {
-        setItems(
-            actionDropdown.filter((item) => {
-                switch (data.status) {
-                    case 'accepted':
-                        return (
-                            item.key !== '4' &&
-                            item.key !== '5' &&
-                            item.key !== '6'
-                        );
-                    case 'shortlisted':
-                        return (
-                            item.key !== '1' &&
-                            item.key !== '2' &&
-                            item.key !== '3' &&
-                            item.key !== '5'
-                        );
-                    case 'interview':
-                        return (
-                            item.key !== '1' &&
-                            item.key !== '2' &&
-                            item.key !== '3' &&
-                            item.key !== '4'
-                        );
-
-                    default:
-                        return item.key === 0;
-                }
-            })
-        );
-    }, []);
     return (
         <CardReferredStyle
-            // onClick={() => onDetail(data)}
             title={
                 <div className="card-header">
                     <div className="card-header__right">

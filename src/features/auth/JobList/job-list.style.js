@@ -41,6 +41,21 @@ export const DashboardCandidatesStyle = styled.div`
                 }
             }
         }
+        &-status {
+            margin-bottom: 27px;
+            font-size: 10px;
+            margin-bottom: 5px;
+            color: #666666;
+            display: flex;
+
+            align-items: center;
+            font-style: normal;
+            font-weight: 400;
+            img {
+                width: 20px;
+                margin-right: 10px;
+            }
+        }
     }
     .ant-tabs-tab {
         border-bottom: 1px solid #e8e8e8;

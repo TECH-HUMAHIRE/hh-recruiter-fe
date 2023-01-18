@@ -1,17 +1,18 @@
 import { Dropdown } from 'antd';
 import React from 'react';
-import { Col, Row } from '../../../../components/Grid';
-import { DashboardCandidatesStyle } from '../style';
-import EmptyJob from '../../../../components/EmptyJob';
-import TabMenu from '../../../../components/Tabs';
-import CandidatesList from '../../../../components/SectionCard/CandidatesList';
-import { formatMoney } from '../../../../components/Utils/formatMoney';
-import companyDummy from '../../../../components/Assets/icon/company-dummy.png';
+import { Col, Row } from '../../../components/Grid';
+import { DashboardCandidatesStyle } from './job-list.style';
+import EmptyJob from '../../../components/EmptyJob';
+import TabMenu from '../../../components/Tabs';
+import { formatMoney } from '../../../components/Utils/formatMoney';
+import companyDummy from '../../../components/Assets/icon/company-dummy.png';
 import { MoreOutlined } from '@ant-design/icons';
-import CandidateDetail from '../../../../components/Modal/CandidateDetail';
-import CancelInvitation from '../../../../components/Modal/CancelInvitation';
+import CandidateDetail from '../../../components/Modal/CandidateDetail';
+import CancelInvitation from '../../../components/Modal/CancelInvitation';
+import moneyIcon from '../../../components/Assets/icon/money.png';
+import unionIcon from '../../../components/Assets/icon/union.png';
 
-const InviteCandidates = () => {
+const Jobist = () => {
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
@@ -52,21 +53,30 @@ const InviteCandidates = () => {
                                             <MoreOutlined className="card-action" />
                                         </Dropdown>
                                     </div>
-                                    <div className="referred-tabs__city">
-                                        Posted 11 Jun 2022 • Expired: 9 Jul 2022
-                                    </div>
                                 </div>
+                            </div>
+                            <div className="referred-tabs__city">
+                                Posted 11 Jun 2022 • Expired: 9 Jul 2022
+                            </div>
+                            <div className="card-status">
+                                <img src={moneyIcon} alt="" />{' '}
+                                <span>Rp 7.000.000 - Rp 9.000.000/ Month</span>
+                            </div>
+                            <div className="card-status">
+                                <img src={unionIcon} alt="" />{' '}
+                                <span>Full Time</span>
                             </div>
                         </div>
                     ),
                     key: `${item.id}`,
                     children: (
-                        <CandidatesList
-                            onViewDetail={onViewDetail}
-                            onCancelInvitation={onCancelInvitation}
-                            code={item.code}
-                            actionText="Unlock"
-                        />
+                        <div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Nesciunt praesentium placeat minus recusandae
+                            voluptatem obcaecati, deleniti dolore quis
+                            repudiandae accusantium ratione aperiam officia
+                            omnis cupiditate esse ad aliquid sunt eum!
+                        </div>
                     )
                 };
             })
@@ -74,6 +84,7 @@ const InviteCandidates = () => {
     }, []);
     return (
         <DashboardCandidatesStyle>
+            <h2 className="title">Job List</h2>
             <Row>
                 <Col xl={12}>
                     {jobInvitation?.data?.length > 0 ? (
@@ -91,7 +102,7 @@ const InviteCandidates = () => {
         </DashboardCandidatesStyle>
     );
 };
-export default InviteCandidates;
+export default Jobist;
 const jobInvitation = {
     data: [
         {
