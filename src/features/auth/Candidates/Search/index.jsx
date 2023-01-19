@@ -7,6 +7,10 @@ import { Col, Row } from '../../../../components/Grid';
 import FilterCandidates from '../../../../components/Modal/FilterCandidates';
 
 const CandidatesSearch = () => {
+    const [isFilter, setFilter] = React.useState(false);
+    const onFilterCandidates = () => {
+        setFilter(!isFilter);
+    };
     return (
         <div>
             <Row justify="space-between">
@@ -22,6 +26,7 @@ const CandidatesSearch = () => {
                 </Col>
                 <Col md={2} className="text-right">
                     <Button
+                        onClick={onFilterCandidates}
                         style={{ color: '#444444', borderColor: '#444444' }}
                         className="message-filter"
                         icon={<FilterOutlined />}>
@@ -33,16 +38,12 @@ const CandidatesSearch = () => {
                 {dataCandidates.data.map((item, key) => {
                     return (
                         <Col xl={4} lg={4} md={6} sm={12}>
-                            <CardCandidates
-                                data={item}
-                                // onViewDetail={onViewDetail}
-                                // onCancelInvitation={onCancelInvitation}
-                            />
+                            <CardCandidates data={item} />
                         </Col>
                     );
                 })}
             </Row>
-            <FilterCandidates />
+            <FilterCandidates isOpen={isFilter} onClose={onFilterCandidates} />
         </div>
     );
 };

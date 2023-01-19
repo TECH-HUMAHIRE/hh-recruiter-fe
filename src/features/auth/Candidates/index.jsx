@@ -26,6 +26,7 @@ const CandidatesLayout = () => {
     }, [search]);
     return (
         <div>
+            <h2 className="title">Candidates</h2>
             <TabMenu
                 defaultActiveKey={activeTab}
                 onChange={handleOnChangeTab}
