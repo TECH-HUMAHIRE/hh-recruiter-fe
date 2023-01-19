@@ -1,17 +1,16 @@
-import { SearchOutlined } from '@ant-design/icons';
+import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import React from 'react';
-import CardCandidates from '../Card/CardCandidates';
-import { Col, Row } from '../Grid';
-// const { Search } = Input;
-const CandidatesList = ({
-    onViewDetail = () => {},
-    onCancelInvitation = () => {}
-}) => {
+import Button from '../../../../components/Button';
+import CardCandidates from '../../../../components/Card/CardCandidates';
+import { Col, Row } from '../../../../components/Grid';
+import FilterCandidates from '../../../../components/Modal/FilterCandidates';
+
+const CandidatesSearch = () => {
     return (
-        <div style={{ minHeight: 300 }}>
-            <Row>
-                <Col md={12}>
+        <div>
+            <Row justify="space-between">
+                <Col md={4}>
                     <Form.Item>
                         <Input
                             prefix={<SearchOutlined />}
@@ -21,24 +20,33 @@ const CandidatesList = ({
                         />
                     </Form.Item>
                 </Col>
+                <Col md={2} className="text-right">
+                    <Button
+                        style={{ color: '#444444', borderColor: '#444444' }}
+                        className="message-filter"
+                        icon={<FilterOutlined />}>
+                        Filter
+                    </Button>
+                </Col>
             </Row>
             <Row>
-                {dataCandidates?.data?.map((item, key) => {
+                {dataCandidates.data.map((item, key) => {
                     return (
-                        <Col xl={6} md={6} sm={6} key={key}>
+                        <Col xl={4} lg={4} md={6} sm={12}>
                             <CardCandidates
                                 data={item}
-                                onViewDetail={onViewDetail}
-                                onCancelInvitation={onCancelInvitation}
+                                // onViewDetail={onViewDetail}
+                                // onCancelInvitation={onCancelInvitation}
                             />
                         </Col>
                     );
                 })}
             </Row>
+            <FilterCandidates />
         </div>
     );
 };
-export default CandidatesList;
+export default CandidatesSearch;
 const dataCandidates = {
     data: [
         {

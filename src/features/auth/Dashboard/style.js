@@ -9,6 +9,12 @@ export const MyTaskStyle = styled.div`
     }
 `;
 export const DashboardCandidatesStyle = styled.div`
+    .ant-tabs-nav {
+        width: 35%;
+    }
+    .ant-tabs-tab-btn {
+        width: 100%;
+    }
     .card {
         &-section {
             min-height: 570px;
