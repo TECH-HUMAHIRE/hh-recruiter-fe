@@ -11,6 +11,7 @@ import ShortlistedCandidates from '../features/auth/Dashboard/ShortlistedCandida
 import Archived from '../features/auth/Dashboard/Archived';
 import JobList from '../features/auth/JobList';
 import CandidatesLayout from '../features/auth/Candidates';
+import Wallet from '../features/auth/Wallet';
 
 const App = () => {
     return (
@@ -81,6 +82,14 @@ const App = () => {
                         element={
                             <RequireAuth>
                                 <CandidatesLayout />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/wallet"
+                        element={
+                            <RequireAuth>
+                                <Wallet />
                             </RequireAuth>
                         }
                     />
