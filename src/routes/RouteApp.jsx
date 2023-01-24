@@ -12,6 +12,7 @@ import Archived from '../features/auth/Dashboard/Archived';
 import JobList from '../features/auth/JobList';
 import CandidatesLayout from '../features/auth/Candidates';
 import Wallet from '../features/auth/Wallet';
+import HumaPoint from '../features/auth/HumaPoint';
 
 const App = () => {
     return (
@@ -90,6 +91,14 @@ const App = () => {
                         element={
                             <RequireAuth>
                                 <Wallet />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/huma-point"
+                        element={
+                            <RequireAuth>
+                                <HumaPoint />
                             </RequireAuth>
                         }
                     />
