@@ -7,7 +7,11 @@ import { formatMoney } from '../../Utils/formatMoney';
 import { color } from '../../Utils/variable';
 import WalletCreditStyle from './wallet-credit.style';
 
-const WalletCredit = ({ open = false, onClose = () => {} }) => {
+const WalletCredit = ({
+    open = false,
+    onClose = () => {},
+    onShowWithdrawNext = () => {}
+}) => {
     const nominalButton = [
         {
             value: 1000000,
@@ -66,6 +70,7 @@ const WalletCredit = ({ open = false, onClose = () => {} }) => {
                 form={form}
                 name="withdraw"
                 onFieldsChange={onChangeForm}
+                onFinish={onShowWithdrawNext}
                 autoComplete="off"
                 layout="vertical">
                 <Row justify="center">

@@ -5,7 +5,11 @@ import InputVerification from '../../InputVerification';
 import { Row } from '../../Grid';
 import { Col } from '../../Grid';
 
-const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
+const EmailVerification = ({
+    isOpen = false,
+    onClose = () => {},
+    verificationText = 'Email'
+}) => {
     return (
         <Style
             open={isOpen}
@@ -21,10 +25,12 @@ const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
                         className="close-icon"
                     />
                     <div>
-                        <h3 className="title">Email Verification </h3>
+                        <h3 className="title">
+                            {verificationText} Verification{' '}
+                        </h3>
                         <span className="sub-title">
                             Please enter the verification code that we have sent
-                            to your email.
+                            to your {verificationText}.
                         </span>
                     </div>
                 </div>

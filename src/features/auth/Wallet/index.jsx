@@ -8,12 +8,26 @@ import CreditHistory from './partial/CreditHistory';
 import TransactionHistory from './partial/TransactionHistory';
 import WalletTop from './partial/WalletTop';
 import WalletCredit from '../../../components/Modal/WalletCredit';
+import WithdrawMethod from '../../../components/Modal/WithdrawMethod';
+import EmailVerification from '../../../components/Modal/ModalHeader/EmailVerification';
 
 const Wallet = () => {
     const [isWithdraw, setWithdraw] = React.useState(false);
+    const [isWithdrawNext, setWithdrawNext] = React.useState(false);
+    const [isVerifyEmail, setVerifyEmail] = React.useState(false);
 
     const onShowWithdraw = () => {
         setWithdraw(!isWithdraw);
+        setWithdrawNext(false);
+    };
+    const onShowWithdrawNext = () => {
+        setWithdraw(!isWithdraw);
+        setWithdrawNext(!isWithdrawNext);
+        setVerifyEmail(false);
+    };
+    const onShowVerify = () => {
+        setWithdrawNext(!isWithdrawNext);
+        setVerifyEmail(!isVerifyEmail);
     };
     return (
         <Style>
@@ -39,7 +53,21 @@ const Wallet = () => {
                     }
                 ]}
             />
-            <WalletCredit open={isWithdraw} onClose={onShowWithdraw} />
+            <WalletCredit
+                open={isWithdraw}
+                onClose={onShowWithdraw}
+                onShowWithdrawNext={onShowWithdrawNext}
+            />
+            <WithdrawMethod
+                isOpen={isWithdrawNext}
+                onClose={onShowWithdrawNext}
+                onShowVerify={onShowVerify}
+            />
+            <EmailVerification
+                verificationText="SMS"
+                isOpen={isVerifyEmail}
+                onClose={onShowVerify}
+            />
         </Style>
     );
 };
