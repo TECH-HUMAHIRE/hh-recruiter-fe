@@ -13,7 +13,8 @@ import JobList from '../features/auth/JobList';
 import CandidatesLayout from '../features/auth/Candidates';
 import Wallet from '../features/auth/Wallet';
 import HumaPoint from '../features/auth/HumaPoint';
-
+import Redirect from '../features/guest/Redirect';
+import GuestLayout from '../layout/guestLayout';
 const App = () => {
     return (
         <AuthProvider>
@@ -103,26 +104,9 @@ const App = () => {
                         }
                     />
                 </Route>
-                {/* <Route element={<GuestLayout />}>
-                    <Route
-                        path="/registration"
-                        element={
-                            <RequireAuth>
-                                <Registration />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path="/verification"
-                        element={
-                            <RequireAuth>
-                                <Verification />
-                            </RequireAuth>
-                        }
-                    />
+                <Route element={<GuestLayout />}>
                     <Route path="/redirect" element={<Redirect />} />
-                   
-                </Route> */}
+                </Route>
             </Routes>
         </AuthProvider>
     );

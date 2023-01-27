@@ -1,4 +1,4 @@
-import { Dropdown } from 'antd';
+import { Dropdown, Input } from 'antd';
 import React from 'react';
 import { Col, Row } from '../../../components/Grid';
 import { DashboardCandidatesStyle } from './job-list.style';
@@ -6,7 +6,11 @@ import EmptyJob from '../../../components/EmptyJob';
 import TabMenu from '../../../components/Tabs';
 import { formatMoney } from '../../../components/Utils/formatMoney';
 import companyDummy from '../../../components/Assets/icon/company-dummy.png';
-import { MoreOutlined } from '@ant-design/icons';
+import {
+    FilterOutlined,
+    MoreOutlined,
+    SearchOutlined
+} from '@ant-design/icons';
 import CandidateDetail from '../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../components/Modal/CancelInvitation';
 import moneyIcon from '../../../components/Assets/icon/money.png';
@@ -15,6 +19,12 @@ import SectionDetail from './partial/SectionDetail';
 import Bookmark from '../../../components/Assets/icon/Bookmark.png';
 import ShareIcon from '../../../components/Assets/icon/share.png';
 import { CardMenu } from '../../../components/Card/card.style';
+import Button from '../../../components/Button';
+import placeIcon from '../../../components/Assets/icon/place.png';
+import SelectOption from '../../../components/Form/SelectOption';
+import CompanyIcon from '../../../components/Icon/Company';
+import BagIcon from '../../../components/Icon/Bag';
+import FilterJobList from '../../../components/Modal/FilterJobList';
 
 const Jobist = () => {
     const actionDropdown = [
@@ -38,11 +48,15 @@ const Jobist = () => {
         }
     ];
     const [items, setItems] = React.useState(actionDropdown);
+    const [isFilter, setFilter] = React.useState(false);
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
     const onViewDetail = (data) => {
         setDetailInfo(!isDetailInfo);
+    };
+    const onOpenFilter = () => {
+        setFilter(!isFilter);
     };
     const onCancelInvitation = (data) => {
         setCancelInvitation(!isCancelInvitation);
@@ -102,6 +116,51 @@ const Jobist = () => {
     return (
         <DashboardCandidatesStyle>
             <h2 className="title">Job List</h2>
+            <div style={{ marginBottom: 30 }}>
+                <Row>
+                    <Col md={8}>
+                        <Row>
+                            <Col lg={4}>
+                                <Input
+                                    prefix={<SearchOutlined />}
+                                    size="large"
+                                    type={'text'}
+                                    placeholder="Product Designer"
+                                />
+                            </Col>
+                            <Col lg={4}>
+                                <Input
+                                    prefix={
+                                        <img
+                                            style={{ width: 20 }}
+                                            src={placeIcon}
+                                            atl={''}
+                                        />
+                                    }
+                                    size="large"
+                                    type={'text'}
+                                    placeholder="Location"
+                                />
+                            </Col>
+                            <Col lg={4}>
+                                <SelectOption
+                                    placeholder="Choose company industry"
+                                    options={[]}
+                                    frontIcon={<BagIcon color="#666666" />}
+                                />
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col md={4} className="text-right">
+                        <Button
+                            onClick={onOpenFilter}
+                            className="message-filter"
+                            icon={<FilterOutlined />}>
+                            Filter
+                        </Button>
+                    </Col>
+                </Row>
+            </div>
             <Row>
                 <Col xl={12}>
                     {jobInvitation?.data?.length > 0 ? (
@@ -116,6 +175,7 @@ const Jobist = () => {
                 isOpen={isCancelInvitation}
                 onClose={onCancelInvitation}
             />
+            <FilterJobList isOpen={isFilter} onClose={onOpenFilter} />
         </DashboardCandidatesStyle>
     );
 };
