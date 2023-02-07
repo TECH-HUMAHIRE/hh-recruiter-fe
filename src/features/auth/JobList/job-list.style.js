@@ -15,6 +15,12 @@ export const DashboardCandidatesStyle = styled.div`
     .ant-tabs-tab-btn {
         width: 100%;
     }
+    .message {
+        &-filter {
+            color: #444444;
+            border-color: #e8e8e8;
+        }
+    }
     .card {
         &-section {
             min-height: 570px;
