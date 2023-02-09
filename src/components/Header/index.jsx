@@ -8,20 +8,22 @@ import ModalHeader from '../Modal/ModalHeader';
 import ChangePassword from '../Modal/ModalHeader/ChangePassword';
 import EmailVerification from '../Modal/ModalHeader/EmailVerification';
 // import { useGetMyCompanyQuery } from '../../app/actions/companyApi';
-import { notification } from 'antd';
+import { message, notification } from 'antd';
+import { useChangePasswordMutation } from '../../app/actions/profile';
 const Header = () => {
     const [isOpen, setOpen] = React.useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const [isChangePass, setChangePass] = React.useState(false);
+
+    const [_, { isSuccess, data }] = useChangePasswordMutation({
+        fixedCacheKey: 'change_password'
+    });
     const [isFirstLoad, setFirstLoad] = React.useState(true);
     const [isVerifyEmail, setVerifyEmail] = React.useState(false);
     const showModal = () => {
         setOpen(!isOpen);
     };
-    // const { isError: unComplateCompany, data } = useGetMyCompanyQuery({
-    //     fakeAuthProvider: 'myCompany'
-    // });
-    // const dataProfile = data?.data || '';
     const changePassword = () => {
         setChangePass(true);
         setOpen(!isOpen);
@@ -38,22 +40,22 @@ const Header = () => {
         setVerifyEmail(false);
         setOpen(!isOpen);
     };
-    // React.useEffect(() => {
-    //     if (unComplateCompany && isFirstLoad) {
-    //         setFirstLoad(false);
-    //         notification.open({
-    //             message: 'Notification',
-    //             description: 'Please complete your company profile',
-    //             onClick: () => {
-    //                 // navigate('/my-company');
-    //                 window.location.pathname = '/my-company';
-    //             },
-    //             duration: 5.0
-    //         });
-    //     }
-    // }, [isFirstLoad]);
+    React.useEffect(() => {
+        if (isSuccess) {
+            setChangePass(false);
+            messageApi.open({
+                type: 'success',
+                content: data.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+        }
+    }, [isSuccess]);
     return (
         <HeaderStyle>
+            {contextHolder}
             <Row justify="space-between">
                 <Col sm={2}>
                     <Link to={'/'}>

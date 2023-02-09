@@ -9,6 +9,7 @@ import {
     useNavigate,
     useSearchParams
 } from 'react-router-dom';
+import { useGetProfileQuery } from '../app/actions/profile';
 // import UnCompleteProfile from '../components/Modal/UnCompleteProfile';
 // import { useGetMyCompanyQuery } from '../app/actions/companyApi';
 
@@ -18,9 +19,7 @@ const AuthLayout = () => {
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = React.useState(false);
     const [isOpen, setOpen] = React.useState(false);
-    // const { data } = useGetMyCompanyQuery({
-    //     fakeAuthProvider: 'myCompany'
-    // });
+    const { data, isError } = useGetProfileQuery();
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
     };
@@ -30,19 +29,24 @@ const AuthLayout = () => {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
     }, [location]);
-    // React.useEffect(() => {
-    //     if (
-    //         data?.data?.profile_completed === false &&
-    //         localStorage.getItem('profile_completed') === null &&
-    //         paramsUrl.get('completed') === 'false'
-    //     ) {
-    //         setOpen(true);
-    //         localStorage.setItem(
-    //             'profile_completed',
-    //             data?.data?.profile_completed
-    //         );
-    //     }
-    // }, [data, localStorage]);
+    React.useEffect(() => {
+        if (
+            data?.data?.profile_completed === false &&
+            localStorage.getItem('profile_completed') === null &&
+            paramsUrl.get('completed') === 'false'
+        ) {
+            setOpen(true);
+            localStorage.setItem(
+                'profile_completed',
+                data?.data?.profile_completed
+            );
+        }
+    }, [data, localStorage]);
+    React.useEffect(() => {
+        if (isError) {
+            console.log('error login');
+        }
+    }, [isError]);
     return (
         <Style id="huma-hire" collapsed={collapsed}>
             <Header collapsed={collapsed} />
