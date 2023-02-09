@@ -1,17 +1,16 @@
 import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-// import { companyApi } from '../../../app/actions/companyApi';
+import { profileAuth } from '../../../app/actions/profile';
 
-const Redirect = () => {
+const RedirectPage = () => {
     const navigate = useNavigate();
     const [paramsUrl, _] = useSearchParams();
     const [token, setToken] = React.useState(false);
-    // const [getMyCompany, { isError: unComplateCompany, data, isSuccess }] =
-    //     companyApi.endpoints.getMyCompany.useLazyQuery({
-    //         fakeAuthProvider: 'myCompany'
-    //     });
+    const [getProfileAcount, { isError: unComplateCompany, data, isSuccess }] =
+        profileAuth.endpoints.getProfile.useLazyQuery();
     React.useEffect(() => {
         if (paramsUrl.get('token') === null) {
+            console.log('masuk ke sini');
             window.location = `${
                 import.meta.env.VITE_REDIRECT_URL
             }?isError=true`;
@@ -22,7 +21,7 @@ const Redirect = () => {
     }, [paramsUrl]);
     React.useEffect(() => {
         if (token) {
-            getMyCompany();
+            getProfileAcount();
         }
     }, [token]);
     React.useEffect(() => {
@@ -34,6 +33,7 @@ const Redirect = () => {
             }?logout=true`;
         }
     }, [unComplateCompany]);
+
     React.useEffect(() => {
         if (isSuccess) {
             if (!data?.data?.profile_completed) {
@@ -42,18 +42,23 @@ const Redirect = () => {
             if (data?.data?.isVerification === false) {
                 navigate('/registration');
             }
-            if (
-                data?.data.why_join_us === null ||
-                data?.data.why_join_us === ''
-            ) {
-                console.log('sukses login');
-                // navigate('/verification?page=1');
+            if (data?.data.email_verified === false) {
+                // navigate('/verification');
+                navigate('/');
             }
-            if (data?.data.why_join_us?.length > 0) {
+            if (data?.data.email_verified) {
                 navigate('/');
             }
         }
     }, [isSuccess]);
-    return <div>loading...</div>;
+
+    return (
+        <div>
+            loading... Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Odio sequi sed minus rerum molestias nemo earum adipisci aliquid
+            praesentium ipsa iusto quia et ipsum architecto officiis ut, aut
+            nesciunt? Necessitatibus?
+        </div>
+    );
 };
-export default Redirect;
+export default RedirectPage;

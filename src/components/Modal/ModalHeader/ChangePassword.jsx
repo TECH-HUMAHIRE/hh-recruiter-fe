@@ -2,21 +2,39 @@ import React from 'react';
 import Style from './modal-header.style';
 import ArrowLeft from '../../Assets/icon/arrow-left.png';
 import Button from '../../Button';
-import { Form, Input } from 'antd';
+import { Form, Input, message } from 'antd';
 import LockIcon from '../../Assets/icon/lock.png';
 import { Row } from '../../Grid';
 import { Col } from '../../Grid';
+import { useChangePasswordMutation } from '../../../app/actions/profile';
 
 const ChangePassword = ({ isOpen = false, onClose = () => {} }) => {
     const [form] = Form.useForm();
+    const [messageApi, contextHolder] = message.useMessage();
     const [, forceUpdate] = React.useState({});
-
+    const [changePassword, { isLoading, isError, error }] =
+        useChangePasswordMutation({
+            fixedCacheKey: 'change_password'
+        });
     React.useEffect(() => {
         forceUpdate({});
     }, []);
     const onFinish = (values) => {
-        console.log('Finish:', values);
+        changePassword({ ...values });
     };
+
+    React.useEffect(() => {
+        if (isError) {
+            messageApi.open({
+                type: 'error',
+                content: error.data.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 3
+            });
+        }
+    }, [isError]);
     return (
         <Style
             open={isOpen}
@@ -35,6 +53,7 @@ const ChangePassword = ({ isOpen = false, onClose = () => {} }) => {
                     </h3>
                 </>
             }>
+            {contextHolder}
             <div className="modal-body">
                 <Form
                     requiredMark={'optional'}
@@ -45,7 +64,7 @@ const ChangePassword = ({ isOpen = false, onClose = () => {} }) => {
                     <Row>
                         <Col xl={12}>
                             <Form.Item
-                                name="current_password"
+                                name="old_password"
                                 label="Current password"
                                 rules={[
                                     {
@@ -86,6 +105,7 @@ const ChangePassword = ({ isOpen = false, onClose = () => {} }) => {
                                 <Form.Item shouldUpdate>
                                     {() => (
                                         <Button
+                                            loading={isLoading}
                                             block
                                             color="outline-primary"
                                             htmlType="submit"

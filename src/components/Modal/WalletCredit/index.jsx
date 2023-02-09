@@ -35,8 +35,6 @@ const WalletCredit = ({
     const [, forceUpdate] = React.useState({});
 
     const onChangeForm = (changedFields, allFields) => {
-        console.log('name', changedFields);
-        console.log('value', allFields);
         setActive('');
     };
     const onClickNominal = (name, value) => {

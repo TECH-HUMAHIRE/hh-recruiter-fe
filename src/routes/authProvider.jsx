@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { useGetProfileQuery } from '../app/actions/profile';
 // import { useGetMyCompanyQuery } from '../app/actions/companyApi';
 
 let AuthContext = React.createContext(null);
@@ -35,30 +36,28 @@ export function useAuth() {
 
 // eslint-disable-next-line react/prop-types
 export function RequireAuth({ children }) {
-    // const navigate = useNavigate();
-    // const { isError: unComplateCompany } = useGetMyCompanyQuery({
-    //     fakeAuthProvider: 'myCompany'
-    // });
-    // let auth = localStorage.getItem('token');
-    // // let location = useLocation();
-    // React.useEffect(() => {
-    //     if (unComplateCompany) {
-    //         localStorage.removeItem('token');
-    //         localStorage.removeItem('profile_completed');
-    //         window.location = `${
-    //             import.meta.env.VITE_REDIRECT_URL
-    //         }?isError=true`;
-    //     }
-    // }, [unComplateCompany]);
-    // // console.log(auth, 'import.meta.env.VITE_REDIRECT_URL');
+    const navigate = useNavigate();
+    const { isError: unComplateCompany } = useGetProfileQuery();
+    let auth = localStorage.getItem('token');
+    // let location = useLocation();
+    React.useEffect(() => {
+        if (unComplateCompany) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('profile_completed');
+            window.location = `${
+                import.meta.env.VITE_REDIRECT_URL
+            }?isError=true`;
+        }
+    }, [unComplateCompany]);
+    // console.log(auth, 'import.meta.env.VITE_REDIRECT_URL');
 
-    // if (!auth) {
-    //     localStorage.removeItem('token');
-    //     localStorage.removeItem('profile_completed');
-    //     return (window.location = `${
-    //         import.meta.env.VITE_REDIRECT_URL
-    //     }?logout=true`);
-    // }
+    if (!auth) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('profile_completed');
+        return (window.location = `${
+            import.meta.env.VITE_REDIRECT_URL
+        }?logout=true`);
+    }
 
     return children;
 }
