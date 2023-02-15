@@ -16,6 +16,7 @@ import HumaPoint from '../features/auth/HumaPoint';
 import RedirectPage from '../features/guest/Redirect';
 import GuestLayout from '../layout/guestLayout';
 import Registration from '../features/auth/Registration';
+import HelpPage from '../features/auth/Help';
 const App = () => {
     return (
         <AuthProvider>
@@ -101,6 +102,14 @@ const App = () => {
                         element={
                             <RequireAuth>
                                 <HumaPoint />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/help"
+                        element={
+                            <RequireAuth>
+                                <HelpPage />
                             </RequireAuth>
                         }
                     />
