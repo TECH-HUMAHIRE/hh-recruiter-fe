@@ -6,6 +6,7 @@ import ProfileTab from './Profile';
 import EmailTab from './Email';
 import PasswordTab from './Password';
 import { useNavigate } from 'react-router-dom';
+import AccountNumber from './AccountNumber';
 
 const ModalHeader = ({
     isOpen = false,
@@ -60,6 +61,11 @@ const ModalHeader = ({
                         children: (
                             <PasswordTab changePassword={changePassword} />
                         )
+                    },
+                    {
+                        label: `Account Number`,
+                        key: '4',
+                        children: <AccountNumber />
                     }
                 ]}
             />
