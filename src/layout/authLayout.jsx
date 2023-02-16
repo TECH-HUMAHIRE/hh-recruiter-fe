@@ -19,7 +19,7 @@ const AuthLayout = () => {
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = React.useState(false);
     const [isOpen, setOpen] = React.useState(false);
-    const { data, isError } = useGetProfileQuery();
+    const { data, isError, isSuccess } = useGetProfileQuery();
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
     };
@@ -44,9 +44,22 @@ const AuthLayout = () => {
     }, [data, localStorage]);
     React.useEffect(() => {
         if (isError) {
-            console.log('error login');
+            return (window.location = `${
+                import.meta.env.VITE_REDIRECT_URL
+            }?logout=true`);
         }
     }, [isError]);
+    React.useEffect(() => {
+        if (isSuccess) {
+            if (data?.data?.user_type !== 'RECRUITER') {
+                return (window.location = `${
+                    import.meta.env.VITE_REDIRECT_URL
+                }?logout=true`);
+            } else {
+                return false;
+            }
+        }
+    }, [isSuccess]);
     return (
         <Style id="huma-hire" collapsed={collapsed}>
             <Header collapsed={collapsed} />

@@ -14,6 +14,7 @@ export const profileAuth = createApi({
             return headers;
         }
     }),
+    tagTypes: ['get_my_company'],
     endpoints: (builder) => ({
         getProfile: builder.query({
             query: (params) => {
@@ -22,7 +23,16 @@ export const profileAuth = createApi({
                     method: 'GET',
                     params
                 };
-            }
+            },
+            providesTags: ['get_my_company']
+        }),
+        updateProfile: builder.mutation({
+            query: (body) => ({
+                url: '/user',
+                method: 'PUT',
+                body
+            }),
+            invalidatesTags: ['get_my_company']
         }),
         changePassword: builder.mutation({
             query: (body) => {
@@ -38,4 +48,8 @@ export const profileAuth = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetProfileQuery, useChangePasswordMutation } = profileAuth;
+export const {
+    useGetProfileQuery,
+    useUpdateProfileMutation,
+    useChangePasswordMutation
+} = profileAuth;

@@ -22,7 +22,6 @@ const ChangePassword = ({ isOpen = false, onClose = () => {} }) => {
     const onFinish = (values) => {
         changePassword({ ...values });
     };
-
     React.useEffect(() => {
         if (isError) {
             messageApi.open({
