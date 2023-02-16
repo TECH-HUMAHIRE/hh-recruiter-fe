@@ -10,7 +10,6 @@ const RedirectPage = () => {
         profileAuth.endpoints.getProfile.useLazyQuery();
     React.useEffect(() => {
         if (paramsUrl.get('token') === null) {
-            console.log('masuk ke sini');
             window.location = `${
                 import.meta.env.VITE_REDIRECT_URL
             }?isError=true`;
@@ -52,13 +51,6 @@ const RedirectPage = () => {
         }
     }, [isSuccess]);
 
-    return (
-        <div>
-            loading... Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Odio sequi sed minus rerum molestias nemo earum adipisci aliquid
-            praesentium ipsa iusto quia et ipsum architecto officiis ut, aut
-            nesciunt? Necessitatibus?
-        </div>
-    );
+    return <div>loading...</div>;
 };
 export default RedirectPage;

@@ -3,19 +3,57 @@ import MessegerIcon from '../../Icon/Messeger';
 import Button from '../../Button';
 import { Col, Row } from '../../Grid';
 import ChatMessegerIcon from '../../Icon/ChatMesseger';
-import { Form, Input, Radio } from 'antd';
+import { Form, Input, message, Radio } from 'antd';
+import {
+    useGetProfileQuery,
+    useUpdateProfileMutation
+} from '../../../app/actions/profile';
 
 const ProfileTab = ({ onClose = () => {} }) => {
+    const [updateProfile, response] = useUpdateProfileMutation();
+    const [messageApi, contextHolder] = message.useMessage();
+    const { data, isSuccess: successGetProfile } = useGetProfileQuery({
+        fakeAuthProvider: 'myCompany'
+    });
     const [form] = Form.useForm();
     const [, forceUpdate] = React.useState({});
-
+    const onFinish = (values) => {
+        updateProfile({ ...values, email: data?.data?.email });
+    };
     // To disable submit button at the beginning.
     React.useEffect(() => {
         forceUpdate({});
     }, []);
-    const onFinish = (values) => {
-        console.log('Finish:', values);
-    };
+    React.useEffect(() => {
+        if (successGetProfile) {
+            form.setFieldsValue({
+                ...data?.data,
+                phone: data?.data?.phone
+            });
+        }
+    }, [successGetProfile]);
+    React.useEffect(() => {
+        if (response.isSuccess) {
+            messageApi.open({
+                type: 'success',
+                content: response?.data?.meta?.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+        }
+        if (response.error) {
+            messageApi.open({
+                type: 'error',
+                content: response?.data?.meta?.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+        }
+    }, [response]);
 
     return (
         <Form
@@ -25,10 +63,11 @@ const ProfileTab = ({ onClose = () => {} }) => {
             layout="vertical"
             onFinish={onFinish}>
             <div className="modal-body">
+                {contextHolder}
                 <Row>
                     <Col md={6}>
                         <Form.Item
-                            name="username"
+                            name="name"
                             label="Username"
                             rules={[
                                 {
@@ -50,7 +89,8 @@ const ProfileTab = ({ onClose = () => {} }) => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your phone!'
+                                    message: 'Please input your phone!',
+                                    pattern: new RegExp(/^[0-9]+$/)
                                 }
                             ]}>
                             <Input
@@ -62,14 +102,15 @@ const ProfileTab = ({ onClose = () => {} }) => {
                     </Col>
                     <Col md={6}>
                         <Form.Item
-                            name="job_role"
+                            // name="job_role"
                             label="Job Role"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your job!'
-                                }
-                            ]}>
+                            // rules={[
+                            //     {
+                            //         required: false,
+                            //         message: 'Please input your job!'
+                            //     }
+                            // ]}
+                        >
                             <Input
                                 type={'text'}
                                 size="large"
@@ -79,14 +120,15 @@ const ProfileTab = ({ onClose = () => {} }) => {
                     </Col>
                     <Col md={6}>
                         <Form.Item
-                            name="departement"
+                            // name="departement"
                             label="Departement"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your departement!'
-                                }
-                            ]}>
+                            // rules={[
+                            //     {
+                            //         required: false,
+                            //         message: 'Please input your departement!'
+                            //     }
+                            // ]}
+                        >
                             <Input
                                 type={'text'}
                                 size="large"
@@ -101,14 +143,15 @@ const ProfileTab = ({ onClose = () => {} }) => {
                 <Row>
                     <Col md={12}>
                         <Form.Item
-                            name="language"
+                            // name="language"
                             label="Language"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your language!'
-                                }
-                            ]}>
+                            // rules={[
+                            //     {
+                            //         required: false,
+                            //         message: 'Please input your language!'
+                            //     }
+                            // ]}
+                        >
                             <Radio.Group name="language">
                                 <Row>
                                     <Col md={6}>
@@ -166,6 +209,7 @@ const ProfileTab = ({ onClose = () => {} }) => {
                         <Form.Item shouldUpdate>
                             {() => (
                                 <Button
+                                    loading={response.isLoading}
                                     block
                                     color="primary"
                                     htmlType="submit"
