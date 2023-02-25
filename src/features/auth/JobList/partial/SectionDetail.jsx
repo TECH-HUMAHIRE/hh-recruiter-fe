@@ -10,23 +10,27 @@ import exampleImage from '../../../../components/Assets/images/example.png';
 import defaultImage from '../../../../components/Assets/images/defaultImage.png';
 import { SectionDetailStyle } from '../job-list.style';
 import Button from '../../../../components/Button';
-const SectionDetail = ({ data = {} }) => {
+import convertEmployeType from '../../../../components/Utils/convertEmployeType';
+const SectionDetail = ({ data = {}, handleAddTask = () => {} }) => {
     return (
         <SectionDetailStyle>
             <div>
                 <div>
                     <div className="job-header">
-                        <img src={exampleImage} alt="" />
+                        <img
+                            src={data.company.photo_url || exampleImage}
+                            alt=""
+                        />
                         <div className="job-info job-header__info">
                             <div className="job-header__company">
                                 <img
-                                    src={defaultImage}
+                                    src={data.company.logo_url || defaultImage}
                                     alt=""
                                     className="job-header__logo"
                                 />
                                 <div>
-                                    <h3 className="title">Scrum Master</h3>
-                                    <div>PT. Solusi Transportasi Indonesia</div>
+                                    <h3 className="title">{data.title}</h3>
+                                    <div>{data.company.name}</div>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +82,9 @@ const SectionDetail = ({ data = {} }) => {
                                 </div>
                                 <div>
                                     <div className="job-information__value">
-                                        {data?.employment_type || '-'}
+                                        {convertEmployeType(
+                                            data?.employment_type
+                                        ) || '-'}
                                     </div>
                                 </div>
                             </div>
@@ -237,7 +243,9 @@ const SectionDetail = ({ data = {} }) => {
                 </div>
             </div>
             <div className="footer-action">
-                <Button color="primary">Add to My Task</Button>
+                <Button color="primary" onClick={() => handleAddTask(data.id)}>
+                    Add to My Task
+                </Button>
             </div>
         </SectionDetailStyle>
     );
