@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { color } from '../../../components/Utils/variable';
 
 export const MyTaskStyle = styled.div`
     .card {
@@ -64,10 +65,11 @@ export const DashboardCandidatesStyle = styled.div`
         }
     }
     .ant-tabs-tab {
-        border-bottom: 1px solid #e8e8e8;
+        border: 1px solid #e8e8e8;
+        border-radius: 8px;
         margin-right: 10px !important;
         &.ant-tabs-tab-active {
-            border: 1px solid #8fe0d4;
+            border: 1px solid ${color.employee.seconday};
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
