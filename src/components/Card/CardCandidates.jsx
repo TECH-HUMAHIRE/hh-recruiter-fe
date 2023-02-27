@@ -8,6 +8,7 @@ import DressIcon from '../Icon/Dress';
 import FoundedIcon from '../Icon/Founded';
 import { formatMoney } from '../Utils/formatMoney';
 import PreviewIcon from '../Assets/icon/preview.png';
+import moment from 'moment';
 
 const CardCandidates = ({
     onViewDetail = () => {},
@@ -43,17 +44,13 @@ const CardCandidates = ({
                         <div className="card-header__initial">JR</div>
                         <div className="card-header__info">
                             <div className="card-header__info-name">
-                                {data?.jobseeker?.name}
+                                {data?.name}
                             </div>
                             <div className="card-header__info-location">
+                                {data?.sub_district?.district?.city?.name},{' '}
                                 {
-                                    data?.jobseeker?.sub_district.district.city
-                                        .name
-                                }
-                                ,{' '}
-                                {
-                                    data?.jobseeker?.sub_district.district.city
-                                        .province.country.name
+                                    data?.sub_district?.district?.city?.province
+                                        ?.country.name
                                 }
                             </div>
                         </div>
@@ -69,10 +66,12 @@ const CardCandidates = ({
                     <MoreOutlined className="card-action" />
                 </Dropdown>
             }>
-            <div className="card-date">Referred: 9 Jul 2022</div>
+            <div className="card-date">
+                Last Update: {moment(data?.updated_at).format('DD MMM YYYY')} •
+                Last active: -
+            </div>
             <div className="card-info">
-                <BagIcon />{' '}
-                <span className="card-info__text">Senior Java Programmer</span>
+                <BagIcon /> <span className="card-info__text">-</span>
             </div>
             <div className="card-info">
                 <DressIcon />{' '}
@@ -89,23 +88,15 @@ const CardCandidates = ({
             <div className="card-info">
                 <WalletIcon color="#C4C4C4" />{' '}
                 <span className="card-info__text">
-                    Expected {formatMoney(data?.jobseeker?.expected_sallary)} (
-                    {data?.jobseeker?.expected_sallary_negotiable
-                        ? 'Negotiable'
-                        : 'Nett'}
-                    )
+                    Expected {formatMoney(data?.expected_sallary)} (
+                    {data?.expected_sallary_negotiable ? 'Negotiable' : 'Nett'})
                 </span>
             </div>
             <div className="hr"></div>
             <div className="card-info">
-                <span className="card-info__referred">
-                    Referred by : {data?.recruiter.name}
-                </span>{' '}
-                <span className="card-info__rating">
-                    <StarFilled style={{ color: '#F57F17' }} /> 4.8 (9 Reviews)
-                </span>
+                <span className="card-info__referred">Candidate Notes :</span>
             </div>
-            <div className="card-info__desc">{data?.message}</div>
+            <div className="card-info__desc">{data?.message || '-'}</div>
         </CardReferredStyle>
     );
 };

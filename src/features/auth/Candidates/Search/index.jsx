@@ -1,23 +1,38 @@
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import {
+    candidates,
+    useGetCandidatesListQuery
+} from '../../../../app/actions/candidates';
 import Button from '../../../../components/Button';
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import FilterCandidates from '../../../../components/Modal/FilterCandidates';
+import debounce from '../../../../components/Utils/debounce';
 
 const CandidatesSearch = () => {
+    // const dispatch = useDispatch();
     const [isFilter, setFilter] = React.useState(false);
+    const { data } = useGetCandidatesListQuery();
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
+    const handleSearchCandidate = debounce((e) => {
+        const value = e.target.value;
+        // dispatch(
+        //     candidates.endpoints.getCandidatesList.initiate({ sort_: value })
+        // );
+    }, 750);
     return (
         <div>
             <Row justify="space-between">
                 <Col md={4}>
                     <Form.Item>
                         <Input
+                            onChange={handleSearchCandidate}
                             prefix={<SearchOutlined />}
                             size="large"
                             type={'text'}
@@ -36,9 +51,15 @@ const CandidatesSearch = () => {
                 </Col>
             </Row>
             <Row>
-                {dataCandidates.data.map((item, key) => {
+                {data?.data?.map((item, key) => {
                     return (
-                        <Col xl={4} lg={4} md={6} sm={12}>
+                        <Col
+                            xl={4}
+                            lg={4}
+                            md={6}
+                            sm={12}
+                            key={key}
+                            style={{ marginBottom: 30 }}>
                             <CardCandidates data={item} />
                         </Col>
                     );
