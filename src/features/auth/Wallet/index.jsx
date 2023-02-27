@@ -1,7 +1,6 @@
-import { Card, Progress } from 'antd';
+import { Card } from 'antd';
 import React from 'react';
 import { Row, Col } from '../../../components/Grid';
-import Button from '../../../components/Button';
 import { Style } from './wallet.style';
 import TabMenu from '../../../components/Tabs';
 import CreditHistory from './partial/CreditHistory';

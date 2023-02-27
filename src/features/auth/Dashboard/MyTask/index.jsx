@@ -7,8 +7,10 @@ import CardTask from '../../../../components/Card/CardTask';
 import JobDetail from '../../../../components/Modal/JobDetail';
 import ReferCandidates from '../../../../components/Modal/ReferCandidates';
 import DeclineTask from '../../../../components/Modal/DeclineTask';
+import { useGetTaskListQuery } from '../../../../app/actions/jobApi';
 
 const MyTask = () => {
+    const { data: taskList } = useGetTaskListQuery();
     const [isOpen, setOpen] = React.useState(false);
     const [data, setData] = React.useState(null);
     const [isRefer, setRefer] = React.useState(false);
@@ -30,14 +32,14 @@ const MyTask = () => {
                     <Card className="card-section">
                         {/* <EmptyJob /> */}
                         <Row>
-                            {dataDummy.map((item, key) => {
+                            {taskList?.data?.map((item, key) => {
                                 return (
                                     <Col md={4} key={key}>
                                         <CardTask
                                             onDeclineTask={onDeclineTask}
                                             onReferCandidate={onReferCandidate}
                                             onDetailJob={onDetailJob}
-                                            job={item}
+                                            data={item}
                                         />
                                     </Col>
                                 );

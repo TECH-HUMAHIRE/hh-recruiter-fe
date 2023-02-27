@@ -30,21 +30,12 @@ import {
 } from '../../../app/actions/jobApi';
 import moment from 'moment';
 import convertEmployeType from '../../../components/Utils/convertEmployeType';
-
-const Jobist = () => {
-    const [messageApi, contextHolder] = message.useMessage();
-    const { data: jobList, isSuccess } = useGetJobsListQuery({
-        status: 'active'
-    });
-    const [addMyTask, response] = useAddTaskMutation();
-    const actionDropdown = [
+const DropdownMenu = ({ data, handleAddTask = () => {} }) => {
+    const items = [
         {
             key: '1',
             label: (
-                <CardMenu
-                    onClick={(item, data) =>
-                        handleAddTask(console.log('item', item, 'data', data))
-                    }>
+                <CardMenu onClick={() => handleAddTask(data.id)}>
                     <img src={Bookmark} alt="" />
                     Add to My Task
                 </CardMenu>
@@ -53,24 +44,37 @@ const Jobist = () => {
         {
             key: '2',
             label: (
-                <CardMenu onClick={() => onDetailJob(job)}>
+                <CardMenu>
                     <img src={ShareIcon} alt="" />
                     Refer
                 </CardMenu>
             )
         }
     ];
+    return (
+        <Dropdown menu={{ items }} placement="bottomCenter" trigger="click">
+            <MoreOutlined className="card-action" />
+        </Dropdown>
+    );
+};
+const Jobist = () => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const { data: jobList, isSuccess } = useGetJobsListQuery({
+        status: 'active'
+    });
+    const [addMyTask, response] = useAddTaskMutation();
+
     const [isFilter, setFilter] = React.useState(false);
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
-    const onViewDetail = (data) => {
+    const onViewDetail = () => {
         setDetailInfo(!isDetailInfo);
     };
     const onOpenFilter = () => {
         setFilter(!isFilter);
     };
-    const onCancelInvitation = (data) => {
+    const onCancelInvitation = () => {
         setCancelInvitation(!isCancelInvitation);
     };
     const handleAddTask = (id) => {
@@ -81,7 +85,7 @@ const Jobist = () => {
     React.useEffect(() => {
         if (isSuccess) {
             setItemTabs(
-                jobList.data.map((item, key) => {
+                jobList.data.map((item) => {
                     return {
                         label: (
                             <div className="referred-tabs">
@@ -120,12 +124,10 @@ const Jobist = () => {
                                                     }
                                                 </div>
                                             </div>
-                                            <Dropdown
-                                                menu={{ actionDropdown }}
-                                                placement="bottomCenter"
-                                                trigger="click">
-                                                <MoreOutlined className="card-action" />
-                                            </Dropdown>
+                                            <DropdownMenu
+                                                data={item}
+                                                handleAddTask={handleAddTask}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -188,7 +190,6 @@ const Jobist = () => {
                 },
                 duration: 2
             });
-            console.log('response', response.error);
         }
     }, [response]);
     return (
@@ -213,7 +214,7 @@ const Jobist = () => {
                                         <img
                                             style={{ width: 20 }}
                                             src={placeIcon}
-                                            atl={''}
+                                            alt=""
                                         />
                                     }
                                     size="large"

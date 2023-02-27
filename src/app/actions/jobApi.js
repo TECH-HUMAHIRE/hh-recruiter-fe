@@ -14,7 +14,7 @@ export const jobApi = createApi({
             return headers;
         }
     }),
-    tagTypes: ['callback_task'],
+    tagTypes: ['Post'],
     endpoints: (builder) => ({
         getJobsList: builder.query({
             query: (params) => {
@@ -23,17 +23,8 @@ export const jobApi = createApi({
                     params,
                     method: 'GET'
                 };
-            }
-        }),
-        addTask: builder.mutation({
-            query: (body) => {
-                return {
-                    url: `/task`,
-                    body,
-                    method: 'POST'
-                };
             },
-            invalidatesTags: ['callback_task']
+            providesTags: [{ type: 'Post', id: 1 }]
         }),
         getTaskList: builder.query({
             query: (params) => {
@@ -43,7 +34,20 @@ export const jobApi = createApi({
                     method: 'GET'
                 };
             },
-            providesTags: ['callback_task']
+            providesTags: [{ type: 'Post', id: 2 }]
+        }),
+        addTask: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/task`,
+                    body,
+                    method: 'POST'
+                };
+            },
+            invalidatesTags: [
+                { type: 'Post', id: 1 },
+                { type: 'Post', id: 2 }
+            ]
         })
     })
 });
