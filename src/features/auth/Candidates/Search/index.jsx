@@ -4,6 +4,7 @@ import React from 'react';
 import Button from '../../../../components/Button';
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
+import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import FilterCandidates from '../../../../components/Modal/FilterCandidates';
 
 const CandidatesSearch = () => {

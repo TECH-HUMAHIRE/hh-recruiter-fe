@@ -1,4 +1,4 @@
-import { Dropdown } from 'antd';
+import { Form, Input } from 'antd';
 import React from 'react';
 import { Col, Row } from '../../../../components/Grid';
 import { DashboardCandidatesStyle } from '../style';
@@ -7,7 +7,7 @@ import TabMenu from '../../../../components/Tabs';
 import CandidatesList from '../../../../components/SectionCard/CandidatesList';
 import { formatMoney } from '../../../../components/Utils/formatMoney';
 import companyDummy from '../../../../components/Assets/icon/company-dummy.png';
-import { MoreOutlined } from '@ant-design/icons';
+import { MoreOutlined, SearchOutlined } from '@ant-design/icons';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../../components/Modal/CancelInvitation';
 
@@ -15,15 +15,15 @@ const InviteCandidates = () => {
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
-    const onViewDetail = (data) => {
+    const onViewDetail = () => {
         setDetailInfo(!isDetailInfo);
     };
-    const onCancelInvitation = (data) => {
+    const onCancelInvitation = () => {
         setCancelInvitation(!isCancelInvitation);
     };
     React.useEffect(() => {
         setItemTabs(
-            jobInvitation.data.map((item, key) => {
+            jobInvitation.data.map((item) => {
                 return {
                     label: (
                         <div className="referred-tabs">
@@ -74,6 +74,18 @@ const InviteCandidates = () => {
     }, []);
     return (
         <DashboardCandidatesStyle>
+            <Row>
+                <Col xl={3} lg={3} md={12}>
+                    <Form.Item>
+                        <Input
+                            prefix={<SearchOutlined />}
+                            size="large"
+                            type={'text'}
+                            placeholder="Search Candidates"
+                        />
+                    </Form.Item>
+                </Col>
+            </Row>
             <Row>
                 <Col xl={12}>
                     {jobInvitation?.data?.length > 0 ? (
