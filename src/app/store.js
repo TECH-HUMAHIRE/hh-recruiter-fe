@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { candidates } from './actions/candidates';
 import { jobApi } from './actions/jobApi';
 import { profileAuth } from './actions/profile';
 import { userAuth } from './actions/userAuth';
@@ -10,7 +11,8 @@ export const store = configureStore({
         // Add the generated reducer as a specific top-level slice
         [userAuth.reducerPath]: userAuth.reducer,
         [profileAuth.reducerPath]: profileAuth.reducer,
-        [jobApi.reducerPath]: jobApi.reducer
+        [jobApi.reducerPath]: jobApi.reducer,
+        [candidates.reducerPath]: candidates.reducer
     },
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
@@ -18,7 +20,8 @@ export const store = configureStore({
         getDefaultMiddleware().concat(
             userAuth.middleware,
             profileAuth.middleware,
-            jobApi.middleware
+            jobApi.middleware,
+            candidates.middleware
         )
 });
 
