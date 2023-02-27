@@ -26,7 +26,8 @@ import BagIcon from '../../../components/Icon/Bag';
 import FilterJobList from '../../../components/Modal/FilterJobList';
 import {
     useAddTaskMutation,
-    useGetJobsListQuery
+    useGetJobsListQuery,
+    useGetTaskListQuery
 } from '../../../app/actions/jobApi';
 import moment from 'moment';
 import convertEmployeType from '../../../components/Utils/convertEmployeType';
@@ -62,6 +63,7 @@ const Jobist = () => {
     const { data: jobList, isSuccess } = useGetJobsListQuery({
         status: 'active'
     });
+    const { refetch } = useGetTaskListQuery();
     const [addMyTask, response] = useAddTaskMutation();
 
     const [isFilter, setFilter] = React.useState(false);
@@ -180,6 +182,7 @@ const Jobist = () => {
                 },
                 duration: 2
             });
+            refetch();
         }
         if (response.isError) {
             messageApi.open({
