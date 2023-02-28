@@ -11,12 +11,17 @@ import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import FilterCandidates from '../../../../components/Modal/FilterCandidates';
+import PaginationTable from '../../../../components/PaginationTable';
 import debounce from '../../../../components/Utils/debounce';
 
 const CandidatesSearch = () => {
-    // const dispatch = useDispatch();
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 10
+    });
     const [isFilter, setFilter] = React.useState(false);
-    const { data } = useGetCandidatesListQuery();
+
+    const { data, refetch } = useGetCandidatesListQuery(params);
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
@@ -26,6 +31,10 @@ const CandidatesSearch = () => {
         //     candidates.endpoints.getCandidatesList.initiate({ sort_: value })
         // );
     }, 750);
+    const onRefetchCandidates = (updateParams) => {
+        setParams(updateParams);
+        refetch();
+    };
     return (
         <div>
             <Row justify="space-between">
@@ -65,6 +74,13 @@ const CandidatesSearch = () => {
                     );
                 })}
             </Row>
+            {data?.meta?.info?.count > 0 && (
+                <PaginationTable
+                    data={data}
+                    refetch={onRefetchCandidates}
+                    params={params}
+                />
+            )}
             <FilterCandidates isOpen={isFilter} onClose={onFilterCandidates} />
         </div>
     );
