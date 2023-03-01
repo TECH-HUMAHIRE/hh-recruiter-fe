@@ -36,6 +36,15 @@ export const jobApi = createApi({
             },
             providesTags: [{ type: 'Post', id: 2 }]
         }),
+        getTaskId: builder.query({
+            query: (id) => {
+                return {
+                    url: `/task/${id}`,
+                    method: 'GET'
+                };
+            },
+            providesTags: [{ type: 'TaskId', id: 1 }]
+        }),
         addTask: builder.mutation({
             query: (body) => {
                 return {
@@ -48,11 +57,28 @@ export const jobApi = createApi({
                 { type: 'Post', id: 1 },
                 { type: 'Post', id: 2 }
             ]
+        }),
+        deleteTask: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/task/${id}`,
+                    method: 'DELETE'
+                };
+            },
+            invalidatesTags: [
+                { type: 'Post', id: 1 },
+                { type: 'Post', id: 2 }
+            ]
         })
     })
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetJobsListQuery, useAddTaskMutation, useGetTaskListQuery } =
-    jobApi;
+export const {
+    useGetJobsListQuery,
+    useAddTaskMutation,
+    useGetTaskIdQuery,
+    useGetTaskListQuery,
+    useDeleteTaskMutation
+} = jobApi;

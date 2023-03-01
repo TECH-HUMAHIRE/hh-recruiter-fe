@@ -11,6 +11,8 @@ export const MyTaskStyle = styled.div`
 export const DashboardCandidatesStyle = styled.div`
     .ant-tabs-nav {
         width: 35%;
+        max-height: 650px;
+        overflow: auto;
     }
     .ant-tabs-tab-btn {
         width: 100%;

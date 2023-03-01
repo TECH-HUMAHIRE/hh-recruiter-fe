@@ -1,31 +1,38 @@
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import {
-    candidates,
-    useGetCandidatesListQuery
-} from '../../../../app/actions/candidates';
+import { useGetCandidatesListQuery } from '../../../../app/actions/candidates';
 import Button from '../../../../components/Button';
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import FilterCandidates from '../../../../components/Modal/FilterCandidates';
+import PaginationTable from '../../../../components/PaginationTable';
 import debounce from '../../../../components/Utils/debounce';
 
 const CandidatesSearch = () => {
-    // const dispatch = useDispatch();
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 10
+    });
     const [isFilter, setFilter] = React.useState(false);
-    const { data } = useGetCandidatesListQuery();
+    const { data, refetch } = useGetCandidatesListQuery(params);
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
-    const handleSearchCandidate = debounce((e) => {
+    const handleSearchCandidate = debounce(async (e) => {
         const value = e.target.value;
-        // dispatch(
-        //     candidates.endpoints.getCandidatesList.initiate({ sort_: value })
-        // );
+        await setParams({
+            ...params,
+            searchByName: value
+        });
+        refetch();
     }, 750);
+
+    const onRefetchCandidates = (updateParams) => {
+        setParams(updateParams);
+        refetch();
+    };
     return (
         <div>
             <Row justify="space-between">
@@ -65,7 +72,15 @@ const CandidatesSearch = () => {
                     );
                 })}
             </Row>
+            {data?.meta?.info?.count > 0 && (
+                <PaginationTable
+                    data={data}
+                    refetch={onRefetchCandidates}
+                    params={params}
+                />
+            )}
             <FilterCandidates isOpen={isFilter} onClose={onFilterCandidates} />
+            {/* <CandidateDetail /> */}
         </div>
     );
 };
