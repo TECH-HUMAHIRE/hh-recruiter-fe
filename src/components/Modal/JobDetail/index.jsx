@@ -12,6 +12,7 @@ import chatIcon from '../../Assets/icon/Chat.png';
 import JobDetailStyle from './job-detail.style.';
 import exampleImage from '../../Assets/images/example.png';
 import defaultImage from '../../Assets/images/defaultImage.png';
+import convertEmployeType from '../../Utils/convertEmployeType';
 const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
     return (
         <JobDetailStyle
@@ -22,11 +23,14 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
             onCancel={onClose}>
             <div>
                 <div className="job-header">
-                    <img src={exampleImage} alt="" />
+                    <img
+                        src={data?.company?.photo_url || exampleImage}
+                        alt=""
+                    />
                     <div className="job-info job-header__info">
                         <div className="job-header__company">
                             <img
-                                src={defaultImage}
+                                src={data?.company?.logo_url || defaultImage}
                                 alt=""
                                 className="job-header__logo"
                             />
@@ -79,7 +83,9 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                             </div>
                             <div>
                                 <div className="job-information__value">
-                                    {data?.employment_type || '-'}
+                                    {convertEmployeType(
+                                        data?.employment_type
+                                    ) || '-'}
                                 </div>
                             </div>
                         </div>

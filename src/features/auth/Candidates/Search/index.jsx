@@ -1,11 +1,7 @@
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import {
-    candidates,
-    useGetCandidatesListQuery
-} from '../../../../app/actions/candidates';
+import { useGetCandidatesListQuery } from '../../../../app/actions/candidates';
 import Button from '../../../../components/Button';
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
@@ -20,17 +16,19 @@ const CandidatesSearch = () => {
         page_size: 10
     });
     const [isFilter, setFilter] = React.useState(false);
-
     const { data, refetch } = useGetCandidatesListQuery(params);
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
-    const handleSearchCandidate = debounce((e) => {
+    const handleSearchCandidate = debounce(async (e) => {
         const value = e.target.value;
-        // dispatch(
-        //     candidates.endpoints.getCandidatesList.initiate({ sort_: value })
-        // );
+        await setParams({
+            ...params,
+            searchByName: value
+        });
+        refetch();
     }, 750);
+
     const onRefetchCandidates = (updateParams) => {
         setParams(updateParams);
         refetch();
@@ -82,6 +80,7 @@ const CandidatesSearch = () => {
                 />
             )}
             <FilterCandidates isOpen={isFilter} onClose={onFilterCandidates} />
+            {/* <CandidateDetail /> */}
         </div>
     );
 };

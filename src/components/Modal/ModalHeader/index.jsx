@@ -60,6 +60,13 @@ const ModalHeader = ({
                         children: (
                             <PasswordTab changePassword={changePassword} />
                         )
+                    },
+                    {
+                        label: `Password`,
+                        key: '3',
+                        children: (
+                            <PasswordTab changePassword={changePassword} />
+                        )
                     }
                 ]}
             />
