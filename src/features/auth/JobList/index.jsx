@@ -31,6 +31,7 @@ import {
 } from '../../../app/actions/jobApi';
 import moment from 'moment';
 import convertEmployeType from '../../../components/Utils/convertEmployeType';
+import debounce from '../../../components/Utils/debounce';
 const DropdownMenu = ({ data, handleAddTask = () => {} }) => {
     const items = [
         {
@@ -60,16 +61,23 @@ const DropdownMenu = ({ data, handleAddTask = () => {} }) => {
 };
 const Jobist = () => {
     const [messageApi, contextHolder] = message.useMessage();
-    const { data: jobList, isSuccess } = useGetJobsListQuery({
+
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 10,
         status: 'active'
     });
-    const { refetch } = useGetTaskListQuery();
-    const [addMyTask, response] = useAddTaskMutation();
-
     const [isFilter, setFilter] = React.useState(false);
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
+    const {
+        data: jobList,
+        isSuccess,
+        refetch: refetchJobList
+    } = useGetJobsListQuery(params);
+    const { refetch } = useGetTaskListQuery();
+    const [addMyTask, response] = useAddTaskMutation();
     const onViewDetail = () => {
         setDetailInfo(!isDetailInfo);
     };
@@ -84,6 +92,14 @@ const Jobist = () => {
             job_id: id
         });
     };
+    const onSearchJob = debounce(async (e) => {
+        let value = e.target.value;
+        await setParams({
+            ...params,
+            serach: value
+        });
+        refetchJobList();
+    }, 750);
     React.useEffect(() => {
         if (isSuccess) {
             setItemTabs(
@@ -205,6 +221,7 @@ const Jobist = () => {
                         <Row>
                             <Col lg={4}>
                                 <Input
+                                    onChange={onSearchJob}
                                     prefix={<SearchOutlined />}
                                     size="large"
                                     type={'text'}

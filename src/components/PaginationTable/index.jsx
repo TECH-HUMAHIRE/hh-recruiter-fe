@@ -1,7 +1,12 @@
 import React from 'react';
 import { Pagination } from 'antd';
 import PaginationStyle from './pagination-table.style';
-const PaginationTable = ({ data, refetch = () => {}, params }) => {
+const PaginationTable = ({
+    data,
+    refetch = () => {},
+    params,
+    showSizeChanger = true
+}) => {
     const onChangePage = (page, pageSize) => {
         refetch({
             ...params,
@@ -21,7 +26,7 @@ const PaginationTable = ({ data, refetch = () => {}, params }) => {
                 //     </div>
                 // )}
                 defaultCurrent={1}
-                showSizeChanger
+                showSizeChanger={showSizeChanger}
             />
         </PaginationStyle>
     );
