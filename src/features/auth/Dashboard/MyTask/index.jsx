@@ -17,7 +17,13 @@ import PaginationTable from '../../../../components/PaginationTable';
 const MyTask = () => {
     const [
         deleteTask,
-        { isSuccess: successDeleted, reset, data: responseDelete }
+        {
+            isSuccess: successDeleted,
+            reset,
+            data: responseDelete,
+            isError,
+            error
+        }
     ] = useDeleteTaskMutation();
     const [params, setParams] = React.useState({
         page: 1,
@@ -65,7 +71,19 @@ const MyTask = () => {
             });
             reset();
         }
-    }, [successDeleted]);
+        if (isError) {
+            console.log('responseDelete', error);
+            messageApi.open({
+                type: 'error',
+                content: error.data.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+            reset();
+        }
+    }, [successDeleted, isError]);
     return (
         <MyTaskStyle>
             {contextHolder}

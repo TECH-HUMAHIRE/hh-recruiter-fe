@@ -45,6 +45,16 @@ export const candidates = createApi({
                 };
             },
             providesTags: [{ type: 'candidates', id: 2 }]
+        }),
+        getCandidatesUnlockList: builder.query({
+            query: (params) => {
+                return {
+                    url: `/user/candidate/unlocked`,
+                    params,
+                    method: 'GET'
+                };
+            },
+            providesTags: [{ type: 'candidates', id: 3 }]
         })
     })
 });
@@ -54,5 +64,6 @@ export const candidates = createApi({
 export const {
     useGetCandidatesListQuery,
     useGetCandidatesAssignedListQuery,
-    useGetCandidatesSavedListQuery
+    useGetCandidatesSavedListQuery,
+    useGetCandidatesUnlockListQuery
 } = candidates;
