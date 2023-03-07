@@ -20,6 +20,7 @@ const PaginationTable = ({
             <Pagination
                 onChange={(page, pageSize) => onChangePage(page, pageSize)}
                 total={data?.meta?.info?.total_data}
+                pageSize={params.page_size}
                 // showTotal={(total, range) => (
                 //     <div className="test">
                 //         {`${range[0]}-${range[1]} of ${total} items`}

@@ -1,4 +1,4 @@
-import { Card, message } from 'antd';
+import { Button, Card, Input, message } from 'antd';
 import React from 'react';
 import { Col, Row } from '../../../../components/Grid';
 import { MyTaskStyle } from '../style';
@@ -6,6 +6,7 @@ import { MyTaskStyle } from '../style';
 import CardTask from '../../../../components/Card/CardTask';
 import JobDetail from '../../../../components/Modal/JobDetail';
 import ReferCandidates from '../../../../components/Modal/ReferCandidates';
+import placeIcon from '../../../../components/Assets/icon/place.png';
 import DeclineTask from '../../../../components/Modal/DeclineTask';
 import {
     jobApi,
@@ -13,6 +14,10 @@ import {
     useGetTaskListQuery
 } from '../../../../app/actions/jobApi';
 import PaginationTable from '../../../../components/PaginationTable';
+import SelectOption from '../../../../components/Form/SelectOption';
+import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
+import BagIcon from '../../../../components/Icon/Bag';
+import debounce from '../../../../components/Utils/debounce';
 
 const MyTask = () => {
     const [
@@ -27,7 +32,7 @@ const MyTask = () => {
     ] = useDeleteTaskMutation();
     const [params, setParams] = React.useState({
         page: 1,
-        page_size: 10
+        page_size: 12
     });
     const [messageApi, contextHolder] = message.useMessage();
     const { data: taskList, refetch } = useGetTaskListQuery(params);
@@ -44,6 +49,14 @@ const MyTask = () => {
             getTaskDetail(detail.id);
         }
     };
+    const onSearchJob = debounce(async (e) => {
+        let value = e.target.value;
+        await setParams({
+            ...params,
+            title: value
+        });
+        refetch();
+    }, 750);
     const onReferCandidate = () => {
         setRefer(!isRefer);
     };
@@ -87,6 +100,37 @@ const MyTask = () => {
     return (
         <MyTaskStyle>
             {contextHolder}
+            <div style={{ marginBottom: 20 }}>
+                <Row>
+                    <Col lg={5}>
+                        <Input
+                            onChange={onSearchJob}
+                            prefix={<SearchOutlined />}
+                            size="large"
+                            type={'text'}
+                            placeholder="Product Designer"
+                        />
+                    </Col>
+
+                    <Col lg={5}>
+                        <SelectOption
+                            placeholder="Choose company industry"
+                            options={[]}
+                            frontIcon={<BagIcon color="#666666" />}
+                        />
+                    </Col>
+                    <Col md={2} className="text-right">
+                        <Button
+                            block
+                            size="large"
+                            // onClick={onOpenFilter}
+                            className="message-filter"
+                            icon={<FilterOutlined />}>
+                            Filter
+                        </Button>
+                    </Col>
+                </Row>
+            </div>
             <Row>
                 <Col xl={12}>
                     <Card className="card-section">
