@@ -4,7 +4,10 @@ import { Col, Row } from '../../../components/Grid';
 import { DashboardCandidatesStyle } from './job-list.style';
 import EmptyJob from '../../../components/EmptyJob';
 import TabMenu from '../../../components/Tabs';
-import { formatMoney } from '../../../components/Utils/formatMoney';
+import {
+    formatMoney,
+    formatNumber
+} from '../../../components/Utils/formatMoney';
 import {
     FilterOutlined,
     MoreOutlined,
@@ -32,6 +35,7 @@ import {
 import moment from 'moment';
 import convertEmployeType from '../../../components/Utils/convertEmployeType';
 import debounce from '../../../components/Utils/debounce';
+import PaginationTable from '../../../components/PaginationTable';
 const DropdownMenu = ({ data, handleAddTask = () => {} }) => {
     const items = [
         {
@@ -71,11 +75,8 @@ const Jobist = () => {
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
-    const {
-        data: jobList,
-        isSuccess,
-        refetch: refetchJobList
-    } = useGetJobsListQuery(params);
+    const { data: jobList, refetch: refetchJobList } =
+        useGetJobsListQuery(params);
     const { refetch } = useGetTaskListQuery();
     const [addMyTask, response] = useAddTaskMutation();
     const onViewDetail = () => {
@@ -92,25 +93,29 @@ const Jobist = () => {
             job_id: id
         });
     };
+    const onRefetchCandidates = async (updateParams) => {
+        await setParams(updateParams);
+        refetchJobList();
+    };
     const onSearchJob = debounce(async (e) => {
         let value = e.target.value;
         await setParams({
             ...params,
-            serach: value
+            title: value
         });
         refetchJobList();
     }, 750);
     React.useEffect(() => {
-        if (isSuccess) {
+        if (jobList) {
             setItemTabs(
                 jobList.data.map((item) => {
                     return {
                         label: (
-                            <div className="referred-tabs">
+                            <div className="job-tabs">
                                 <div className="card-earn__price">
                                     <span>Earn</span> {formatMoney(2000000)}
                                 </div>
-                                <div className="referred-card">
+                                <div className="job-card">
                                     <img
                                         src={
                                             item.company.photo_profile ||
@@ -119,15 +124,15 @@ const Jobist = () => {
                                         alt=""
                                     />
                                     <div style={{ width: '100%' }}>
-                                        <div className="referred-tabs__header">
+                                        <div className="job-tabs__header">
                                             <div>
-                                                <div className="referred-tabs__title">
+                                                <div className="job-tabs__title">
                                                     {item.title}
                                                 </div>
-                                                <div className="referred-tabs__company">
+                                                <div className="job-tabs__company">
                                                     {item.company.name}
                                                 </div>
-                                                <div className="referred-tabs__city">
+                                                <div className="job-tabs__city">
                                                     {
                                                         item.sub_district
                                                             .district.city
@@ -149,7 +154,7 @@ const Jobist = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="referred-tabs__city">
+                                <div className="job-tabs__city">
                                     Posted{' '}
                                     {moment(item.created_at).format(
                                         'DD MMM YYYY'
@@ -187,7 +192,7 @@ const Jobist = () => {
                 })
             );
         }
-    }, [isSuccess]);
+    }, [jobList]);
     React.useEffect(() => {
         if (response.isSuccess) {
             messageApi.open({
@@ -264,12 +269,38 @@ const Jobist = () => {
             <Row>
                 <Col xl={12}>
                     {itemTabs?.length > 0 ? (
-                        <TabMenu item={itemTabs} tabPosition="left" />
+                        <>
+                            {/* <div className="job-count">
+                                <b>
+                                    {params.page === 1
+                                        ? params.page
+                                        : (params.page - 1) * 10 +
+                                          params.page -
+                                          1}{' '}
+                                    - {jobList?.data?.length * params.page}
+                                </b>{' '}
+                                of{' '}
+                                {formatNumber(jobList?.meta?.info?.total_data)}{' '}
+                                jobs
+                            </div> */}
+                            <TabMenu item={itemTabs} tabPosition="left" />
+                        </>
                     ) : (
                         <EmptyJob button={false} />
                     )}
+                    {jobList?.meta?.info?.count > 0 && (
+                        <div className="job-pagination">
+                            <PaginationTable
+                                showSizeChanger={false}
+                                data={jobList}
+                                refetch={onRefetchCandidates}
+                                params={params}
+                            />
+                        </div>
+                    )}
                 </Col>
             </Row>
+
             <CandidateDetail open={isDetailInfo} onClose={onViewDetail} />
             <CancelInvitation
                 isOpen={isCancelInvitation}
