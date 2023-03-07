@@ -5,6 +5,7 @@ import TabMenu from '../../../components/Tabs';
 import CandidatesAssigned from './Assigned';
 import CandidatesSaved from './Saved';
 import CandidatesSearch from './Search';
+import CandidatesUnlocked from './Unlocked';
 const CandidatesLayout = () => {
     let navigate = useNavigate();
     let [searchParams] = useSearchParams();
@@ -45,6 +46,11 @@ const CandidatesLayout = () => {
                         label: `Saved`,
                         key: 'saved',
                         children: <CandidatesSaved />
+                    },
+                    {
+                        label: `Unlocked`,
+                        key: 'unlocked',
+                        children: <CandidatesUnlocked />
                     }
                 ]}
             />

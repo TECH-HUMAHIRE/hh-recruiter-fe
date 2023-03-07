@@ -5,7 +5,6 @@ import { useGetCandidatesListQuery } from '../../../../app/actions/candidates';
 import Button from '../../../../components/Button';
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
-import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import FilterCandidates from '../../../../components/Modal/FilterCandidates';
 import PaginationTable from '../../../../components/PaginationTable';
 import debounce from '../../../../components/Utils/debounce';

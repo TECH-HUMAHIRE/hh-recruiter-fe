@@ -74,7 +74,7 @@ export const DashboardCandidatesStyle = styled.div`
             border-radius: 8px;
         }
     }
-    .referred {
+    .job {
         &-card {
             display: flex;
             align-items: flex-start;
@@ -116,6 +116,13 @@ export const DashboardCandidatesStyle = styled.div`
         &-filter {
             color: #444444;
             border-color: #444444;
+        }
+        &-pagination {
+            margin-top: 30px;
+            width: 35%;
+        }
+        &-count {
+            margin-bottom: 15px;
         }
     }
 `;
