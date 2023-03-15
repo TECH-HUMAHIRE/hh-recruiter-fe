@@ -85,7 +85,6 @@ const MyTask = () => {
             reset();
         }
         if (isError) {
-            console.log('responseDelete', error);
             messageApi.open({
                 type: 'error',
                 content: error.data.meta.message,

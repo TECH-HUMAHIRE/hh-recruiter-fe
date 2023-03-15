@@ -29,10 +29,8 @@ const CandidatesSearch = () => {
     const onViewDetail = (candidates) => {
         setDetail(!isDetail);
         // setCandidateDetail(candidates)
-        console.log('candidates', candidates);
     };
     const handlerLockCandidates = (candidates) => {
-        console.log('masuk');
         setUnlock(!isUnlock);
         setDetail(false);
     };
