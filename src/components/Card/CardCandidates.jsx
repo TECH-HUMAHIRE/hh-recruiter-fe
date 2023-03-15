@@ -8,6 +8,8 @@ import DressIcon from '../Icon/Dress';
 import FoundedIcon from '../Icon/Founded';
 import { formatMoney } from '../Utils/formatMoney';
 import PreviewIcon from '../Assets/icon/preview.png';
+import Bookmark from '../Assets/icon/Bookmark.png';
+import ShareIcon from '../Assets/icon/share.png';
 import moment from 'moment';
 
 const CardCandidates = ({
@@ -28,9 +30,18 @@ const CardCandidates = ({
         {
             key: '2',
             label: (
+                <CardMenu onClick={() => onViewDetail(data)}>
+                    <img src={ShareIcon} alt="" />
+                    Refer
+                </CardMenu>
+            )
+        },
+        {
+            key: '3',
+            label: (
                 <CardMenu onClick={() => onCancelInvitation(data)}>
-                    <CloseOutlined />
-                    Cancel Invitation
+                    <img src={Bookmark} alt="" />
+                    Save
                 </CardMenu>
             )
         }

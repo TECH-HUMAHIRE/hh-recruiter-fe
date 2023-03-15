@@ -19,7 +19,13 @@ import { color } from '../../Utils/variable';
 import ChattingIcon from '../../Icon/Chatting';
 import Education from './Education';
 import { formatMoney } from '../../Utils/formatMoney';
-const CandidateDetail = ({ open = false, data, onClose = () => {} }) => {
+const CandidateDetail = ({
+    open = false,
+    data,
+    onClose = () => {},
+    handlerLockCandidates = () => {},
+    handlerReferCandidates = () => {}
+}) => {
     const dummyData = [
         {
             name: 'Senior Product Designer',
@@ -281,19 +287,36 @@ const CandidateDetail = ({ open = false, data, onClose = () => {} }) => {
                     </Row>
                 </div>
                 <Row>
-                    <Col md={4}>
+                    <Col md={3}>
                         <Button color="outline-primary" onClick={onClose} block>
                             Back
                         </Button>
                     </Col>
-                    <Col md={4}>
+                    <Col md={3}>
                         <Button color="outline-primary" block>
                             Print
                         </Button>
                     </Col>
-                    <Col md={4}>
+                    <Col md={3}>
                         <Button color="outline-primary" block>
-                            Download CV
+                            Download
+                        </Button>
+                    </Col>
+                    <Col md={3}>
+                        <Button
+                            onClick={() => handlerLockCandidates(data)}
+                            icon={<LockIcon />}
+                            color="primary"
+                            block>
+                            Unlock
+                        </Button>
+                    </Col>
+                    <Col md={3}>
+                        <Button
+                            onClick={() => handlerReferCandidates(data)}
+                            color="primary"
+                            block>
+                            Refer
                         </Button>
                     </Col>
                 </Row>
