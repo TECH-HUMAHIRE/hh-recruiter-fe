@@ -102,26 +102,29 @@ const ProfileTab = ({ onClose = () => {} }) => {
                     </Col>
                     <Col md={6}>
                         <Form.Item
-                            // name="job_role"
-                            label="Job Role"
-                            // rules={[
-                            //     {
-                            //         required: false,
-                            //         message: 'Please input your job!'
-                            //     }
-                            // ]}
-                        >
+                            label="Linked URL"
+                            name="website_url"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your linked URL!'
+                                },
+                                {
+                                    type: 'url',
+                                    message: 'invalid url'
+                                }
+                            ]}>
                             <Input
                                 type={'text'}
                                 size="large"
-                                placeholder="Job Role"
+                                placeholder="Linked URL"
                             />
                         </Form.Item>
                     </Col>
                     <Col md={6}>
                         <Form.Item
                             // name="departement"
-                            label="Departement"
+                            label="Recruiting Specialization"
                             // rules={[
                             //     {
                             //         required: false,

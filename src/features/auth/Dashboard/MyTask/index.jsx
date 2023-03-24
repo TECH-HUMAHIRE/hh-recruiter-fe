@@ -18,6 +18,7 @@ import SelectOption from '../../../../components/Form/SelectOption';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import BagIcon from '../../../../components/Icon/Bag';
 import debounce from '../../../../components/Utils/debounce';
+import EmptyJob from '../../../../components/EmptyJob';
 
 const MyTask = () => {
     const [
@@ -100,63 +101,73 @@ const MyTask = () => {
         <MyTaskStyle>
             {contextHolder}
             <div style={{ marginBottom: 20 }}>
-                <Row>
-                    <Col lg={5}>
-                        <Input
-                            onChange={onSearchJob}
-                            prefix={<SearchOutlined />}
-                            size="large"
-                            type={'text'}
-                            placeholder="Product Designer"
-                        />
-                    </Col>
+                {taskList?.data?.length > 0 && (
+                    <Row>
+                        <Col lg={5}>
+                            <Input
+                                onChange={onSearchJob}
+                                prefix={<SearchOutlined />}
+                                size="large"
+                                type={'text'}
+                                placeholder="Product Designer"
+                            />
+                        </Col>
 
-                    <Col lg={5}>
-                        <SelectOption
-                            placeholder="Choose company industry"
-                            options={[]}
-                            frontIcon={<BagIcon color="#666666" />}
-                        />
-                    </Col>
-                    <Col md={2} className="text-right">
-                        <Button
-                            block
-                            size="large"
-                            // onClick={onOpenFilter}
-                            className="message-filter"
-                            icon={<FilterOutlined />}>
-                            Filter
-                        </Button>
-                    </Col>
-                </Row>
+                        <Col lg={5}>
+                            <SelectOption
+                                placeholder="Choose company industry"
+                                options={[]}
+                                frontIcon={<BagIcon color="#666666" />}
+                            />
+                        </Col>
+                        <Col md={2} className="text-right">
+                            <Button
+                                block
+                                size="large"
+                                // onClick={onOpenFilter}
+                                className="message-filter"
+                                icon={<FilterOutlined />}>
+                                Filter
+                            </Button>
+                        </Col>
+                    </Row>
+                )}
             </div>
             <Row>
                 <Col xl={12}>
-                    <Card className="card-section">
-                        {/* <EmptyJob /> */}
-                        <Row>
-                            {taskList?.data?.map((item, key) => {
-                                return (
-                                    <Col md={4} key={key}>
-                                        <CardTask
-                                            onDeclineTask={onDeclineTask}
-                                            onReferCandidate={onReferCandidate}
-                                            onDetailJob={onDetailJob}
-                                            data={item}
-                                        />
-                                    </Col>
-                                );
-                            })}
-                        </Row>
-                        {taskList?.meta?.info?.count > 0 && (
-                            <PaginationTable
-                                data={taskList}
-                                refetch={onRefetchCandidates}
-                                params={params}
-                                showSizeChanger={false}
-                            />
-                        )}
-                    </Card>
+                    {taskList?.data?.length > 0 ? (
+                        <Card className="card-section">
+                            {/* <EmptyJob /> */}
+                            <Row>
+                                {taskList?.data?.map((item, key) => {
+                                    return (
+                                        <Col md={4} key={key}>
+                                            <CardTask
+                                                onDeclineTask={onDeclineTask}
+                                                onReferCandidate={
+                                                    onReferCandidate
+                                                }
+                                                onDetailJob={onDetailJob}
+                                                data={item}
+                                            />
+                                        </Col>
+                                    );
+                                })}
+                            </Row>
+                            {taskList?.meta?.info?.count > 0 && (
+                                <PaginationTable
+                                    data={taskList}
+                                    refetch={onRefetchCandidates}
+                                    params={params}
+                                    showSizeChanger={false}
+                                />
+                            )}
+                        </Card>
+                    ) : (
+                        <Card>
+                            <EmptyJob button={false} />
+                        </Card>
+                    )}
                 </Col>
             </Row>
 

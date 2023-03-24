@@ -36,6 +36,16 @@ export const jobApi = createApi({
             },
             providesTags: [{ type: 'Post', id: 2 }]
         }),
+        getTaskInvitation: builder.query({
+            query: (params) => {
+                return {
+                    url: `/job/job_invitation`,
+                    params,
+                    method: 'GET'
+                };
+            },
+            providesTags: [{ type: 'Post', id: 2 }]
+        }),
         getTaskId: builder.query({
             query: (id) => {
                 return {
@@ -78,6 +88,7 @@ export const jobApi = createApi({
 export const {
     useGetJobsListQuery,
     useAddTaskMutation,
+    useGetTaskInvitationQuery,
     useGetTaskIdQuery,
     useGetTaskListQuery,
     useDeleteTaskMutation
