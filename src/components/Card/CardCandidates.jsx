@@ -14,7 +14,10 @@ import moment from 'moment';
 
 const CardCandidates = ({
     onViewDetail = () => {},
+    onRefer = () => {},
+    onSaveCandidate = () => {},
     onCancelInvitation = () => {},
+    onRevomeCandidate = () => {},
     data
 }) => {
     const actionDropdown = [
@@ -30,7 +33,7 @@ const CardCandidates = ({
         {
             key: '2',
             label: (
-                <CardMenu onClick={() => onViewDetail(data)}>
+                <CardMenu onClick={() => onRefer(data)}>
                     <img src={ShareIcon} alt="" />
                     Refer
                 </CardMenu>
@@ -39,9 +42,27 @@ const CardCandidates = ({
         {
             key: '3',
             label: (
-                <CardMenu onClick={() => onCancelInvitation(data)}>
+                <CardMenu onClick={() => onSaveCandidate(data)}>
                     <img src={Bookmark} alt="" />
                     Save
+                </CardMenu>
+            )
+        },
+        {
+            key: '4',
+            label: (
+                <CardMenu onClick={() => onCancelInvitation(data)}>
+                    <CloseOutlined />
+                    Cancel Invitation
+                </CardMenu>
+            )
+        },
+        {
+            key: '5',
+            label: (
+                <CardMenu onClick={() => onRevomeCandidate(data)}>
+                    <CloseOutlined />
+                    Remove
                 </CardMenu>
             )
         }

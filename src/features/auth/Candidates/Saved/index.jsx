@@ -2,11 +2,21 @@ import React from 'react';
 import { useGetCandidatesSavedListQuery } from '../../../../app/actions/candidates';
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
+import RemoveCandidate from '../../../../components/Modal/RemoveCandidate';
+import UnlockCandidates from '../../../../components/Modal/UnlockCandidates';
 
 const CandidatesSaved = () => {
     // const dispatch = useDispatch();
     const [isFilter, setFilter] = React.useState(false);
+    const [isRemove, setRemove] = React.useState(false);
+    const [isUnlock, setUnlock] = React.useState(false);
     const { data } = useGetCandidatesSavedListQuery();
+    const onRevomeCandidate = () => {
+        setRemove(!isRemove);
+    };
+    const handlerLockCandidates = (candidates) => {
+        setUnlock(!isUnlock);
+    };
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
@@ -16,11 +26,20 @@ const CandidatesSaved = () => {
                 {data?.data?.map((item, key) => {
                     return (
                         <Col xl={4} lg={4} md={6} sm={12} key={key}>
-                            <CardCandidates data={item} />
+                            <CardCandidates
+                                onRefer={onFilterCandidates}
+                                onRevomeCandidate={onRevomeCandidate}
+                                data={item}
+                            />
                         </Col>
                     );
                 })}
             </Row>
+            <RemoveCandidate isOpen={isRemove} onClose={onRevomeCandidate} />
+            <UnlockCandidates
+                isOpen={isUnlock}
+                onClose={handlerLockCandidates}
+            />
         </div>
     );
 };
