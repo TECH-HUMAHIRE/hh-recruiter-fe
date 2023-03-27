@@ -12,7 +12,7 @@ import ShareIcon from '../Assets/icon/share.png';
 import PauseIconOutline from '../Assets/icon/pause-outline.png';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import companyDummy from '../Assets/icon/company-dummy.png';
+import companyDummy from '../Assets/images/defaultImage.png';
 import moneyIcon from '../Assets/icon/money.png';
 import unionIcon from '../Assets/icon/union.png';
 import { format } from 'prettier';

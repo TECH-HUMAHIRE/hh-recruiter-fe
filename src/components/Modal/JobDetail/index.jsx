@@ -24,8 +24,9 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
             <div>
                 <div className="job-header">
                     <img
-                        src={data?.company?.photo_url || exampleImage}
+                        src={data?.company?.photo_url || defaultImage}
                         alt=""
+                        className="job-banner"
                     />
                     <div className="job-info job-header__info">
                         <div className="job-header__company">
@@ -35,8 +36,8 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                                 className="job-header__logo"
                             />
                             <div>
-                                <h3 className="title">Scrum Master</h3>
-                                <div>PT. Solusi Transportasi Indonesia</div>
+                                <h3 className="title">{data?.title}</h3>
+                                <div>{data?.company?.name}</div>
                             </div>
                         </div>
                     </div>

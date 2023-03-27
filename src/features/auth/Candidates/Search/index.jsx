@@ -8,6 +8,7 @@ import { Col, Row } from '../../../../components/Grid';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import FilterCandidates from '../../../../components/Modal/FilterCandidates';
 import ReferCandidatesJobs from '../../../../components/Modal/ReferCandidatesJobs';
+import SaveCandidate from '../../../../components/Modal/SaveCandidate';
 import UnlockCandidates from '../../../../components/Modal/UnlockCandidates';
 import PaginationTable from '../../../../components/PaginationTable';
 import debounce from '../../../../components/Utils/debounce';
@@ -19,12 +20,16 @@ const CandidatesSearch = () => {
     });
     const [isFilter, setFilter] = React.useState(false);
     const [isDetail, setDetail] = React.useState(false);
+    const [isSave, setSave] = React.useState(false);
     const [isReferJobList, setReferJobList] = React.useState(false);
     const [isUnlock, setUnlock] = React.useState(false);
     const [candidateDetail, setCandidateDetail] = React.useState(null);
     const { data, refetch } = useGetCandidatesListQuery(params);
     const onFilterCandidates = () => {
         setFilter(!isFilter);
+    };
+    const onSaveCandidate = () => {
+        setSave(!isSave);
     };
     const onViewDetail = (candidates) => {
         setDetail(!isDetail);
@@ -85,6 +90,8 @@ const CandidatesSearch = () => {
                             key={key}
                             style={{ marginBottom: 30 }}>
                             <CardCandidates
+                                onRefer={handlerLockCandidates}
+                                onSaveCandidate={onSaveCandidate}
                                 onViewDetail={onViewDetail}
                                 data={item}
                             />
@@ -114,6 +121,7 @@ const CandidatesSearch = () => {
                 onClose={onReferJobList}
                 isOpen={isReferJobList}
             />
+            <SaveCandidate isOpen={isSave} onClose={onSaveCandidate} />
         </div>
     );
 };

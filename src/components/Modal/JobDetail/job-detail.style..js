@@ -32,6 +32,11 @@ const JobDetailStyle = styled(Modal)`
         font-size: 16px;
     }
     .job {
+        &-banner {
+            height: 207px;
+            width: 100%;
+            object-fit: cover;
+        }
         &-header {
             position: relative;
             margin-bottom: 65px;

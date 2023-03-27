@@ -18,7 +18,8 @@ const InviteCandidates = () => {
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
     const [params, setParams] = React.useState({
         page: 1,
-        page_size: 12
+        page_size: 12,
+        status: 'invited'
     });
     const { data: jobInvitation } = useGetTaskInvitationQuery(params);
 
@@ -46,7 +47,7 @@ const InviteCandidates = () => {
                                                 {item.title}
                                             </div>
                                             <div className="referred-tabs__company">
-                                                PT Grab Indonesia
+                                                {item.company.name}
                                             </div>
                                             <div className="referred-tabs__city">
                                                 Jakarta, Indonesia
