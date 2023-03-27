@@ -159,6 +159,9 @@ export const SectionDetailStyle = styled.div`
             margin-bottom: 65px;
             > img {
                 border-radius: 8px 8px 0px 0px;
+                height: 150px;
+                width: 100%;
+                object-fit: cover;
             }
             &__info {
                 position: absolute;
