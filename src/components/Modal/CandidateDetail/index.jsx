@@ -52,6 +52,7 @@ const CandidateDetail = ({
             desc: "You are my fire the one desire believe when I say I want it that way. But we are two worlds apart can't reach to your heart when you say that I want it that way."
         }
     ];
+    console.log(data);
     return (
         <CandidateDetailStyle
             title={
@@ -67,17 +68,13 @@ const CandidateDetail = ({
                         <div className="modal-header__info">
                             <div className="modal-header__info-name">
                                 {' '}
-                                {data?.jobseeker.name}
+                                {data?.name}
                             </div>
                             <div className="modal-header__info-location">
+                                {data?.sub_district?.district?.city?.name},{' '}
                                 {
-                                    data?.jobseeker.sub_district.district.city
-                                        .name
-                                }
-                                ,{' '}
-                                {
-                                    data?.jobseeker.sub_district.district.city
-                                        .province.country.name
+                                    data?.sub_district?.district?.city?.province
+                                        ?.country?.name
                                 }
                             </div>
                         </div>
@@ -164,11 +161,8 @@ const CandidateDetail = ({
                                     Expected Salary
                                 </div>
                                 <div className="referred-information__value">
-                                    {formatMoney(
-                                        data?.jobseeker.expected_sallary
-                                    )}{' '}
-                                    (
-                                    {data?.jobseeker.expected_sallary_negotiable
+                                    {formatMoney(data?.expected_sallary)} (
+                                    {data?.expected_sallary_negotiable
                                         ? 'Negotiable'
                                         : 'Nett'}
                                     )
@@ -192,7 +186,7 @@ const CandidateDetail = ({
                                     Phone
                                 </div>
                                 <div className="referred-information__value">
-                                    {data?.jobseeker.phone}
+                                    {data?.phone}
                                 </div>
                             </div>
                         </div>
@@ -207,7 +201,7 @@ const CandidateDetail = ({
                                     Email
                                 </div>
                                 <div className="referred-information__value">
-                                    {data?.jobseeker.email}
+                                    {data?.email}
                                 </div>
                             </div>
                         </div>
@@ -239,53 +233,11 @@ const CandidateDetail = ({
             <div className="hr"></div>
             <div className="modal-body">
                 <div style={{ marginBottom: 25 }}>
-                    <div className="referred-information__contact">
-                        <div className="referred-information__user border">
-                            <div className="referred-information__profile ">
-                                <div>
-                                    <img
-                                        className="referred-information__avatar"
-                                        src={userDummy}
-                                        alt="user_name"
-                                    />
-                                </div>
-                                <div>
-                                    <div className="referred-information__name">
-                                        The Mandalorian
-                                    </div>
-                                    <div>
-                                        <span className="referred-information__rating">
-                                            <StarFilled
-                                                style={{ color: '#F57F17' }}
-                                            />{' '}
-                                            4.8 (9 Reviews)
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="referred-information__chat ">
-                                <ChattingIcon color={color.employee.primary} />{' '}
-                                Chat
-                            </div>
-                        </div>
-                        <div className="referred-information__phone border">
-                            <PhoneIcon color="#444444" /> +62-819-1234-5678
-                        </div>
-                        <div className="referred-information__email">
-                            <a href="mailto:themandalorian@gmail.com">
-                                <MessegerIcon /> themandalorian@gmail.com
-                            </a>
-                        </div>
-                    </div>
-                    <Row>
-                        <Col md={12}>
-                            You are my fire the one desire believe when I say I
-                            want it that way. But we are two worlds apart can't
-                            reach to your heart when you say that I want it that
-                            way.
-                        </Col>
-                    </Row>
+                    <h3 style={{ fontWeight: 'bold' }}>Candidate Note:</h3>
+                    <div>-</div>
+                    <div className="hr"></div>
                 </div>
+
                 <Row>
                     <Col md={3}>
                         <Button color="outline-primary" onClick={onClose} block>
@@ -302,23 +254,26 @@ const CandidateDetail = ({
                             Download
                         </Button>
                     </Col>
-                    <Col md={3}>
-                        <Button
-                            onClick={() => handlerLockCandidates(data)}
-                            icon={<LockIcon />}
-                            color="primary"
-                            block>
-                            Unlock
-                        </Button>
-                    </Col>
-                    <Col md={3}>
-                        <Button
-                            onClick={() => handlerReferCandidates(data)}
-                            color="primary"
-                            block>
-                            Refer
-                        </Button>
-                    </Col>
+                    {data?.is_unlocked ? (
+                        <Col md={3}>
+                            <Button
+                                onClick={() => handlerReferCandidates(data)}
+                                color="primary"
+                                block>
+                                Refer
+                            </Button>
+                        </Col>
+                    ) : (
+                        <Col md={3}>
+                            <Button
+                                onClick={() => handlerLockCandidates(data)}
+                                icon={<LockIcon />}
+                                color="primary"
+                                block>
+                                Unlock
+                            </Button>
+                        </Col>
+                    )}
                 </Row>
             </div>
         </CandidateDetailStyle>

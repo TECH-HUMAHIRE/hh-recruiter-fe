@@ -4,10 +4,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../Button';
 
-const ReferralLinkTab = ({ onClose = () => {} }) => {
+const ReferralLinkTab = ({ onClose = () => {}, data }) => {
     const [form] = Form.useForm();
     const [messageApi, contextHolder] = message.useMessage();
-    const onCopyLink = (e) => {
+    const onCopyLink = (link) => {
         messageApi.open({
             type: 'success',
             content: 'Copied!',
@@ -16,8 +16,9 @@ const ReferralLinkTab = ({ onClose = () => {} }) => {
             },
             duration: 1
         });
-        return navigator.clipboard.writeText(`asdasdasda`);
+        return navigator.clipboard.writeText(link);
     };
+    console.log('data', data);
     return (
         <Form layout="vertical" form={form}>
             <Form.Item label="Shareable link" style={{ marginBottom: 10 }}>
@@ -25,10 +26,20 @@ const ReferralLinkTab = ({ onClose = () => {} }) => {
                     <Input
                         readOnly
                         size="large"
-                        value={'https://youtube.com'}
+                        value={
+                            window.location.origin +
+                            `/?ref=${data?.job?.referral_code}`
+                        }
                     />
                     {contextHolder}
-                    <Button color="primary" onClick={onCopyLink}>
+                    <Button
+                        color="primary"
+                        onClick={() =>
+                            onCopyLink(
+                                window.location.origin +
+                                    `/?ref=${data?.job?.referral_code}`
+                            )
+                        }>
                         Copy
                     </Button>
                 </div>

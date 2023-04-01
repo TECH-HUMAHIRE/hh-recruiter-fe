@@ -1,7 +1,11 @@
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import { Form, Input } from 'antd';
+import { Form, Input, message } from 'antd';
 import React from 'react';
-import { useGetCandidatesListQuery } from '../../../../app/actions/candidates';
+import {
+    useGetCandidatesListQuery,
+    useSaveCandidateMutation,
+    useUnlockCandidateMutation
+} from '../../../../app/actions/candidates';
 import Button from '../../../../components/Button';
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
@@ -13,7 +17,8 @@ import UnlockCandidates from '../../../../components/Modal/UnlockCandidates';
 import PaginationTable from '../../../../components/PaginationTable';
 import debounce from '../../../../components/Utils/debounce';
 
-const CandidatesSearch = () => {
+const CandidatesSearch = ({ status }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 10
@@ -25,15 +30,34 @@ const CandidatesSearch = () => {
     const [isUnlock, setUnlock] = React.useState(false);
     const [candidateDetail, setCandidateDetail] = React.useState(null);
     const { data, refetch } = useGetCandidatesListQuery(params);
+    const [saveCandidate, { isSuccess, reset, isLoading, data: response }] =
+        useSaveCandidateMutation();
+    const [
+        unLockCandidate,
+        {
+            isSuccess: successUnlock,
+            reset: resetUnlock,
+            isLoading: loadingUnlock,
+            data: responseUnlock
+        }
+    ] = useUnlockCandidateMutation();
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
-    const onSaveCandidate = () => {
+    const onSaveCandidate = (data) => {
+        console.log(data);
+        setCandidateDetail(data);
         setSave(!isSave);
+    };
+    const onAction = () => {
+        saveCandidate({ jobseeker_id: candidateDetail.id });
+    };
+    const handleUnlockCandidate = () => {
+        unLockCandidate({ jobseeker_id: candidateDetail.id });
     };
     const onViewDetail = (candidates) => {
         setDetail(!isDetail);
-        // setCandidateDetail(candidates)
+        setCandidateDetail(candidates);
     };
     const handlerLockCandidates = (candidates) => {
         setUnlock(!isUnlock);
@@ -55,8 +79,24 @@ const CandidatesSearch = () => {
         await setParams(updateParams);
         refetch();
     };
+    React.useEffect(() => {
+        if (isSuccess) {
+            console.log('response', response);
+            setSave(!isSave);
+            messageApi.open({
+                type: 'success',
+                content: response?.meta?.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+            reset();
+        }
+    }, [isSuccess]);
     return (
         <div>
+            {contextHolder}
             <Row justify="space-between">
                 <Col md={4}>
                     <Form.Item>
@@ -90,6 +130,7 @@ const CandidatesSearch = () => {
                             key={key}
                             style={{ marginBottom: 30 }}>
                             <CardCandidates
+                                status={status}
                                 onRefer={handlerLockCandidates}
                                 onSaveCandidate={onSaveCandidate}
                                 onViewDetail={onViewDetail}
@@ -108,12 +149,14 @@ const CandidatesSearch = () => {
             )}
             <FilterCandidates isOpen={isFilter} onClose={onFilterCandidates} />
             <CandidateDetail
+                data={candidateDetail}
                 handlerReferCandidates={onReferJobList}
                 open={isDetail}
                 onClose={onViewDetail}
                 handlerLockCandidates={handlerLockCandidates}
             />
             <UnlockCandidates
+                unLockCandidate={handleUnlockCandidate}
                 isOpen={isUnlock}
                 onClose={handlerLockCandidates}
             />
@@ -121,7 +164,11 @@ const CandidatesSearch = () => {
                 onClose={onReferJobList}
                 isOpen={isReferJobList}
             />
-            <SaveCandidate isOpen={isSave} onClose={onSaveCandidate} />
+            <SaveCandidate
+                isOpen={isSave}
+                onClose={onSaveCandidate}
+                onAction={onAction}
+            />
         </div>
     );
 };

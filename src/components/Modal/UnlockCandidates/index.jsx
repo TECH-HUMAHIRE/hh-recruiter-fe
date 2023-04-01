@@ -7,7 +7,11 @@ import WalletIcon from '../../Icon/Wallet';
 import { color } from '../../Utils/variable';
 import Style from './unlock-candidates.style';
 
-const UnlockCandidates = ({ onClose = () => {}, isOpen = true }) => {
+const UnlockCandidates = ({
+    onClose = () => {},
+    isOpen = true,
+    unLockCandidate = () => {}
+}) => {
     return (
         <Style open={isOpen} footer={null} onCancel={onClose}>
             <div>
@@ -24,7 +28,7 @@ const UnlockCandidates = ({ onClose = () => {}, isOpen = true }) => {
             </div>
             <Row justify="end">
                 <Col md={6}>
-                    <Button block color="primary">
+                    <Button block color="primary" onClick={unLockCandidate}>
                         Unlock 2.000 Pts
                     </Button>
                 </Col>

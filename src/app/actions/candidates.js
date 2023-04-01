@@ -14,7 +14,7 @@ export const candidates = createApi({
             return headers;
         }
     }),
-    tagTypes: ['Post'],
+    tagTypes: ['candidates', 'saveCandidate', 'unlockCandidate'],
     endpoints: (builder) => ({
         getCandidatesList: builder.query({
             query: (params) => {
@@ -24,7 +24,7 @@ export const candidates = createApi({
                     method: 'GET'
                 };
             },
-            providesTags: [{ type: 'candidates', id: 1 }]
+            providesTags: ['saveCandidate', 'unlockCandidate']
         }),
         getCandidatesAssignedList: builder.query({
             query: (params) => {
@@ -44,7 +44,7 @@ export const candidates = createApi({
                     method: 'GET'
                 };
             },
-            providesTags: [{ type: 'candidates', id: 2 }]
+            providesTags: ['saveCandidate']
         }),
         getCandidatesUnlockList: builder.query({
             query: (params) => {
@@ -54,7 +54,36 @@ export const candidates = createApi({
                     method: 'GET'
                 };
             },
-            providesTags: [{ type: 'candidates', id: 3 }]
+            providesTags: ['unlockCandidate']
+        }),
+        saveCandidate: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/user/candidate/save`,
+                    body,
+                    method: 'POST'
+                };
+            },
+            invalidatesTags: ['saveCandidate']
+        }),
+        unlockCandidate: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/job/invitation/${body.jobseeker_id}/unlock`,
+                    method: 'PUT'
+                };
+            },
+            invalidatesTags: ['unlockCandidate']
+        }),
+        getCountCandidates: builder.query({
+            query: (params) => {
+                return {
+                    url: `/user/candidate/count`,
+                    params,
+                    method: 'GET'
+                };
+            },
+            providesTags: ['saveCandidate', 'unlockCandidate']
         })
     })
 });
@@ -65,5 +94,8 @@ export const {
     useGetCandidatesListQuery,
     useGetCandidatesAssignedListQuery,
     useGetCandidatesSavedListQuery,
-    useGetCandidatesUnlockListQuery
+    useGetCandidatesUnlockListQuery,
+    useSaveCandidateMutation,
+    useUnlockCandidateMutation,
+    useGetCountCandidatesQuery
 } = candidates;

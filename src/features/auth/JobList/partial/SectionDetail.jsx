@@ -35,7 +35,7 @@ const SectionDetail = ({ data = {}, handleAddTask = () => {} }) => {
                             </div>
                         </div>
                         <div className="card-earn__price">
-                            <span>Earn</span> {formatMoney(2000000)}
+                            <span>Earn</span> {formatMoney(data.commission)}
                         </div>
                     </div>
                 </div>
