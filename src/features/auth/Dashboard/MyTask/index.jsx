@@ -58,7 +58,8 @@ const MyTask = () => {
         });
         refetch();
     }, 750);
-    const onReferCandidate = () => {
+    const onReferCandidate = (data) => {
+        setData(data);
         setRefer(!isRefer);
     };
     const onDeclineTask = (data) => {
@@ -176,7 +177,11 @@ const MyTask = () => {
                 isOpen={isOpen}
                 data={taskDetail?.data?.job}
             />
-            <ReferCandidates isRefer={isRefer} onClose={onReferCandidate} />
+            <ReferCandidates
+                data={data}
+                isRefer={isRefer}
+                onClose={onReferCandidate}
+            />
             <DeclineTask
                 isOpen={isDecline}
                 onClose={onDeclineTask}

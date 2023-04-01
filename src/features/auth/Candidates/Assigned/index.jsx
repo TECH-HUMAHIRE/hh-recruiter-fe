@@ -3,7 +3,7 @@ import { useGetCandidatesAssignedListQuery } from '../../../../app/actions/candi
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
 
-const CandidatesAssigned = () => {
+const CandidatesAssigned = ({ status }) => {
     const [isFilter, setFilter] = React.useState(false);
     const { data } = useGetCandidatesAssignedListQuery();
     const onFilterCandidates = () => {
@@ -15,7 +15,7 @@ const CandidatesAssigned = () => {
                 {data?.data?.map((item, key) => {
                     return (
                         <Col xl={4} lg={4} md={6} sm={12} key={key}>
-                            <CardCandidates data={item} />
+                            <CardCandidates status={status} data={item} />
                         </Col>
                     );
                 })}

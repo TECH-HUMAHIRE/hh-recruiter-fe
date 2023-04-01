@@ -6,7 +6,7 @@ import TabMenu from '../../Tabs';
 import EmailTab from './EmailTab';
 import ReferralLinkTab from './ReferralLinkTab';
 
-const ReferCandidates = ({ isRefer = false, onClose = () => {} }) => {
+const ReferCandidates = ({ isRefer = false, onClose = () => {}, data }) => {
     return (
         <ReferCandidatesStyle
             open={isRefer}
@@ -42,7 +42,9 @@ const ReferCandidates = ({ isRefer = false, onClose = () => {} }) => {
                     {
                         label: `Referral Link`,
                         key: 'referral',
-                        children: <ReferralLinkTab onClose={onClose} />
+                        children: (
+                            <ReferralLinkTab data={data} onClose={onClose} />
+                        )
                     }
                 ]}
             />

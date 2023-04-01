@@ -18,7 +18,8 @@ const CardCandidates = ({
     onSaveCandidate = () => {},
     onCancelInvitation = () => {},
     onRevomeCandidate = () => {},
-    data
+    data,
+    status = false
 }) => {
     const actionDropdown = [
         {
@@ -53,7 +54,7 @@ const CardCandidates = ({
             label: (
                 <CardMenu onClick={() => onCancelInvitation(data)}>
                     <CloseOutlined />
-                    Cancel Invitation
+                    Decline
                 </CardMenu>
             )
         },
@@ -68,6 +69,22 @@ const CardCandidates = ({
         }
     ];
     const [items, setItems] = React.useState(actionDropdown);
+    React.useEffect(() => {
+        if (status) {
+            console.log(status);
+            setItems(
+                actionDropdown.filter((item) => {
+                    switch (status) {
+                        case 'search':
+                            return item.key !== '4' && item.key !== '5';
+
+                        default:
+                            return item.key !== '3' && item.key !== '5';
+                    }
+                })
+            );
+        }
+    }, [status]);
     return (
         <CardReferredStyle
             title={

@@ -5,7 +5,7 @@ import { Col, Row } from '../../../../components/Grid';
 import RemoveCandidate from '../../../../components/Modal/RemoveCandidate';
 import UnlockCandidates from '../../../../components/Modal/UnlockCandidates';
 
-const CandidatesSaved = () => {
+const CandidatesSaved = ({ status }) => {
     // const dispatch = useDispatch();
     const [isFilter, setFilter] = React.useState(false);
     const [isRemove, setRemove] = React.useState(false);
@@ -27,6 +27,7 @@ const CandidatesSaved = () => {
                     return (
                         <Col xl={4} lg={4} md={6} sm={12} key={key}>
                             <CardCandidates
+                                status={status}
                                 onRefer={onFilterCandidates}
                                 onRevomeCandidate={onRevomeCandidate}
                                 data={item}

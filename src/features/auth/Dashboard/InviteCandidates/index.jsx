@@ -36,7 +36,8 @@ const InviteCandidates = () => {
                     label: (
                         <div className="referred-tabs">
                             <div className="card-earn__price">
-                                <span>Earn</span> {formatMoney(2000000)}
+                                <span>Earn</span>{' '}
+                                {formatMoney(item?.commission)}
                             </div>
                             <div className="referred-card">
                                 <img src={companyDummy} alt="" />

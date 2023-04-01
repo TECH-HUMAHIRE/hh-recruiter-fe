@@ -113,7 +113,8 @@ const Jobist = () => {
                         label: (
                             <div className="job-tabs">
                                 <div className="card-earn__price">
-                                    <span>Earn</span> {formatMoney(2000000)}
+                                    <span>Earn</span>{' '}
+                                    {formatMoney(item.commission)}
                                 </div>
                                 <div className="job-card">
                                     <img
