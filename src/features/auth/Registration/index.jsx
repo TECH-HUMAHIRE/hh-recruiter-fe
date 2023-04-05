@@ -8,13 +8,34 @@ import IconTop from '../../../components/Assets/icon/background-icon.png';
 import IconBottom from '../../../components/Assets/icon/resgistration-icon-bottom.png';
 import IconTopRight from '../../../components/Assets/icon/registration-top-right.png';
 import Button from '../../../components/Button';
-import { useSendOTPEmailMutation } from '../../../app/actions/userAuth';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import {
+    useGetProfileQuery,
+    useSendOTPEmailMutation
+} from '../../../app/actions/profile';
 const Registration = () => {
+    const navigate = useNavigate();
     const [setOptEmail, response] = useSendOTPEmailMutation();
-    const [paramsUrl, _] = useSearchParams();
-
-    React.useEffect(() => {}, []);
+    const { data: profile } = useGetProfileQuery();
+    const onSubmitOtp = (data) => {
+        const uid = profile.data.uid;
+        var otp = '';
+        for (var el in data) {
+            // eslint-disable-next-line no-prototype-builtins
+            if (data.hasOwnProperty(el)) {
+                otp += data[el];
+            }
+        }
+        const body = {
+            otp: otp
+        };
+        setOptEmail({ uid, ...body });
+    };
+    React.useEffect(() => {
+        if (response?.isSuccess) {
+            navigate('/');
+        }
+    }, [response]);
     return (
         <Style>
             <Row>
@@ -85,7 +106,7 @@ const Registration = () => {
                                     have sent to your email.
                                 </div>
                                 <div className="code-verification">
-                                    <InputVerification />
+                                    <InputVerification onSubmit={onSubmitOtp} />
                                 </div>
                                 <div>
                                     Haven't received the verification code yet?

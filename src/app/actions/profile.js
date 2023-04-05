@@ -42,6 +42,13 @@ export const profileAuth = createApi({
                     body
                 };
             }
+        }),
+        sendOTPEmail: builder.mutation({
+            query: ({ uid, ...body }) => ({
+                url: `/user/${uid}/verified_email`,
+                method: 'PUT',
+                body
+            })
         })
     })
 });
@@ -51,5 +58,6 @@ export const profileAuth = createApi({
 export const {
     useGetProfileQuery,
     useUpdateProfileMutation,
-    useChangePasswordMutation
+    useChangePasswordMutation,
+    useSendOTPEmailMutation
 } = profileAuth;

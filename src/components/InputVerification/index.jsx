@@ -4,7 +4,7 @@ import { Col } from '../Grid';
 import { Row } from '../Grid';
 import Style from './input-verification.style.';
 
-const InputVerification = () => {
+const InputVerification = ({ onSubmit = () => {} }) => {
     const [valueForm, setValueForm] = React.useState({
         formone: '',
         formtwo: '',
@@ -19,7 +19,7 @@ const InputVerification = () => {
     const form4 = React.useRef(null);
     const form5 = React.useRef(null);
     const form6 = React.useRef(null);
-    const handleChange = async (e, next, prev) => {
+    const handleChange = async (e, next, prev, text) => {
         let value = e.target.value;
         let id = e.target.id;
         if (value.length > 0) {
@@ -31,6 +31,13 @@ const InputVerification = () => {
             ...valueForm,
             [id]: value
         });
+
+        if (text === 'done') {
+            return onSubmit({
+                ...valueForm,
+                [id]: value
+            });
+        }
     };
     return (
         <Style>
@@ -82,7 +89,7 @@ const InputVerification = () => {
                 </Col>
                 <Col md={2}>
                     <Input
-                        onChange={(e) => handleChange(e, form6, form5)}
+                        onChange={(e) => handleChange(e, form6, form5, 'done')}
                         maxLength={1}
                         size="large"
                         id="formsix"

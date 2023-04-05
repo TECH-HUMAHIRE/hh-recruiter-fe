@@ -24,6 +24,7 @@ export const candidates = createApi({
                     method: 'GET'
                 };
             },
+            overrideExisting: false,
             providesTags: ['saveCandidate', 'unlockCandidate']
         }),
         getCandidatesAssignedList: builder.query({
@@ -69,8 +70,9 @@ export const candidates = createApi({
         unlockCandidate: builder.mutation({
             query: (body) => {
                 return {
-                    url: `/job/invitation/${body.jobseeker_id}/unlock`,
-                    method: 'PUT'
+                    url: `/user/candidate/unlock`,
+                    method: 'POST',
+                    body
                 };
             },
             invalidatesTags: ['unlockCandidate']
