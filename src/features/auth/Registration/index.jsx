@@ -13,7 +13,9 @@ import {
     useGetProfileQuery,
     useSendOTPEmailMutation
 } from '../../../app/actions/profile';
+import { message } from 'antd';
 const Registration = () => {
+    const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const [setOptEmail, response] = useSendOTPEmailMutation();
     const [otp, setOtp] = React.useState('');
@@ -49,6 +51,7 @@ const Registration = () => {
     }, [response]);
     return (
         <Style>
+            {contextHolder}
             <Row>
                 <Col md={4}>
                     <div className="registration">
