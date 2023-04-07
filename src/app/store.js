@@ -5,7 +5,7 @@ import { candidates } from './actions/candidates';
 import { jobApi } from './actions/jobApi';
 import { profileAuth } from './actions/profile';
 import { userAuth } from './actions/userAuth';
-import { walletApi } from './actions/walletapi';
+import { walletApi } from './actions/walletApi';
 
 export const store = configureStore({
     reducer: {
