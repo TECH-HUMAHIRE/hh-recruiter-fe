@@ -26,9 +26,6 @@ const ReferCandidatesJobs = ({ onClose = () => {}, isOpen = false }) => {
         await setParams(updateParams);
         refetchJobList();
     };
-    React.useEffect(() => {
-        refetchJobList();
-    }, []);
     return (
         <Style
             title="Refer Candidates"
@@ -64,7 +61,7 @@ const ReferCandidatesJobs = ({ onClose = () => {}, isOpen = false }) => {
                                     <Checkbox />
                                     <img
                                         src={
-                                            item.job.company.logo_url ||
+                                            item?.job?.company?.logo_url ||
                                             companyDummy
                                         }
                                         alt=""
@@ -73,20 +70,20 @@ const ReferCandidatesJobs = ({ onClose = () => {}, isOpen = false }) => {
                                         <div className="job-tabs__header">
                                             <div>
                                                 <div className="job-tabs__title">
-                                                    {item.job.title}
+                                                    {item?.job?.title}
                                                 </div>
                                                 <div className="job-tabs__company">
-                                                    {item.job.company.name}
+                                                    {item?.job?.company?.name}
                                                 </div>
                                                 <div className="job-tabs__city">
                                                     {
-                                                        item.job.sub_district
+                                                        item?.job?.sub_district
                                                             ?.district?.city
                                                             ?.province?.name
                                                     }
                                                     ,{' '}
                                                     {
-                                                        item.job.sub_district
+                                                        item?.job?.sub_district
                                                             ?.district?.city
                                                             ?.province.country
                                                             ?.name

@@ -118,7 +118,7 @@ const CardTask = ({
                 </Dropdown>
             }>
             <div className="card-earn__price">
-                <span>Earn</span> {formatMoney(data?.commission)}
+                <span>Earn</span> {formatMoney(data?.job?.commission)}
             </div>
             <div className="card-status">
                 <div
