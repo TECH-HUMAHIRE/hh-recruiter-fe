@@ -3,6 +3,7 @@ import { Form, Input, message } from 'antd';
 import React from 'react';
 import {
     useGetCandidatesListQuery,
+    useReferCandidateMutation,
     useSaveCandidateMutation,
     useUnlockCandidateMutation
 } from '../../../../app/actions/candidates';
@@ -42,6 +43,14 @@ const CandidatesSearch = ({ status }) => {
             data: responseUnlock
         }
     ] = useUnlockCandidateMutation();
+    const [
+        _,
+        {
+            isSuccess: successRefer,
+            data: responseRefer,
+            reset: resetResponseRefer
+        }
+    ] = useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
@@ -61,8 +70,13 @@ const CandidatesSearch = ({ status }) => {
         setCandidateDetail(candidates);
     };
     const handlerLockCandidates = (candidates) => {
-        setUnlock(!isUnlock);
-        setDetail(false);
+        setCandidateDetail(candidates);
+        if (!candidates.is_unlocked) {
+            setUnlock(!isUnlock);
+            setDetail(false);
+        } else {
+            setReferJobList(true);
+        }
     };
     const handleSearchCandidate = debounce(async (e) => {
         const value = e.target.value;
@@ -74,7 +88,7 @@ const CandidatesSearch = ({ status }) => {
     }, 750);
     const onReferJobList = () => {
         setReferJobList(!isReferJobList);
-        setDetail(!isDetail);
+        setDetail(false);
     };
     const onRefetchCandidates = async (updateParams) => {
         await setParams(updateParams);
@@ -102,6 +116,20 @@ const CandidatesSearch = ({ status }) => {
             resetUnlock();
         }
     }, [successUnlock]);
+    React.useEffect(() => {
+        if (successRefer) {
+            setReferJobList(false);
+            messageApi.open({
+                type: 'success',
+                content: responseRefer.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+            resetResponseRefer();
+        }
+    }, [successRefer]);
     return (
         <div>
             {contextHolder}
@@ -170,6 +198,7 @@ const CandidatesSearch = ({ status }) => {
                 onClose={handlerLockCandidates}
             />
             <ReferCandidatesJobs
+                candidate={candidateDetail}
                 onClose={onReferJobList}
                 isOpen={isReferJobList}
             />

@@ -39,7 +39,7 @@ export const candidates = createApi({
                     method: 'GET'
                 };
             },
-            providesTags: [{ type: 'candidates', id: 2 }]
+            providesTags: ['candidates']
         }),
         getCandidatesSavedList: builder.query({
             query: (params) => {
@@ -104,6 +104,16 @@ export const candidates = createApi({
                 };
             },
             providesTags: ['get_my_company']
+        }),
+        referCandidate: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/job/invitation/refer`,
+                    body,
+                    method: 'POST'
+                };
+            },
+            invalidatesTags: ['saveCandidate', 'candidates']
         })
     })
 });
@@ -117,5 +127,6 @@ export const {
     useGetCandidatesUnlockListQuery,
     useSaveCandidateMutation,
     useUnlockCandidateMutation,
-    useGetCountCandidatesQuery
+    useGetCountCandidatesQuery,
+    useReferCandidateMutation
 } = candidates;

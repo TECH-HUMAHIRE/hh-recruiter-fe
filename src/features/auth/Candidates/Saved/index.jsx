@@ -1,34 +1,103 @@
+import { message } from 'antd';
 import React from 'react';
-import { useGetCandidatesSavedListQuery } from '../../../../app/actions/candidates';
+import {
+    useGetCandidatesSavedListQuery,
+    useReferCandidateMutation,
+    useUnlockCandidateMutation
+} from '../../../../app/actions/candidates';
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
+import CandidateDetail from '../../../../components/Modal/CandidateDetail';
+import ReferCandidatesJobs from '../../../../components/Modal/ReferCandidatesJobs';
 import RemoveCandidate from '../../../../components/Modal/RemoveCandidate';
 import UnlockCandidates from '../../../../components/Modal/UnlockCandidates';
 
 const CandidatesSaved = ({ status }) => {
-    // const dispatch = useDispatch();
+    const [messageApi, contextHolder] = message.useMessage();
     const [isFilter, setFilter] = React.useState(false);
     const [isRemove, setRemove] = React.useState(false);
     const [isUnlock, setUnlock] = React.useState(false);
+    const [isDetail, setDetail] = React.useState(false);
+    const [candidateDetail, setCandidateDetail] = React.useState(null);
+    const [isReferJobList, setReferJobList] = React.useState(false);
+    const [isReffered, setReffered] = React.useState(false);
     const { data } = useGetCandidatesSavedListQuery();
     const onRevomeCandidate = () => {
         setRemove(!isRemove);
     };
+    const [
+        _,
+        {
+            isSuccess: successRefer,
+            data: responseRefer,
+            reset: resetResponseRefer
+        }
+    ] = useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
+    const [unLockCandidate, { isSuccess: successUnlock, reset: resetUnlock }] =
+        useUnlockCandidateMutation();
     const handlerLockCandidates = (candidates) => {
-        setUnlock(!isUnlock);
+        setCandidateDetail(candidates);
+        if (!candidates.is_unlocked) {
+            setUnlock(!isUnlock);
+            setDetail(false);
+        } else {
+            setReferJobList(true);
+        }
     };
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
+    const onReferJobList = () => {
+        setReferJobList(!isReferJobList);
+        setDetail(false);
+    };
+    const onViewDetail = (candidates) => {
+        setDetail(!isDetail);
+        setReffered(false);
+        setCandidateDetail(candidates);
+    };
+    const handleUnlockCandidate = () => {
+        unLockCandidate({ jobseeker_id: candidateDetail.id });
+    };
+    React.useEffect(() => {
+        if (successRefer) {
+            setReferJobList(false);
+            messageApi.open({
+                type: 'success',
+                content: responseRefer.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+            resetResponseRefer();
+        }
+    }, [successRefer]);
+    React.useEffect(() => {
+        if (successUnlock) {
+            setReffered(true);
+            setReferJobList(true);
+            setUnlock(!isUnlock);
+            resetUnlock();
+        }
+    }, [successUnlock]);
     return (
         <div>
+            {contextHolder}
             <Row>
                 {data?.data?.map((item, key) => {
                     return (
-                        <Col xl={4} lg={4} md={6} sm={12} key={key}>
+                        <Col
+                            xl={4}
+                            lg={4}
+                            md={6}
+                            sm={12}
+                            key={key}
+                            style={{ marginBottom: 30 }}>
                             <CardCandidates
                                 status={status}
-                                onRefer={onFilterCandidates}
+                                onViewDetail={onViewDetail}
+                                onRefer={handlerLockCandidates}
                                 onRevomeCandidate={onRevomeCandidate}
                                 data={item}
                             />
@@ -37,7 +106,21 @@ const CandidatesSaved = ({ status }) => {
                 })}
             </Row>
             <RemoveCandidate isOpen={isRemove} onClose={onRevomeCandidate} />
+            <CandidateDetail
+                isReffered={isReffered}
+                data={candidateDetail}
+                handlerReferCandidates={onReferJobList}
+                open={isDetail}
+                onClose={onViewDetail}
+                handlerLockCandidates={handlerLockCandidates}
+            />
+            <ReferCandidatesJobs
+                candidate={candidateDetail}
+                onClose={onReferJobList}
+                isOpen={isReferJobList}
+            />
             <UnlockCandidates
+                unLockCandidate={handleUnlockCandidate}
                 isOpen={isUnlock}
                 onClose={handlerLockCandidates}
             />
