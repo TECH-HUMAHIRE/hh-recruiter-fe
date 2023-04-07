@@ -1,4 +1,4 @@
-import { Card, Form, Input, Skeleton } from 'antd';
+import { Card, Form, Input, message, Skeleton } from 'antd';
 import React from 'react';
 import companyDummy from '../../../components/Assets/images/defaultImage.png';
 import Style from './refer-candidates-job.style';
@@ -14,6 +14,7 @@ const ReferCandidatesJobs = ({
     isOpen = false,
     candidate = null
 }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 5
@@ -62,83 +63,89 @@ const ReferCandidatesJobs = ({
             footer={null}
             onCancel={onClose}
             width={720}>
+            {contextHolder}
             <Form onFinish={handleSendRefer}>
                 <Card style={{ marginBottom: 15 }}>
                     <div className="job">
-                        {jobList?.data?.map((item, key) => {
-                            return (
-                                <Form.Item
-                                    name={'job_id'}
-                                    valuePropName="checked">
-                                    <div className="job-card" key={key}>
-                                        <Checkbox
-                                            value={item?.job?.id}
-                                            onChange={handleChooseTask}
-                                        />
-                                        <img
-                                            src={
-                                                item?.job?.company?.logo_url ||
-                                                companyDummy
-                                            }
-                                            alt=""
-                                        />
-                                        <div style={{ width: '100%' }}>
-                                            <div className="job-tabs__header">
-                                                <div>
-                                                    <div className="job-tabs__title">
-                                                        {item?.job?.title}
-                                                    </div>
-                                                    <div className="job-tabs__company">
-                                                        {
-                                                            item?.job?.company
-                                                                ?.name
-                                                        }
-                                                    </div>
-                                                    <div className="job-tabs__city">
-                                                        {
-                                                            item?.job
-                                                                ?.sub_district
-                                                                ?.district?.city
-                                                                ?.province?.name
-                                                        }
-                                                        ,{' '}
-                                                        {
-                                                            item?.job
-                                                                ?.sub_district
-                                                                ?.district?.city
-                                                                ?.province
-                                                                .country?.name
-                                                        }
-                                                    </div>
-                                                </div>
+                        {isLoading ? (
+                            <div className="job-card">
+                                <Skeleton.Image style={{ marginRight: 10 }} />
+                                <div style={{ width: '100%' }}>
+                                    <div className="job-tabs__header">
+                                        <div>
+                                            <div className="job-tabs__title">
+                                                <Skeleton.Input />
                                             </div>
-                                        </div>
-                                    </div>
-                                </Form.Item>
-                            );
-                        })}
-                        {/* {isLoading ? (
-                        <div className="job-card">
-                            <Skeleton.Image style={{ marginRight: 10 }} />
-                            <div style={{ width: '100%' }}>
-                                <div className="job-tabs__header">
-                                    <div>
-                                        <div className="job-tabs__title">
-                                            <Skeleton.Input />
-                                        </div>
-                                        <div className="job-tabs__company">
-                                            <Skeleton.Input />
-                                        </div>
-                                        <div className="job-tabs__city">
-                                            <Skeleton.Input />
+                                            <div className="job-tabs__company">
+                                                <Skeleton.Input />
+                                            </div>
+                                            <div className="job-tabs__city">
+                                                <Skeleton.Input />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ) : (
-                        
-                    )} */}
+                        ) : (
+                            jobList?.data?.map((item, key) => {
+                                return (
+                                    <Form.Item
+                                        name={'job_id'}
+                                        valuePropName="checked">
+                                        <div className="job-card" key={key}>
+                                            <Checkbox
+                                                value={item?.job?.id}
+                                                onChange={handleChooseTask}
+                                            />
+                                            <img
+                                                src={
+                                                    item?.job?.company
+                                                        ?.logo_url ||
+                                                    companyDummy
+                                                }
+                                                alt=""
+                                            />
+                                            <div style={{ width: '100%' }}>
+                                                <div className="job-tabs__header">
+                                                    <div>
+                                                        <div className="job-tabs__title">
+                                                            {item?.job?.title}
+                                                        </div>
+                                                        <div className="job-tabs__company">
+                                                            {
+                                                                item?.job
+                                                                    ?.company
+                                                                    ?.name
+                                                            }
+                                                        </div>
+                                                        <div className="job-tabs__city">
+                                                            {
+                                                                item?.job
+                                                                    ?.sub_district
+                                                                    ?.district
+                                                                    ?.city
+                                                                    ?.province
+                                                                    ?.name
+                                                            }
+                                                            ,{' '}
+                                                            {
+                                                                item?.job
+                                                                    ?.sub_district
+                                                                    ?.district
+                                                                    ?.city
+                                                                    ?.province
+                                                                    .country
+                                                                    ?.name
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Form.Item>
+                                );
+                            })
+                        )}
                     </div>
                 </Card>
                 {jobList?.meta?.info?.total_page > 1 && (
