@@ -22,6 +22,7 @@ import { formatMoney } from '../../Utils/formatMoney';
 const CandidateDetail = ({
     open = false,
     data,
+    isReffered = false,
     onClose = () => {},
     handlerLockCandidates = () => {},
     handlerReferCandidates = () => {}
@@ -52,7 +53,6 @@ const CandidateDetail = ({
             desc: "You are my fire the one desire believe when I say I want it that way. But we are two worlds apart can't reach to your heart when you say that I want it that way."
         }
     ];
-    console.log(data);
     return (
         <CandidateDetailStyle
             title={
@@ -254,7 +254,7 @@ const CandidateDetail = ({
                             Download
                         </Button>
                     </Col>
-                    {data?.is_unlocked ? (
+                    {data?.is_unlocked || isReffered ? (
                         <Col md={3}>
                             <Button
                                 onClick={() => handlerReferCandidates(data)}

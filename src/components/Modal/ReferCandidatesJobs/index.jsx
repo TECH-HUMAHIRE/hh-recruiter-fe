@@ -2,7 +2,10 @@ import { Card, Form, Input, Modal, Skeleton } from 'antd';
 import React from 'react';
 import companyDummy from '../../../components/Assets/images/defaultImage.png';
 import Style from './refer-candidates-job.style';
-import { useGetJobsListQuery } from '../../../app/actions/jobApi';
+import {
+    useGetJobsListQuery,
+    useGetTaskListQuery
+} from '../../../app/actions/jobApi';
 import CheckBoxForm from '../../Form/Checkbox';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import { Col, Row } from '../../Grid';
@@ -12,18 +15,20 @@ import PaginationTable from '../../PaginationTable';
 const ReferCandidatesJobs = ({ onClose = () => {}, isOpen = false }) => {
     const [params, setParams] = React.useState({
         page: 1,
-        page_size: 5,
-        status: 'active'
+        page_size: 5
     });
     const {
         data: jobList,
         isLoading,
         refetch: refetchJobList
-    } = useGetJobsListQuery(params);
+    } = useGetTaskListQuery(params);
     const onRefetchCandidates = async (updateParams) => {
         await setParams(updateParams);
         refetchJobList();
     };
+    React.useEffect(() => {
+        refetchJobList();
+    }, []);
     return (
         <Style
             title="Refer Candidates"
@@ -59,7 +64,7 @@ const ReferCandidatesJobs = ({ onClose = () => {}, isOpen = false }) => {
                                     <Checkbox />
                                     <img
                                         src={
-                                            item.company.logo_url ||
+                                            item.job.company.logo_url ||
                                             companyDummy
                                         }
                                         alt=""
@@ -68,23 +73,23 @@ const ReferCandidatesJobs = ({ onClose = () => {}, isOpen = false }) => {
                                         <div className="job-tabs__header">
                                             <div>
                                                 <div className="job-tabs__title">
-                                                    {item.title}
+                                                    {item.job.title}
                                                 </div>
                                                 <div className="job-tabs__company">
-                                                    {item.company.name}
+                                                    {item.job.company.name}
                                                 </div>
                                                 <div className="job-tabs__city">
                                                     {
-                                                        item.sub_district
-                                                            .district.city
-                                                            .province.name
+                                                        item.job.sub_district
+                                                            ?.district?.city
+                                                            ?.province?.name
                                                     }
                                                     ,{' '}
                                                     {
-                                                        item.sub_district
-                                                            .district.city
-                                                            .province.country
-                                                            .name
+                                                        item.job.sub_district
+                                                            ?.district?.city
+                                                            ?.province.country
+                                                            ?.name
                                                     }
                                                 </div>
                                             </div>

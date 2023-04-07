@@ -30,7 +30,6 @@ const Inbox = () => {
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.val();
-                    console.log('data', data);
                     // Do something with the data
                 } else {
                     console.log('No data available');

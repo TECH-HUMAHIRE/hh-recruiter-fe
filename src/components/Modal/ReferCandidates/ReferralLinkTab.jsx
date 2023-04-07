@@ -18,7 +18,6 @@ const ReferralLinkTab = ({ onClose = () => {}, data }) => {
         });
         return navigator.clipboard.writeText(link);
     };
-    console.log('data', data);
     return (
         <Form layout="vertical" form={form}>
             <Form.Item label="Shareable link" style={{ marginBottom: 10 }}>

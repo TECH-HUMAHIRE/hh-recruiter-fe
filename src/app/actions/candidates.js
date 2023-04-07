@@ -14,7 +14,12 @@ export const candidates = createApi({
             return headers;
         }
     }),
-    tagTypes: ['candidates', 'saveCandidate', 'unlockCandidate'],
+    tagTypes: [
+        'candidates',
+        'saveCandidate',
+        'unlockCandidate',
+        'get_my_company'
+    ],
     endpoints: (builder) => ({
         getCandidatesList: builder.query({
             query: (params) => {
@@ -24,7 +29,6 @@ export const candidates = createApi({
                     method: 'GET'
                 };
             },
-            overrideExisting: false,
             providesTags: ['saveCandidate', 'unlockCandidate']
         }),
         getCandidatesAssignedList: builder.query({
@@ -75,7 +79,11 @@ export const candidates = createApi({
                     body
                 };
             },
-            invalidatesTags: ['unlockCandidate']
+            invalidatesTags: [
+                'unlockCandidate',
+                'saveCandidate',
+                'get_my_company'
+            ]
         }),
         getCountCandidates: builder.query({
             query: (params) => {
@@ -86,6 +94,16 @@ export const candidates = createApi({
                 };
             },
             providesTags: ['saveCandidate', 'unlockCandidate']
+        }),
+        getProfile: builder.query({
+            query: (params) => {
+                return {
+                    url: `/user/my`,
+                    method: 'GET',
+                    params
+                };
+            },
+            providesTags: ['get_my_company']
         })
     })
 });
