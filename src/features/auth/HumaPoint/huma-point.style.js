@@ -54,16 +54,16 @@ export const Style = styled.div`
         }
         &-history {
             .credit {
+                color: ${color.employee.primary};
+                span {
+                    margin-right: 5px;
+                }
+            }
+            .debit {
                 color: red;
                 span {
                     margin-right: 5px;
                     transform: rotate(180deg);
-                }
-            }
-            .debit {
-                color: ${color.employee.primary};
-                span {
-                    margin-right: 5px;
                 }
             }
         }

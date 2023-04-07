@@ -6,8 +6,26 @@ import HumaPointTop from './partial/HumaPointTop';
 import moment from 'moment';
 import Button from '../../../components/Button';
 import InfoIcon from '../../../components/Assets/icon/info.png';
+import { useHumaPointQuery, walletApi } from '../../../app/actions/walletapi';
+import ArrowIcon from '../../../components/Icon/Arrow';
+import { color } from '../../../components/Utils/variable';
+import PaginationTable from '../../../components/PaginationTable';
 
 const HumaPoint = () => {
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 10
+    });
+    const [getHumaPoint, { data }] =
+        walletApi.endpoints.humaPoint.useLazyQuery();
+    React.useEffect(() => {
+        getHumaPoint(params);
+    }, []);
+
+    const onRefetchCandidates = async (updateParams) => {
+        await setParams(updateParams);
+        getHumaPoint(updateParams);
+    };
     return (
         <Style>
             <h2 className="title">Huma Point</h2>
@@ -65,10 +83,10 @@ const HumaPoint = () => {
                         },
 
                         {
-                            title: 'Job ID',
+                            title: 'Item',
                             width: 100,
-                            dataIndex: 'job_id',
-                            key: 'job_id'
+                            dataIndex: 'item',
+                            key: 'item'
                         },
                         {
                             title: 'User',
@@ -79,42 +97,52 @@ const HumaPoint = () => {
                                 return user.name;
                             }
                         },
+
                         {
-                            title: 'Job',
-                            dataIndex: 'Job',
-                            key: 'Job',
-                            width: 150
-                        },
-                        {
-                            title: 'Item',
-                            dataIndex: 'item',
-                            key: 'item',
-                            width: 150
-                        },
-                        {
-                            title: 'Value',
-                            dataIndex: 'user',
+                            title: 'Total Amount',
                             key: '1',
                             width: 150,
-                            render: (user) => {
+                            render: (data) => {
                                 return (
-                                    <div className={`credit`}>
-                                        <ArrowIcon color={`red`} />
+                                    <div
+                                        className={
+                                            data.transaction_type === 'Debet'
+                                                ? 'debit'
+                                                : `credit`
+                                        }>
+                                        <ArrowIcon
+                                            color={
+                                                data.transaction_type ===
+                                                'Debet'
+                                                    ? `red`
+                                                    : color.employee.primary
+                                            }
+                                        />
                                         <span className="value">
-                                            {user.credit_used}
+                                            {data.amount}
                                         </span>
                                     </div>
                                 );
                             }
                         }
                     ]}
-                    dataSource={[]}
+                    pagination={false}
+                    dataSource={data?.data}
                     scroll={{
                         x: 1500,
                         y: 500
                     }}
                 />
             </div>
+            {data?.meta?.info?.total_page > 1 && (
+                <div style={{ marginTop: 20 }}>
+                    <PaginationTable
+                        data={data}
+                        refetch={onRefetchCandidates}
+                        params={params}
+                    />
+                </div>
+            )}
         </Style>
     );
 };

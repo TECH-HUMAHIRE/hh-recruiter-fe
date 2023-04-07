@@ -1,6 +1,9 @@
 import { message } from 'antd';
 import React from 'react';
-import { useGetCandidatesUnlockListQuery } from '../../../../app/actions/candidates';
+import {
+    useGetCandidatesUnlockListQuery,
+    useReferCandidateMutation
+} from '../../../../app/actions/candidates';
 import CardCandidates from '../../../../components/Card/CardCandidates';
 import { Col, Row } from '../../../../components/Grid';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
@@ -20,11 +23,18 @@ const CandidatesUnlocked = ({ status }) => {
     const [isUnlock, setUnlock] = React.useState(false);
     const [candidateDetail, setCandidateDetail] = React.useState(null);
     const { data, refetch } = useGetCandidatesUnlockListQuery(params);
+    const [
+        _,
+        {
+            isSuccess: successRefer,
+            data: responseRefer,
+            reset: resetResponseRefer
+        }
+    ] = useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
     const onSaveCandidate = (data) => {
-        console.log(data);
         setCandidateDetail(data);
         setSave(!isSave);
     };
@@ -36,8 +46,13 @@ const CandidatesUnlocked = ({ status }) => {
         setCandidateDetail(candidates);
     };
     const handlerLockCandidates = (candidates) => {
-        setUnlock(!isUnlock);
-        setDetail(false);
+        setCandidateDetail(candidates);
+        if (!candidates.is_unlocked) {
+            setUnlock(!isUnlock);
+            setDetail(false);
+        } else {
+            setReferJobList(true);
+        }
     };
     const onReferJobList = () => {
         setReferJobList(!isReferJobList);
@@ -47,22 +62,44 @@ const CandidatesUnlocked = ({ status }) => {
         await setParams(updateParams);
         refetch();
     };
+    React.useEffect(() => {
+        if (successRefer) {
+            setReferJobList(false);
+            messageApi.open({
+                type: 'success',
+                content: responseRefer.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+            resetResponseRefer();
+        }
+    }, [successRefer]);
     return (
         <div>
+            {contextHolder}
             <Row>
                 {data?.data?.map((item, key) => {
                     return (
-                        <Col xl={4} lg={4} md={6} sm={12} key={key}>
+                        <Col
+                            xl={4}
+                            lg={4}
+                            md={6}
+                            sm={12}
+                            key={key}
+                            style={{ marginBottom: 30 }}>
                             <CardCandidates
                                 status={status}
                                 data={item}
                                 onViewDetail={onViewDetail}
+                                onRefer={handlerLockCandidates}
                             />
                         </Col>
                     );
                 })}
             </Row>
-            {data?.meta?.info?.count > 0 && (
+            {data?.meta?.info?.total_page > 1 && (
                 <PaginationTable
                     data={data}
                     refetch={onRefetchCandidates}

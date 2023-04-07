@@ -5,6 +5,7 @@ import { candidates } from './actions/candidates';
 import { jobApi } from './actions/jobApi';
 import { profileAuth } from './actions/profile';
 import { userAuth } from './actions/userAuth';
+import { walletApi } from './actions/walletapi';
 
 export const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
         [userAuth.reducerPath]: userAuth.reducer,
         [profileAuth.reducerPath]: profileAuth.reducer,
         [jobApi.reducerPath]: jobApi.reducer,
-        [candidates.reducerPath]: candidates.reducer
+        [candidates.reducerPath]: candidates.reducer,
+        [walletApi.reducerPath]: walletApi.reducer
     },
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
@@ -21,7 +23,8 @@ export const store = configureStore({
             userAuth.middleware,
             profileAuth.middleware,
             jobApi.middleware,
-            candidates.middleware
+            candidates.middleware,
+            walletApi.middleware
         )
 });
 
