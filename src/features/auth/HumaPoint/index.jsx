@@ -6,7 +6,7 @@ import HumaPointTop from './partial/HumaPointTop';
 import moment from 'moment';
 import Button from '../../../components/Button';
 import InfoIcon from '../../../components/Assets/icon/info.png';
-import { useHumaPointQuery, walletApi } from '../../../app/actions/walletapi';
+import { walletApi } from '../../../app/actions/walletApi';
 import ArrowIcon from '../../../components/Icon/Arrow';
 import { color } from '../../../components/Utils/variable';
 import PaginationTable from '../../../components/PaginationTable';
