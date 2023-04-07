@@ -44,7 +44,7 @@ export const profileAuth = createApi({
             }
         }),
         sendOTPEmail: builder.mutation({
-            query: ({ uid, body }) => ({
+            query: ({ uid, ...body }) => ({
                 url: `/user/${uid}/verified_email`,
                 method: 'PUT',
                 body

@@ -30,7 +30,7 @@ const Registration = () => {
     };
     const onSubmit = () => {
         const uid = profile.data.uid;
-        setOptEmail({ uid, otp });
+        setOptEmail({ uid, ...otp });
     };
     React.useEffect(() => {
         if (response?.isSuccess) {
