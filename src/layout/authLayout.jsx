@@ -55,6 +55,8 @@ const AuthLayout = () => {
                 return (window.location = `${
                     import.meta.env.VITE_REDIRECT_URL
                 }?logout=true`);
+            } else if (data?.data?.email_verified === false) {
+                navigate('/verification');
             } else {
                 return false;
             }

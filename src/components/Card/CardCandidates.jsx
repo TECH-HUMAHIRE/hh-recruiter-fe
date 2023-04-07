@@ -71,7 +71,6 @@ const CardCandidates = ({
     const [items, setItems] = React.useState(actionDropdown);
     React.useEffect(() => {
         if (status) {
-            console.log(status);
             setItems(
                 actionDropdown.filter((item) => {
                     switch (status) {

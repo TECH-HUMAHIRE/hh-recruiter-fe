@@ -23,6 +23,7 @@ const CandidatesSearch = ({ status }) => {
         page: 1,
         page_size: 10
     });
+    const [isReffered, setReffered] = React.useState(false);
     const [isFilter, setFilter] = React.useState(false);
     const [isDetail, setDetail] = React.useState(false);
     const [isSave, setSave] = React.useState(false);
@@ -45,7 +46,6 @@ const CandidatesSearch = ({ status }) => {
         setFilter(!isFilter);
     };
     const onSaveCandidate = (data) => {
-        console.log(data);
         setCandidateDetail(data);
         setSave(!isSave);
     };
@@ -57,6 +57,7 @@ const CandidatesSearch = ({ status }) => {
     };
     const onViewDetail = (candidates) => {
         setDetail(!isDetail);
+        setReffered(false);
         setCandidateDetail(candidates);
     };
     const handlerLockCandidates = (candidates) => {
@@ -81,7 +82,6 @@ const CandidatesSearch = ({ status }) => {
     };
     React.useEffect(() => {
         if (isSuccess) {
-            console.log('response', response);
             setSave(!isSave);
             messageApi.open({
                 type: 'success',
@@ -94,6 +94,14 @@ const CandidatesSearch = ({ status }) => {
             reset();
         }
     }, [isSuccess]);
+    React.useEffect(() => {
+        if (successUnlock) {
+            setReffered(true);
+            setDetail(!isDetail);
+            setUnlock(!isUnlock);
+            resetUnlock();
+        }
+    }, [successUnlock]);
     return (
         <div>
             {contextHolder}
@@ -149,6 +157,7 @@ const CandidatesSearch = ({ status }) => {
             )}
             <FilterCandidates isOpen={isFilter} onClose={onFilterCandidates} />
             <CandidateDetail
+                isReffered={isReffered}
                 data={candidateDetail}
                 handlerReferCandidates={onReferJobList}
                 open={isDetail}

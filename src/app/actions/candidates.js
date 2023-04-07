@@ -14,7 +14,12 @@ export const candidates = createApi({
             return headers;
         }
     }),
-    tagTypes: ['candidates', 'saveCandidate', 'unlockCandidate'],
+    tagTypes: [
+        'candidates',
+        'saveCandidate',
+        'unlockCandidate',
+        'get_my_company'
+    ],
     endpoints: (builder) => ({
         getCandidatesList: builder.query({
             query: (params) => {
@@ -69,11 +74,16 @@ export const candidates = createApi({
         unlockCandidate: builder.mutation({
             query: (body) => {
                 return {
-                    url: `/job/invitation/${body.jobseeker_id}/unlock`,
-                    method: 'PUT'
+                    url: `/user/candidate/unlock`,
+                    method: 'POST',
+                    body
                 };
             },
-            invalidatesTags: ['unlockCandidate']
+            invalidatesTags: [
+                'unlockCandidate',
+                'saveCandidate',
+                'get_my_company'
+            ]
         }),
         getCountCandidates: builder.query({
             query: (params) => {
@@ -84,6 +94,16 @@ export const candidates = createApi({
                 };
             },
             providesTags: ['saveCandidate', 'unlockCandidate']
+        }),
+        getProfile: builder.query({
+            query: (params) => {
+                return {
+                    url: `/user/my`,
+                    method: 'GET',
+                    params
+                };
+            },
+            providesTags: ['get_my_company']
         })
     })
 });

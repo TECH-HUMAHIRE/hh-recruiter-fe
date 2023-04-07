@@ -18,17 +18,10 @@ export const userAuth = createApi({
                 method: 'POST',
                 body
             })
-        }),
-        sendOTPEmail: builder.mutation({
-            query: ({ uid, ...body }) => ({
-                url: `/user/${uid}/verified_email`,
-                method: 'POST',
-                body
-            })
         })
     })
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useUserLoginMutation, useSendOTPEmailMutation } = userAuth;
+export const { useUserLoginMutation } = userAuth;

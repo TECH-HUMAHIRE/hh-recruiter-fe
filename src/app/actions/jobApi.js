@@ -65,7 +65,8 @@ export const jobApi = createApi({
             },
             invalidatesTags: [
                 { type: 'Post', id: 1 },
-                { type: 'Post', id: 2 }
+                { type: 'Post', id: 2 },
+                { type: 'counTask', id: 1 }
             ]
         }),
         deleteTask: builder.mutation({
@@ -75,9 +76,11 @@ export const jobApi = createApi({
                     method: 'DELETE'
                 };
             },
+
             invalidatesTags: [
                 { type: 'Post', id: 1 },
-                { type: 'Post', id: 2 }
+                { type: 'Post', id: 2 },
+                { type: 'counTask', id: 1 }
             ]
         }),
         countJob: builder.query({
