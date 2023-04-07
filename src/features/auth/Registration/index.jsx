@@ -16,9 +16,9 @@ import {
 const Registration = () => {
     const navigate = useNavigate();
     const [setOptEmail, response] = useSendOTPEmailMutation();
+    const [otp, setOtp] = React.useState('');
     const { data: profile } = useGetProfileQuery();
     const onSubmitOtp = (data) => {
-        const uid = profile.data.uid;
         var otp = '';
         for (var el in data) {
             // eslint-disable-next-line no-prototype-builtins
@@ -26,14 +26,25 @@ const Registration = () => {
                 otp += data[el];
             }
         }
-        const body = {
-            otp: otp
-        };
-        setOptEmail({ uid, ...body });
+        setOtp(otp);
+    };
+    const onSubmit = () => {
+        const uid = profile.data.uid;
+        setOptEmail({ uid, ...otp });
     };
     React.useEffect(() => {
         if (response?.isSuccess) {
             navigate('/');
+        }
+        if (response?.isError) {
+            messageApi.open({
+                type: 'error',
+                content: response?.meta?.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
         }
     }, [response]);
     return (
@@ -114,7 +125,11 @@ const Registration = () => {
                                 <div className="code-resend">
                                     Resending Code
                                 </div>
-                                <Button color="primary" block>
+                                <Button
+                                    loading={response.isLoading}
+                                    color="primary"
+                                    block
+                                    onClick={onSubmit}>
                                     Submit
                                 </Button>
                             </Col>
