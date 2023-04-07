@@ -26,11 +26,11 @@ const Registration = () => {
                 otp += data[el];
             }
         }
-        setOtp(otp);
+        setOtp({ otp: otp });
     };
     const onSubmit = () => {
         const uid = profile.data.uid;
-        setOptEmail({ uid, ...otp });
+        setOptEmail({ uid, otp });
     };
     React.useEffect(() => {
         if (response?.isSuccess) {
