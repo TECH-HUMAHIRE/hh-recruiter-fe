@@ -3,9 +3,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { candidates } from './actions/candidates';
 import { jobApi } from './actions/jobApi';
+import { walletApi } from './actions/walletApi';
 import { profileAuth } from './actions/profile';
 import { userAuth } from './actions/userAuth';
-import { walletApi } from './actions/walletApi';
 
 export const store = configureStore({
     reducer: {
