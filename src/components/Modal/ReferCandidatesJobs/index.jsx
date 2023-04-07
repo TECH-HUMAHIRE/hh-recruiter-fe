@@ -20,8 +20,11 @@ const ReferCandidatesJobs = ({
         page_size: 5
     });
     const [jobId, setJobId] = React.useState(null);
-    const { data: jobList, refetch: refetchJobList } =
-        useGetTaskListQuery(params);
+    const {
+        data: jobList,
+        refetch: refetchJobList,
+        isLoading
+    } = useGetTaskListQuery(params);
     const [referCandidate, { reset, isLoading: loadingRefer, isError }] =
         useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
     const onRefetchCandidates = async (updateParams) => {
