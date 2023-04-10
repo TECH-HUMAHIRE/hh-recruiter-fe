@@ -1,9 +1,8 @@
-import { Card, Form, Input, message, Skeleton } from 'antd';
+import { Card, Form, Input, message, Skeleton, Checkbox } from 'antd';
 import React from 'react';
 import companyDummy from '../../../components/Assets/images/defaultImage.png';
 import Style from './refer-candidates-job.style';
 import { useGetTaskListQuery } from '../../../app/actions/jobApi';
-import Checkbox from 'antd/lib/checkbox/Checkbox';
 import { Col, Row } from '../../Grid';
 import Button from '../../Button';
 import PaginationTable from '../../PaginationTable';
@@ -46,19 +45,19 @@ const ReferCandidatesJobs = ({
         };
         referCandidate(data);
     };
-    // React.useEffect(() => {
-    //     if (isError) {
-    //         messageApi.open({
-    //             type: 'error',
-    //             content: responseRefer.data.meta.message,
-    //             style: {
-    //                 marginTop: '15vh'
-    //             },
-    //             duration: 2
-    //         });
-    //         reset();
-    //     }
-    // }, [isError]);
+    React.useEffect(() => {
+        if (isError) {
+            messageApi.open({
+                type: 'error',
+                content: responseRefer.data.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+            reset();
+        }
+    }, [isError]);
     return (
         <Style
             title="Refer Candidates"
