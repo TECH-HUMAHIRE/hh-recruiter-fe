@@ -46,19 +46,19 @@ const ReferCandidatesJobs = ({
         };
         referCandidate(data);
     };
-    React.useEffect(() => {
-        if (isError) {
-            messageApi.open({
-                type: 'error',
-                content: responseRefer.data.meta.message,
-                style: {
-                    marginTop: '15vh'
-                },
-                duration: 2
-            });
-            reset();
-        }
-    }, [isError]);
+    // React.useEffect(() => {
+    //     if (isError) {
+    //         messageApi.open({
+    //             type: 'error',
+    //             content: responseRefer.data.meta.message,
+    //             style: {
+    //                 marginTop: '15vh'
+    //             },
+    //             duration: 2
+    //         });
+    //         reset();
+    //     }
+    // }, [isError]);
     return (
         <Style
             title="Refer Candidates"
