@@ -24,7 +24,7 @@ const ReferCandidatesJobs = ({
         refetch: refetchJobList,
         isLoading
     } = useGetTaskListQuery(params);
-    const [referCandidate, { reset, isLoading: loadingRefer, isError }] =
+    const [referCandidate, { reset, isLoading: loadingRefer, isError, error }] =
         useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
     const onRefetchCandidates = async (updateParams) => {
         await setParams(updateParams);
@@ -39,7 +39,7 @@ const ReferCandidatesJobs = ({
     };
     const handleSendRefer = (values) => {
         let data = {
-            ...values,
+            message: values.message || '',
             job_id: jobId,
             jobseeker_id: candidate.id
         };
@@ -49,9 +49,9 @@ const ReferCandidatesJobs = ({
         if (isError) {
             messageApi.open({
                 type: 'error',
-                content: responseRefer.data.meta.message,
+                content: error.data.meta.message,
                 style: {
-                    marginTop: '15vh'
+                    marginTop: '16vh'
                 },
                 duration: 2
             });
@@ -163,7 +163,14 @@ const ReferCandidatesJobs = ({
                 <h4>
                     <b>Note for Job Seeker:</b>
                 </h4>
-                <Form.Item name={'message'}>
+                <Form.Item
+                    name={'message'}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input message'
+                        }
+                    ]}>
                     <Input
                         placeholder="What do you want to say?"
                         size="large"
