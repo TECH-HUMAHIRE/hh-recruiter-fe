@@ -11,9 +11,14 @@ import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import ReferCandidatesJobs from '../../../../components/Modal/ReferCandidatesJobs';
 import RemoveCandidate from '../../../../components/Modal/RemoveCandidate';
 import UnlockCandidates from '../../../../components/Modal/UnlockCandidates';
+import PaginationTable from '../../../../components/PaginationTable';
 
 const CandidatesSaved = ({ status }) => {
     const [messageApi, contextHolder] = message.useMessage();
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 10
+    });
     const [isFilter, setFilter] = React.useState(false);
     const [isRemove, setRemove] = React.useState(false);
     const [isUnlock, setUnlock] = React.useState(false);
@@ -21,7 +26,7 @@ const CandidatesSaved = ({ status }) => {
     const [candidateDetail, setCandidateDetail] = React.useState(null);
     const [isReferJobList, setReferJobList] = React.useState(false);
     const [isReffered, setReffered] = React.useState(false);
-    const { data } = useGetCandidatesSavedListQuery();
+    const { data, refetch } = useGetCandidatesSavedListQuery(params);
     const onRevomeCandidate = () => {
         setRemove(!isRemove);
     };
@@ -58,6 +63,10 @@ const CandidatesSaved = ({ status }) => {
     };
     const handleUnlockCandidate = () => {
         unLockCandidate({ jobseeker_id: candidateDetail.id });
+    };
+    const onRefetchCandidates = async (updateParams) => {
+        await setParams(updateParams);
+        refetch();
     };
     React.useEffect(() => {
         if (successRefer) {
@@ -105,6 +114,13 @@ const CandidatesSaved = ({ status }) => {
                     );
                 })}
             </Row>
+            {data?.meta?.info?.total_page > 1 && (
+                <PaginationTable
+                    data={data}
+                    refetch={onRefetchCandidates}
+                    params={params}
+                />
+            )}
             <RemoveCandidate isOpen={isRemove} onClose={onRevomeCandidate} />
             <CandidateDetail
                 isReffered={isReffered}
