@@ -6,16 +6,21 @@ import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import ReferCandidatesJobs from '../../../../components/Modal/ReferCandidatesJobs';
 import RemoveCandidate from '../../../../components/Modal/RemoveCandidate';
 import UnlockCandidates from '../../../../components/Modal/UnlockCandidates';
+import PaginationTable from '../../../../components/PaginationTable';
 
 const CandidatesAssigned = ({ status }) => {
     const [isFilter, setFilter] = React.useState(false);
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 10
+    });
     const [isRemove, setRemove] = React.useState(false);
     const [isUnlock, setUnlock] = React.useState(false);
     const [isDetail, setDetail] = React.useState(false);
     const [candidateDetail, setCandidateDetail] = React.useState(null);
     const [isReferJobList, setReferJobList] = React.useState(false);
     const [isReffered, setReffered] = React.useState(false);
-    const { data } = useGetCandidatesAssignedListQuery();
+    const { data, refetch } = useGetCandidatesAssignedListQuery(params);
     const onRevomeCandidate = () => {
         setRemove(!isRemove);
     };
@@ -40,6 +45,10 @@ const CandidatesAssigned = ({ status }) => {
         setReffered(false);
         setCandidateDetail(candidates);
     };
+    const onRefetchCandidates = async (updateParams) => {
+        await setParams(updateParams);
+        refetch();
+    };
     return (
         <div>
             <Row>
@@ -63,6 +72,13 @@ const CandidatesAssigned = ({ status }) => {
                     );
                 })}
             </Row>
+            {data?.meta?.info?.total_page > 1 && (
+                <PaginationTable
+                    data={data}
+                    refetch={onRefetchCandidates}
+                    params={params}
+                />
+            )}
             <RemoveCandidate isOpen={isRemove} onClose={onRevomeCandidate} />
             <CandidateDetail
                 isReffered={isReffered}
