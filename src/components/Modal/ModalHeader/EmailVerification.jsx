@@ -9,7 +9,7 @@ import { message } from 'antd';
 
 const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const [resetOtp, {data, isLoading}] = useResendOTPEmailMutation()
+    const [resetOtp, {data, isLoading, isSuccess}] = useResendOTPEmailMutation()
     const handleResendOtp = ()=>{
         resetOtp()
     }
