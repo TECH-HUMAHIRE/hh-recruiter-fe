@@ -21,7 +21,7 @@ const TransactionHistory = ({ onShowDetail = () => {} }) => {
                     },
 
                     {
-                        title: 'Invoice',
+                        title: 'Recipt',
                         width: 100,
                         dataIndex: '',
                         render: (data) => {
@@ -46,7 +46,7 @@ const TransactionHistory = ({ onShowDetail = () => {} }) => {
                         key: 'invoice'
                     },
                     {
-                        title: 'User',
+                        title: 'Account Number',
                         width: 100,
                         dataIndex: 'user',
                         key: 'user.name',
@@ -55,7 +55,7 @@ const TransactionHistory = ({ onShowDetail = () => {} }) => {
                         }
                     },
                     {
-                        title: 'Item',
+                        title: 'Withdrawal Amount',
                         dataIndex: 'items',
                         key: 'items[0].item',
                         width: 150,
@@ -63,15 +63,7 @@ const TransactionHistory = ({ onShowDetail = () => {} }) => {
                             return item[0].item;
                         }
                     },
-                    {
-                        title: 'Value',
-                        dataIndex: 'items',
-                        key: 'items[0].price',
-                        width: 150,
-                        render: (item) => {
-                            return formatMoney(item[0].price);
-                        }
-                    },
+                    
                     {
                         title: 'Action',
                         dataIndex: '',
