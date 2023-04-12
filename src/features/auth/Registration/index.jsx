@@ -11,6 +11,7 @@ import Button from '../../../components/Button';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
     useGetProfileQuery,
+    useResendOTPEmailMutation,
     useSendOTPEmailMutation
 } from '../../../app/actions/profile';
 import { message } from 'antd';
@@ -18,8 +19,9 @@ const Registration = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const [setOptEmail, response] = useSendOTPEmailMutation();
+    const [resetOtp, {data, isLoading}] = useResendOTPEmailMutation()
     const [otp, setOtp] = React.useState('');
-    const { data: profile } = useGetProfileQuery();
+    const { data: profile, refetch } = useGetProfileQuery();
     const onSubmitOtp = (data) => {
         var otp = '';
         for (var el in data) {
@@ -30,12 +32,16 @@ const Registration = () => {
         }
         setOtp({ otp: otp });
     };
+    const handleResendOtp = ()=>{
+        resetOtp()
+    }
     const onSubmit = () => {
         const uid = profile.data.uid;
         setOptEmail({ uid, ...otp });
     };
     React.useEffect(() => {
         if (response?.isSuccess) {
+            refetch()
             navigate('/');
         }
         if (response?.isError) {
@@ -49,6 +55,19 @@ const Registration = () => {
             });
         }
     }, [response]);
+    React.useEffect(() => {
+        if (isSuccess) {
+            setChangePass(false);
+            messageApi.open({
+                type: 'success',
+                content: data.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+        }
+    }, [isSuccess]);
     return (
         <Style>
             {contextHolder}
@@ -125,9 +144,9 @@ const Registration = () => {
                                 <div>
                                     Haven't received the verification code yet?
                                 </div>
-                                <div className="code-resend">
+                                {isLoading ? <div style={{marginBottom: 40}}>Sending OTP...</div> :  <div className="code-resend" onClick={handleResendOtp}>
                                     Resending Code
-                                </div>
+                                </div>}
                                 <Button
                                     loading={response.isLoading}
                                     color="primary"

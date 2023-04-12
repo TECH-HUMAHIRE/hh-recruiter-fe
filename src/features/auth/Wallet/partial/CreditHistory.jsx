@@ -46,8 +46,8 @@ const CreditHistory = () => {
                         width: 150
                     },
                     {
-                        title: 'Value',
-                        dataIndex: 'user',
+                        title: 'Total Amount',
+                        dataIndex: 'total_amount',
                         key: '1',
                         width: 150,
                         render: (user) => {
@@ -55,7 +55,7 @@ const CreditHistory = () => {
                                 <div className={`credit`}>
                                     <ArrowIcon color={`red`} />
                                     <span className="value">
-                                        {user.credit_used}
+                                        {user.total_amount}
                                     </span>
                                 </div>
                             );

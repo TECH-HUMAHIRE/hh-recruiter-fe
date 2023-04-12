@@ -57,13 +57,13 @@ export const Style = styled.div`
                 color: ${color.employee.primary};
                 span {
                     margin-right: 5px;
+                    transform: rotate(180deg);
                 }
             }
             .debit {
                 color: red;
                 span {
                     margin-right: 5px;
-                    transform: rotate(180deg);
                 }
             }
         }

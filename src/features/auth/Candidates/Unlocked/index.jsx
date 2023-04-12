@@ -34,10 +34,7 @@ const CandidatesUnlocked = ({ status }) => {
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
-    const onSaveCandidate = (data) => {
-        setCandidateDetail(data);
-        setSave(!isSave);
-    };
+   
     const onAction = () => {
         saveCandidate({ jobseeker_id: candidateDetail.id });
     };
@@ -113,13 +110,7 @@ const CandidatesUnlocked = ({ status }) => {
                 onClose={onViewDetail}
                 handlerLockCandidates={handlerLockCandidates}
             />
-            <CandidateDetail
-                data={candidateDetail}
-                handlerReferCandidates={onReferJobList}
-                open={isDetail}
-                onClose={onViewDetail}
-                handlerLockCandidates={handlerLockCandidates}
-            />
+            
             <ReferCandidatesJobs
                 onClose={onReferJobList}
                 isOpen={isReferJobList}
