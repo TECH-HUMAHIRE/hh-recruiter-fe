@@ -108,7 +108,7 @@ export const candidates = createApi({
         referCandidate: builder.mutation({
             query: (body) => {
                 return {
-                    url: `/job/invitation/refer`,
+                    url: `/job/invitation/refer/bulk`,
                     body,
                     method: 'POST'
                 };

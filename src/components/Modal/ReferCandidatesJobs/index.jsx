@@ -19,6 +19,7 @@ const ReferCandidatesJobs = ({
         page_size: 5
     });
     const [jobId, setJobId] = React.useState(null);
+    const [inviting, setInviting] = React.useState([]);
     const {
         data: jobList,
         refetch: refetchJobList,
@@ -33,16 +34,22 @@ const ReferCandidatesJobs = ({
     const handleChooseTask = (e) => {
         if (e.target.checked) {
             setJobId(Number(e.target.value));
+            setInviting([...inviting, Number(e.target.value)])
         } else {
             setJobId(null);
+            setInviting(inviting.filter(item=> item !== Number(e.target.value)))
         }
     };
     const handleSendRefer = (values) => {
-        let data = {
-            message: values.message || '',
-            job_id: jobId,
-            jobseeker_id: candidate.id
-        };
+        let data= {
+            jobseeker_id: candidate.id,
+            inviting: inviting.map((item) => {
+                return {
+                    job_id: item,
+                    message: values.message || ''
+                }
+            })
+        }
         referCandidate(data);
     };
     React.useEffect(() => {
