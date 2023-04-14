@@ -41,7 +41,6 @@ const Registration = () => {
     };
     React.useEffect(() => {
         if (response?.isSuccess) {
-            refetch()
             navigate('/');
         }
         if (response?.isError) {
