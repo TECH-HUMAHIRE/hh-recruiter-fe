@@ -19,7 +19,7 @@ const Registration = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const [setOptEmail, response] = useSendOTPEmailMutation();
-    const [resetOtp, {data, isLoading}] = useResendOTPEmailMutation()
+    const [resetOtp, {data, isLoading, isSuccess}] = useResendOTPEmailMutation()
     const [otp, setOtp] = React.useState('');
     const { data: profile, refetch } = useGetProfileQuery();
     const onSubmitOtp = (data) => {
