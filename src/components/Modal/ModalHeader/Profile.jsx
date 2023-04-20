@@ -12,9 +12,7 @@ import {
 const ProfileTab = ({ onClose = () => {} }) => {
     const [updateProfile, response] = useUpdateProfileMutation();
     const [messageApi, contextHolder] = message.useMessage();
-    const { data, isSuccess: successGetProfile } = useGetProfileQuery({
-        fakeAuthProvider: 'myCompany'
-    });
+    const { data, isSuccess: successGetProfile } = useGetProfileQuery();
     const [form] = Form.useForm();
     const [, forceUpdate] = React.useState({});
     const onFinish = (values) => {

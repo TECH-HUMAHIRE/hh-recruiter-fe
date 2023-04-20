@@ -1,4 +1,5 @@
 import { CalendarOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import React from 'react';
 import { useGetProfileQuery } from '../../../../app/actions/profile';
 import Button from '../../../../components/Button';
@@ -42,7 +43,7 @@ const HumaPointTop = ({ onShowWithdraw = () => {} }) => {
                                         (data?.data?.credit_used || 0)
                                 )}
                             </b>{' '}
-                            Point expired on 12 Feb 2022
+                            Point expired on {data?.data?.credit_expired_at ? moment(data?.data?.credit_expired_at).format("DD MMM YYYY") : "-"}
                         </div>
                     </div>
                 </div>
