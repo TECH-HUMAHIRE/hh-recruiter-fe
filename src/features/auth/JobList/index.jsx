@@ -46,15 +46,6 @@ const DropdownMenu = ({ data, handleAddTask = () => {} }) => {
                     Add to My Task
                 </CardMenu>
             )
-        },
-        {
-            key: '2',
-            label: (
-                <CardMenu>
-                    <img src={ShareIcon} alt="" />
-                    Refer
-                </CardMenu>
-            )
         }
     ];
     return (

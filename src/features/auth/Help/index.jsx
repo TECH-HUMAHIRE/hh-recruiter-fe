@@ -40,7 +40,7 @@ const HelpPage = () => {
                                 <Button
                                     icon={<ChatMessegerIcon />}
                                     color="outline-primary">
-                                    Chat Customer Service
+                                    Chat with CS
                                 </Button>
                             </div>
                         </div>

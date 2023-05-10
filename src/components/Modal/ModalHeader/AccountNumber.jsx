@@ -45,8 +45,8 @@ const AccountNumber = ({ onClose = () => {} }) => {
                     </Col>
                     <Col md={6}>
                         <Form.Item
-                            name="Account Number"
-                            label="accountNumber"
+                            label="Account Number"
+                            name="accountNumber"
                             rules={[
                                 {
                                     required: true,
@@ -82,7 +82,7 @@ const AccountNumber = ({ onClose = () => {} }) => {
                     <Col md={6}>
                         <Form.Item
                             // name="departement"
-                            label="Bank Branch"
+                            label="Bank Address"
                             // rules={[
                             //     {
                             //         required: false,
@@ -93,7 +93,7 @@ const AccountNumber = ({ onClose = () => {} }) => {
                             <Input
                                 type={'text'}
                                 size="large"
-                                placeholder="Bank Branch"
+                                placeholder="Bank Address"
                             />
                         </Form.Item>
                     </Col>

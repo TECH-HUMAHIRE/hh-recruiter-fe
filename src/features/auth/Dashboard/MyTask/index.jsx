@@ -104,7 +104,7 @@ const MyTask = () => {
             <div style={{ marginBottom: 20 }}>
                 {taskList?.data?.length > 0 && (
                     <Row>
-                        <Col lg={5}>
+                        <Col lg={6}>
                             <Input
                                 onChange={onSearchJob}
                                 prefix={<SearchOutlined />}
@@ -114,23 +114,29 @@ const MyTask = () => {
                             />
                         </Col>
 
-                        <Col lg={5}>
+                        <Col lg={6}>
                             <SelectOption
                                 placeholder="Choose company industry"
-                                options={[]}
+                                defaultValue="all"
+                                options={[
+                                    {
+                                        label: 'From All Company',
+                                        value: 'all'
+                                    }
+                                ]}
                                 frontIcon={<BagIcon color="#666666" />}
                             />
                         </Col>
-                        <Col md={2} className="text-right">
+                        {/* <Col md={2} className="text-right">
                             <Button
                                 block
                                 size="large"
-                                // onClick={onOpenFilter}
+                                onClick={onOpenFilter}
                                 className="message-filter"
                                 icon={<FilterOutlined />}>
                                 Filter
                             </Button>
-                        </Col>
+                        </Col> */}
                     </Row>
                 )}
             </div>

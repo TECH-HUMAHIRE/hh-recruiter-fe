@@ -191,7 +191,7 @@ const ProfileTab = ({ onClose = () => {} }) => {
                             icon={<ChatMessegerIcon />}
                             block
                             color="outline-primary">
-                            Chat Customer Service
+                            Chat with CS
                         </Button>
                     </Col>
                     <Col xl={12}>
