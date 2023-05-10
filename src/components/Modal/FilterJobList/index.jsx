@@ -48,30 +48,9 @@ const FilterJobList = ({ isOpen = false, onClose = () => {} }) => {
                         <label htmlFor="">Min. salary</label>
                         <Row>
                             <Col lg={3}>
-                                <Form.Item
-                                    name="rate_end"
-                                    rules={[
-                                        {
-                                            message:
-                                                'Please input your  maximum salary!'
-                                        },
-                                        ({ getFieldValue }) => ({
-                                            validator(_, value) {
-                                                if (
-                                                    value >
-                                                    getFieldValue('rate_start')
-                                                ) {
-                                                    return Promise.resolve();
-                                                }
-                                                return Promise.reject(
-                                                    new Error(
-                                                        'Maximum salary less than minimum salary!'
-                                                    )
-                                                );
-                                            }
-                                        })
-                                    ]}>
+                                <Form.Item name="">
                                     <SelectOption
+                                        showSearch={false}
                                         className="select-currency"
                                         defaultValue="IDR"
                                         options={[
@@ -84,29 +63,7 @@ const FilterJobList = ({ isOpen = false, onClose = () => {} }) => {
                                 </Form.Item>
                             </Col>
                             <Col lg={9} style={{ paddingLeft: 0 }}>
-                                <Form.Item
-                                    name="rate_end"
-                                    rules={[
-                                        {
-                                            message:
-                                                'Please input your  maximum salary!'
-                                        },
-                                        ({ getFieldValue }) => ({
-                                            validator(_, value) {
-                                                if (
-                                                    value >
-                                                    getFieldValue('rate_start')
-                                                ) {
-                                                    return Promise.resolve();
-                                                }
-                                                return Promise.reject(
-                                                    new Error(
-                                                        'Maximum salary less than minimum salary!'
-                                                    )
-                                                );
-                                            }
-                                        })
-                                    ]}>
+                                <Form.Item name="rate_start">
                                     <InputNumber
                                         style={{ width: '100%' }}
                                         // pattern="[^0-9]"
@@ -130,30 +87,9 @@ const FilterJobList = ({ isOpen = false, onClose = () => {} }) => {
                         <label htmlFor="">Max. salary</label>
                         <Row>
                             <Col lg={3}>
-                                <Form.Item
-                                    name="rate_end"
-                                    rules={[
-                                        {
-                                            message:
-                                                'Please input your  maximum salary!'
-                                        },
-                                        ({ getFieldValue }) => ({
-                                            validator(_, value) {
-                                                if (
-                                                    value >
-                                                    getFieldValue('rate_start')
-                                                ) {
-                                                    return Promise.resolve();
-                                                }
-                                                return Promise.reject(
-                                                    new Error(
-                                                        'Maximum salary less than minimum salary!'
-                                                    )
-                                                );
-                                            }
-                                        })
-                                    ]}>
+                                <Form.Item name="">
                                     <SelectOption
+                                        showSearch={false}
                                         className="select-currency"
                                         defaultValue="IDR"
                                         options={[
@@ -169,10 +105,6 @@ const FilterJobList = ({ isOpen = false, onClose = () => {} }) => {
                                 <Form.Item
                                     name="rate_end"
                                     rules={[
-                                        {
-                                            message:
-                                                'Please input your  maximum salary!'
-                                        },
                                         ({ getFieldValue }) => ({
                                             validator(_, value) {
                                                 if (

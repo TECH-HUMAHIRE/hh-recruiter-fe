@@ -9,13 +9,13 @@ import { message } from 'antd';
 
 const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const [resetOtp, {data, isLoading, isSuccess}] = useResendOTPEmailMutation()
-    const handleResendOtp = ()=>{
-        resetOtp()
-    }
+    const [resetOtp, { data, isLoading, isSuccess }] =
+        useResendOTPEmailMutation();
+    const handleResendOtp = () => {
+        resetOtp();
+    };
     React.useEffect(() => {
         if (isSuccess) {
-            setChangePass(false);
             messageApi.open({
                 type: 'success',
                 content: data.meta.message,
@@ -34,7 +34,6 @@ const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
             width={450}
             title={
                 <div className="modal-header">
-                    
                     <img
                         src={ArrowLeft}
                         alt=""
@@ -50,7 +49,7 @@ const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
                     </div>
                 </div>
             }>
-                 {contextHolder}
+            {contextHolder}
             <div className="modal-body">
                 <Row justify="flex-end">
                     <Col md={12}>
@@ -58,7 +57,17 @@ const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
                             <InputVerification />
                         </div>
                         <div>Haven't received the verification code yet?</div>
-                       {isLoading ? <div style={{marginBottom: 40}}>Sending OTP...</div> :  <div className="code-resend" onClick={handleResendOtp}>Resending Code</div>}
+                        {isLoading ? (
+                            <div style={{ marginBottom: 40 }}>
+                                Sending OTP...
+                            </div>
+                        ) : (
+                            <div
+                                className="code-resend"
+                                onClick={handleResendOtp}>
+                                Resending Code
+                            </div>
+                        )}
                     </Col>
                 </Row>
             </div>

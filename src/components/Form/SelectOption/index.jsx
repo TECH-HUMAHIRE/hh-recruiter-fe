@@ -14,7 +14,8 @@ const SelectOption = (props) => {
         onChange = () => {},
         value,
         defaultValue = '',
-        className = ''
+        className = '',
+        showSearch = true
     } = props;
     const onGetValue = (value) => {
         onChange(value);
@@ -29,7 +30,7 @@ const SelectOption = (props) => {
                 disabled={disabled}
                 value={value}
                 onChange={onGetValue}
-                showSearch
+                showSearch={showSearch}
                 defaultValue={defaultValue}
                 style={{
                     width: '100%'

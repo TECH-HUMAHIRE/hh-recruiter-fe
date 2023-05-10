@@ -7,15 +7,18 @@ import HeaderStyle from './header.style';
 import ModalHeader from '../Modal/ModalHeader';
 import ChangePassword from '../Modal/ModalHeader/ChangePassword';
 import EmailVerification from '../Modal/ModalHeader/EmailVerification';
-// import { useGetMyCompanyQuery } from '../../app/actions/companyApi';
 import { message, notification } from 'antd';
-import { useChangePasswordMutation } from '../../app/actions/profile';
+import {
+    useChangePasswordMutation,
+    useGetProfileQuery
+} from '../../app/actions/profile';
 const Header = () => {
     const [isOpen, setOpen] = React.useState(false);
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const [isChangePass, setChangePass] = React.useState(false);
 
+    const { data: profile } = useGetProfileQuery();
     const [_, { isSuccess, data }] = useChangePasswordMutation({
         fixedCacheKey: 'change_password'
     });
@@ -66,7 +69,7 @@ const Header = () => {
                     <div className="header-user">
                         <div className="header-user__info">
                             <div className="header-user__info-name">
-                                Hi, Recruiter
+                                Hi, {profile?.data?.name}
                             </div>
                             <div className="header-user__info-employee">
                                 {/* {dataProfile.name} */}
