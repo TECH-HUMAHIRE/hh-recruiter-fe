@@ -241,8 +241,14 @@ const Jobist = () => {
                             </Col>
                             <Col lg={4}>
                                 <SelectOption
+                                    defaultValue="all"
                                     placeholder="Choose company industry"
-                                    options={[]}
+                                    options={[
+                                        {
+                                            label: 'From All Company',
+                                            value: 'all'
+                                        }
+                                    ]}
                                     frontIcon={<BagIcon color="#666666" />}
                                 />
                             </Col>

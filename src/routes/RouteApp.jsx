@@ -17,6 +17,7 @@ import RedirectPage from '../features/guest/Redirect';
 import GuestLayout from '../layout/guestLayout';
 import Registration from '../features/auth/Registration';
 import HelpPage from '../features/auth/Help';
+import HumaHireJob from '../features/guest/HumaHireJob';
 const App = () => {
     return (
         <AuthProvider>
@@ -124,6 +125,7 @@ const App = () => {
                             </RequireAuth>
                         }
                     />
+                    <Route path="/huma-hire-job" element={<HumaHireJob />} />
                 </Route>
             </Routes>
         </AuthProvider>

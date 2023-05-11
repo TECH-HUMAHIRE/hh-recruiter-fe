@@ -27,7 +27,7 @@ const ReferralLinkTab = ({ onClose = () => {}, data }) => {
                         size="large"
                         value={
                             window.location.origin +
-                            `/?ref=${data?.job?.referral_code}`
+                            `/huma-hire-job?ref=${data?.job?.referral_code}`
                         }
                     />
                     {contextHolder}
@@ -36,7 +36,7 @@ const ReferralLinkTab = ({ onClose = () => {}, data }) => {
                         onClick={() =>
                             onCopyLink(
                                 window.location.origin +
-                                    `/?ref=${data?.job?.referral_code}`
+                                    `//huma-hire-job?ref=${data?.job?.referral_code}`
                             )
                         }>
                         Copy
@@ -44,9 +44,15 @@ const ReferralLinkTab = ({ onClose = () => {}, data }) => {
                 </div>
             </Form.Item>
             <div>
-                <Link className="refer-link">
-                    <a href="">Preview link in new tab</a>
-                </Link>
+                <a
+                    className="refer-link"
+                    href={
+                        window.location.origin +
+                        `/huma-hire-job?ref=${data?.job?.referral_code}`
+                    }
+                    target="_blank">
+                    Preview link in new tab
+                </a>
             </div>
             <div className="refer-email__action">
                 <Form.Item style={{ marginRight: 10 }}>

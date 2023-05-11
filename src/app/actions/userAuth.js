@@ -18,10 +18,16 @@ export const userAuth = createApi({
                 method: 'POST',
                 body
             })
+        }),
+        getHumaHireJob: builder.query({
+            query: (refferal_code) => ({
+                url: `/job/public/${refferal_code}`,
+                method: 'GET'
+            })
         })
     })
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useUserLoginMutation } = userAuth;
+export const { useUserLoginMutation, useGetHumaHireJobQuery } = userAuth;
