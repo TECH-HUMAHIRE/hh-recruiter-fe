@@ -343,7 +343,13 @@ const HumaHireJob = () => {
                         </div>
                         <div className="footer-action">
                             <Button color="primary" block>
-                                <a href="">Login for Jobseeker</a>
+                                <a
+                                    href={
+                                        import.meta.env
+                                            .VITE_JOBSEEKER_LANDING_PAGE
+                                    }>
+                                    Login for Jobseeker
+                                </a>
                             </Button>
                         </div>
                     </React.Fragment>
