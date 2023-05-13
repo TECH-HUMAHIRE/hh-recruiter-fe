@@ -4,13 +4,14 @@ const UploadStyle = styled.div`
     position: relative;
     .ant-upload,
     .ant-upload-list-picture-card-container {
-        border-radius: 8px;
+        border-radius: 50%;
         width: 100%;
         height: ${(props) => props.height};
         border: unset;
 
         img {
             object-fit: cover;
+            border-radius: 50%;
         }
     }
     .background-upload {
@@ -25,13 +26,13 @@ const UploadStyle = styled.div`
         right: 0;
         bottom: 0;
         left: 0;
-        border-radius: 8px;
+        border-radius: 50%;
     }
     .label {
         position: absolute;
-        bottom: 10px;
+        bottom: calc(100% - 63%);
         right: 10px;
-        background: #fff;
+        background: transparent;
         padding: 7px;
         width: max-content;
         border-radius: 8px;
@@ -57,14 +58,14 @@ const UploadStyle = styled.div`
     }
     .ant-upload-list-item {
         padding: 0px;
-        border-radius: 8px;
+        border-radius: 50%;
         border: unset;
         img {
-            border-radius: 8px;
+            border-radius: 50%;
         }
     }
     .ant-upload-list-item-info {
-        border-radius: 8px;
+        border-radius: 50%;
     }
 `;
 export default UploadStyle;

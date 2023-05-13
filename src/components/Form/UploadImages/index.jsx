@@ -1,6 +1,6 @@
 import { Form, Modal, Upload } from 'antd';
 import React, { useState } from 'react';
-import defaultImage from '../../Assets/images/defaultImage.png';
+import defaultImage from '../../Assets/images/defaultCompany.png';
 import iconEdit from '../../Assets/icon/edit.png';
 import UploadStyle from './upload-image.style';
 const getBase64 = (file) =>
@@ -16,7 +16,8 @@ const UploadImages = (props) => {
         maxCount,
         label,
         width = '100%',
-        onChange = () => {}
+        onChange = () => {},
+        className = ''
     } = props;
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
@@ -49,6 +50,7 @@ const UploadImages = (props) => {
     return (
         <UploadStyle height={height}>
             <Upload
+                className={className}
                 customRequest={dummyRequest}
                 listType="picture-card"
                 fileList={fileList}

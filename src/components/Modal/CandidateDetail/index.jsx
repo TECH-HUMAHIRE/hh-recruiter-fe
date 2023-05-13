@@ -19,6 +19,10 @@ import { color } from '../../Utils/variable';
 import ChattingIcon from '../../Icon/Chatting';
 import Education from './Education';
 import { formatMoney } from '../../Utils/formatMoney';
+import {
+    profileAuth,
+    useGetEducationCandidateQuery
+} from '../../../app/actions/profile';
 const CandidateDetail = ({
     open = false,
     data,
@@ -27,6 +31,13 @@ const CandidateDetail = ({
     handlerLockCandidates = () => {},
     handlerReferCandidates = () => {}
 }) => {
+    const [getEducationCandidate, { data: educationList }] =
+        profileAuth.endpoints.getEducationCandidate.useLazyQuery();
+    React.useEffect(() => {
+        if (data?.id) {
+            getEducationCandidate(data.id);
+        }
+    }, [data]);
     const dummyData = [
         {
             name: 'Senior Product Designer',
@@ -53,6 +64,7 @@ const CandidateDetail = ({
             desc: "You are my fire the one desire believe when I say I want it that way. But we are two worlds apart can't reach to your heart when you say that I want it that way."
         }
     ];
+    console.log('educationList', educationList);
     return (
         <CandidateDetailStyle
             title={
@@ -220,7 +232,7 @@ const CandidateDetail = ({
                         {
                             label: `Education`,
                             key: '2',
-                            children: <Education data={dummyData} />
+                            children: <Education data={educationList?.data} />
                         },
                         {
                             label: `Certification`,

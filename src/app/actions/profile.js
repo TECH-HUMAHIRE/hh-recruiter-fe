@@ -53,7 +53,22 @@ export const profileAuth = createApi({
         resendOTPEmail: builder.mutation({
             query: () => ({
                 url: `/auth/resend_email_verification`,
-                method: 'PUT',
+                method: 'PUT'
+            })
+        }),
+        getEducationCandidate: builder.query({
+            query: (id) => {
+                return {
+                    url: `/education/${id}`,
+                    method: 'GET'
+                };
+            }
+        }),
+        uploadeImage: builder.mutation({
+            query: (body) => ({
+                url: '/upload/image',
+                method: 'POST',
+                body
             })
         })
     })
@@ -66,5 +81,7 @@ export const {
     useUpdateProfileMutation,
     useChangePasswordMutation,
     useSendOTPEmailMutation,
-    useResendOTPEmailMutation
+    useResendOTPEmailMutation,
+    useGetEducationCandidateQuery,
+    useUploadeImageMutation
 } = profileAuth;
