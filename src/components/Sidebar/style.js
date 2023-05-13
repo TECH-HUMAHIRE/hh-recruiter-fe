@@ -7,6 +7,8 @@ const SidebarStyle = styled.aside`
     position: fixed;
     left: 0;
     height: 100%;
+    background: #fff;
+    z-index: 999;
     transition: background 0.3s, width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
     padding-top: 90px;
     .btn-collapsed {
