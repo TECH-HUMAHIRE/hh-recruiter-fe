@@ -4,10 +4,7 @@ import { Col, Row } from '../../../components/Grid';
 import { DashboardCandidatesStyle } from './job-list.style';
 import EmptyJob from '../../../components/EmptyJob';
 import TabMenu from '../../../components/Tabs';
-import {
-    formatMoney,
-    formatNumber
-} from '../../../components/Utils/formatMoney';
+import { formatMoney } from '../../../components/Utils/formatMoney';
 import {
     FilterOutlined,
     MoreOutlined,
@@ -19,13 +16,10 @@ import moneyIcon from '../../../components/Assets/icon/money.png';
 import unionIcon from '../../../components/Assets/icon/union.png';
 import SectionDetail from './partial/SectionDetail';
 import Bookmark from '../../../components/Assets/icon/Bookmark.png';
-import ShareIcon from '../../../components/Assets/icon/share.png';
 import { CardMenu } from '../../../components/Card/card.style';
 import Button from '../../../components/Button';
 import placeIcon from '../../../components/Assets/icon/place.png';
-import SelectOption from '../../../components/Form/SelectOption';
 import companyDummy from '../../../components/Assets/images/defaultImage.png';
-import BagIcon from '../../../components/Icon/Bag';
 import FilterJobList from '../../../components/Modal/FilterJobList';
 import {
     useAddTaskMutation,
@@ -36,6 +30,7 @@ import moment from 'moment';
 import convertEmployeType from '../../../components/Utils/convertEmployeType';
 import debounce from '../../../components/Utils/debounce';
 import PaginationTable from '../../../components/PaginationTable';
+import SelectCompany from '../../../components/SelectCompany';
 const DropdownMenu = ({ data, handleAddTask = () => {} }) => {
     const items = [
         {
@@ -57,6 +52,7 @@ const DropdownMenu = ({ data, handleAddTask = () => {} }) => {
 const Jobist = () => {
     const [messageApi, contextHolder] = message.useMessage();
 
+    // state
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 10,
@@ -66,10 +62,14 @@ const Jobist = () => {
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
+
+    // fetch api
     const { data: jobList, refetch: refetchJobList } =
         useGetJobsListQuery(params);
     const { refetch } = useGetTaskListQuery();
     const [addMyTask, response] = useAddTaskMutation();
+
+    // function
     const onViewDetail = () => {
         setDetailInfo(!isDetailInfo);
     };
@@ -96,6 +96,13 @@ const Jobist = () => {
         });
         refetchJobList();
     }, 750);
+    const onSearchJobByCompany = async (value) => {
+        await setParams({
+            ...params,
+            ['company.name']: value
+        });
+        refetchJobList();
+    };
     React.useEffect(() => {
         if (jobList) {
             setItemTabs(
@@ -208,6 +215,7 @@ const Jobist = () => {
             });
         }
     }, [response]);
+
     return (
         <DashboardCandidatesStyle>
             {contextHolder}
@@ -222,7 +230,7 @@ const Jobist = () => {
                                     prefix={<SearchOutlined />}
                                     size="large"
                                     type={'text'}
-                                    placeholder="Product Designer"
+                                    placeholder="Search"
                                 />
                             </Col>
                             <Col lg={4}>
@@ -240,16 +248,8 @@ const Jobist = () => {
                                 />
                             </Col>
                             <Col lg={4}>
-                                <SelectOption
-                                    defaultValue="all"
-                                    placeholder="Choose company industry"
-                                    options={[
-                                        {
-                                            label: 'From All Company',
-                                            value: 'all'
-                                        }
-                                    ]}
-                                    frontIcon={<BagIcon color="#666666" />}
+                                <SelectCompany
+                                    onChange={onSearchJobByCompany}
                                 />
                             </Col>
                         </Row>
@@ -268,19 +268,6 @@ const Jobist = () => {
                 <Col xl={12}>
                     {itemTabs?.length > 0 ? (
                         <>
-                            {/* <div className="job-count">
-                                <b>
-                                    {params.page === 1
-                                        ? params.page
-                                        : (params.page - 1) * 10 +
-                                          params.page -
-                                          1}{' '}
-                                    - {jobList?.data?.length * params.page}
-                                </b>{' '}
-                                of{' '}
-                                {formatNumber(jobList?.meta?.info?.total_data)}{' '}
-                                jobs
-                            </div> */}
                             <TabMenu item={itemTabs} tabPosition="left" />
                         </>
                     ) : (

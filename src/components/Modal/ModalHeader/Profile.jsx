@@ -140,7 +140,7 @@ const ProfileTab = ({ onClose = () => {} }) => {
                 </Row>
             </div>
             <div className="hr"></div>
-            <div className="modal-body">
+            {/* <div className="modal-body">
                 <Row>
                     <Col md={12}>
                         <Form.Item
@@ -174,7 +174,7 @@ const ProfileTab = ({ onClose = () => {} }) => {
                         </Form.Item>
                     </Col>
                 </Row>
-            </div>
+            </div> */}
             <div className="hr"></div>
             <div className="modal-body">
                 <label htmlFor="">HumaHire Customer Service</label>

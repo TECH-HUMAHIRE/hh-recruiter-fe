@@ -21,7 +21,11 @@ const EmailTab = ({ verifyEmail = () => {}, onClose = () => {} }) => {
     const [, forceUpdate] = React.useState({});
     const handleChange = (e) => {
         let value = e.target.value;
-        setVerify(validateEmail(value));
+        if (data.data.email === value) {
+            setVerify(false);
+        } else {
+            setVerify(true);
+        }
     };
     const onFinish = (values) => {
         updateProfile({
@@ -41,6 +45,11 @@ const EmailTab = ({ verifyEmail = () => {}, onClose = () => {} }) => {
             form.setFieldsValue({
                 ...data?.data
             });
+            if (data.data.email === form.getFieldValue('email')) {
+                setVerify(false);
+            } else {
+                setVerify(true);
+            }
         }
     }, [isSuccess]);
     React.useEffect(() => {
@@ -96,15 +105,20 @@ const EmailTab = ({ verifyEmail = () => {}, onClose = () => {} }) => {
                                         placeholder="Email"
                                     />
                                 </Form.Item>
-                                {isVerify &&
-                                    form.getFieldsValue('email') !== '' && (
-                                        <button
-                                            color="primary"
-                                            className="btn-verify"
-                                            onClick={verifyEmail}>
-                                            Verify {'>'}
-                                        </button>
-                                    )}
+                                {isVerify ? (
+                                    <button
+                                        color="primary"
+                                        className="btn-verify"
+                                        onClick={verifyEmail}>
+                                        Verify {'>'}
+                                    </button>
+                                ) : (
+                                    <div
+                                        className="btn-verify"
+                                        style={{ left: 15, right: 'unset' }}>
+                                        Verified
+                                    </div>
+                                )}
                             </Col>
                         </Row>
                     </div>

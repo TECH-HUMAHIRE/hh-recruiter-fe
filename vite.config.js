@@ -16,7 +16,8 @@ export default defineConfig(({ mode }) => {
             ViteEjsPlugin({
                 VITE_GTM_KEY: env.VITE_GTM_KEY,
                 VITE_BASE_URL_API: env.VITE_BASE_URL_API,
-                VITE_REDIRECT_URL: env.VITE_REDIRECT_URL
+                VITE_REDIRECT_URL: env.VITE_REDIRECT_URL,
+                VITE_JOBSEEKER_LANDING_PAGE: env.VITE_JOBSEEKER_LANDING_PAGE
             })
         ],
         css: {

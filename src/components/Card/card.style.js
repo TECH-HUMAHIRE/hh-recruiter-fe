@@ -48,6 +48,7 @@ export const CardJobStyle = styled(Card)`
             justify-content: space-between;
             align-items: center;
             width: 90%;
+            cursor: pointer;
             &__info {
                 &-location {
                     font-weight: 400;

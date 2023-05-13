@@ -89,7 +89,7 @@ const CardTask = ({
     return (
         <CardJobStyle
             title={
-                <div className="card-header">
+                <div className="card-header" onClick={() => onDetailJob(data)}>
                     <div className="card-header__right">
                         <div className="card-header__logo">
                             <img
@@ -117,31 +117,33 @@ const CardTask = ({
                     <MoreOutlined className="card-action" />
                 </Dropdown>
             }>
-            <div className="card-earn__price">
-                <span>Earn</span> {formatMoney(data?.job?.commission)}
-            </div>
-            <div className="card-status">
-                <div
-                    className={`card-date ${
-                        data?.status === 'archived' ? 'text-danger' : ''
-                    }`}>
-                    Posted {moment(data?.created_at).format('DD-MM-YYYY')} •
-                    Expired:
+            <div onClick={() => onDetailJob(data)}>
+                <div className="card-earn__price">
+                    <span>Earn</span> {formatMoney(data?.job?.commission)}
+                </div>
+                <div className="card-status">
+                    <div
+                        className={`card-date ${
+                            data?.status === 'archived' ? 'text-danger' : ''
+                        }`}>
+                        Posted {moment(data?.created_at).format('DD-MM-YYYY')} •
+                        Expired:
+                        <span>
+                            {moment(data?.job.expired_at).format('DD-MM-YYYY')}
+                        </span>
+                    </div>
+                </div>
+                <div className="card-status">
+                    <img src={moneyIcon} alt="" />{' '}
                     <span>
-                        {moment(data?.job.expired_at).format('DD-MM-YYYY')}
+                        {formatMoney(data?.job.rate_start)} -{' '}
+                        {formatMoney(data?.job.rate_end)}/ Month
                     </span>
                 </div>
-            </div>
-            <div className="card-status">
-                <img src={moneyIcon} alt="" />{' '}
-                <span>
-                    {formatMoney(data?.job.rate_start)} -{' '}
-                    {formatMoney(data?.job.rate_end)}/ Month
-                </span>
-            </div>
-            <div className="card-status">
-                <img src={unionIcon} alt="" />{' '}
-                <span>{convertEmployeType(data?.job.employment_type)}</span>
+                <div className="card-status">
+                    <img src={unionIcon} alt="" />{' '}
+                    <span>{convertEmployeType(data?.job.employment_type)}</span>
+                </div>
             </div>
 
             <Link

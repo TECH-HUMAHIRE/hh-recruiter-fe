@@ -19,18 +19,10 @@ import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import BagIcon from '../../../../components/Icon/Bag';
 import debounce from '../../../../components/Utils/debounce';
 import EmptyJob from '../../../../components/EmptyJob';
+import SelectCompany from '../../../../components/SelectCompany';
 
 const MyTask = () => {
-    const [
-        deleteTask,
-        {
-            isSuccess: successDeleted,
-            reset,
-            data: responseDelete,
-            isError,
-            error
-        }
-    ] = useDeleteTaskMutation();
+    // state
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 12
@@ -41,8 +33,22 @@ const MyTask = () => {
     const [data, setData] = React.useState(null);
     const [isRefer, setRefer] = React.useState(false);
     const [isDecline, setDecline] = React.useState(false);
+
+    // fetch api
     const [getTaskDetail, { data: taskDetail }] =
         jobApi.endpoints.getTaskId.useLazyQuery();
+    const [
+        deleteTask,
+        {
+            isSuccess: successDeleted,
+            reset,
+            data: responseDelete,
+            isError,
+            error
+        }
+    ] = useDeleteTaskMutation();
+
+    // function
     const onDetailJob = (detail) => {
         setData(detail);
         setOpen(!isOpen);
@@ -54,10 +60,15 @@ const MyTask = () => {
         let value = e.target.value;
         await setParams({
             ...params,
-            title: value
+            'job.title': value
         });
-        refetch();
     }, 750);
+    const onSearchJobByCompany = async (value) => {
+        await setParams({
+            ...params,
+            ['company.name']: value
+        });
+    };
     const onReferCandidate = (data) => {
         setData(data);
         setRefer(!isRefer);
@@ -71,7 +82,6 @@ const MyTask = () => {
     };
     const onRefetchCandidates = async (updateParams) => {
         await setParams(updateParams);
-        refetch();
     };
     React.useEffect(() => {
         if (successDeleted) {
@@ -110,22 +120,12 @@ const MyTask = () => {
                                 prefix={<SearchOutlined />}
                                 size="large"
                                 type={'text'}
-                                placeholder="Product Designer"
+                                placeholder="Search"
                             />
                         </Col>
 
                         <Col lg={6}>
-                            <SelectOption
-                                placeholder="Choose company industry"
-                                defaultValue="all"
-                                options={[
-                                    {
-                                        label: 'From All Company',
-                                        value: 'all'
-                                    }
-                                ]}
-                                frontIcon={<BagIcon color="#666666" />}
-                            />
+                            <SelectCompany onChange={onSearchJobByCompany} />
                         </Col>
                         {/* <Col md={2} className="text-right">
                             <Button
