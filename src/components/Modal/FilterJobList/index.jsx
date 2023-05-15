@@ -41,7 +41,22 @@ const FilterJobList = ({ isOpen = false, onClose = () => {} }) => {
                     </Col>
                     <Col md={6}>
                         <Form.Item label="Type of work" name="type">
-                            <SelectOption options={[]} />
+                            <SelectOption
+                                options={[
+                                    {
+                                        label: 'Work From Home',
+                                        value: 'Work From Home'
+                                    },
+                                    {
+                                        label: 'Work From Office',
+                                        value: 'Work From Office'
+                                    },
+                                    {
+                                        label: 'Hybrid',
+                                        value: 'Hybrid'
+                                    }
+                                ]}
+                            />
                         </Form.Item>
                     </Col>
                     <Col xl={6}>
