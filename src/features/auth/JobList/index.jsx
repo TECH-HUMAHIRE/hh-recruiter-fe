@@ -64,8 +64,7 @@ const Jobist = () => {
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
 
     // fetch api
-    const { data: jobList, refetch: refetchJobList } =
-        useGetJobsListQuery(params);
+    const { data: jobList } = useGetJobsListQuery(params);
     const { refetch } = useGetTaskListQuery();
     const [addMyTask, response] = useAddTaskMutation();
 
@@ -86,7 +85,6 @@ const Jobist = () => {
     };
     const onRefetchCandidates = async (updateParams) => {
         await setParams(updateParams);
-        refetchJobList();
     };
     const onSearchJob = debounce(async (e) => {
         let value = e.target.value;
@@ -94,15 +92,20 @@ const Jobist = () => {
             ...params,
             title: value
         });
-        refetchJobList();
     }, 750);
     const onSearchJobByCompany = async (value) => {
         await setParams({
             ...params,
             ['company.name']: value
         });
-        refetchJobList();
     };
+    const onSearchJobByLocation = debounce(async (e) => {
+        let value = e.target.value;
+        await setParams({
+            ...params,
+            ['sub_district.district.city.name']: value
+        });
+    }, 750);
     React.useEffect(() => {
         if (jobList) {
             setItemTabs(
@@ -235,6 +238,7 @@ const Jobist = () => {
                             </Col>
                             <Col lg={4}>
                                 <Input
+                                    onChange={onSearchJobByLocation}
                                     prefix={
                                         <img
                                             style={{ width: 20 }}
