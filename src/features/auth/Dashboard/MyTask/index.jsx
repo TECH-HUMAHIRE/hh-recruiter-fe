@@ -14,9 +14,7 @@ import {
     useGetTaskListQuery
 } from '../../../../app/actions/jobApi';
 import PaginationTable from '../../../../components/PaginationTable';
-import SelectOption from '../../../../components/Form/SelectOption';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import BagIcon from '../../../../components/Icon/Bag';
 import debounce from '../../../../components/Utils/debounce';
 import EmptyJob from '../../../../components/EmptyJob';
 import SelectCompany from '../../../../components/SelectCompany';
@@ -112,22 +110,21 @@ const MyTask = () => {
         <MyTaskStyle>
             {contextHolder}
             <div style={{ marginBottom: 20 }}>
-                {taskList?.data?.length > 0 && (
-                    <Row>
-                        <Col lg={6}>
-                            <Input
-                                onChange={onSearchJob}
-                                prefix={<SearchOutlined />}
-                                size="large"
-                                type={'text'}
-                                placeholder="Search"
-                            />
-                        </Col>
+                <Row>
+                    <Col lg={6}>
+                        <Input
+                            onChange={onSearchJob}
+                            prefix={<SearchOutlined />}
+                            size="large"
+                            type={'text'}
+                            placeholder="Search"
+                        />
+                    </Col>
 
-                        <Col lg={6}>
-                            <SelectCompany onChange={onSearchJobByCompany} />
-                        </Col>
-                        {/* <Col md={2} className="text-right">
+                    <Col lg={6}>
+                        <SelectCompany onChange={onSearchJobByCompany} />
+                    </Col>
+                    {/* <Col md={2} className="text-right">
                             <Button
                                 block
                                 size="large"
@@ -137,8 +134,7 @@ const MyTask = () => {
                                 Filter
                             </Button>
                         </Col> */}
-                    </Row>
-                )}
+                </Row>
             </div>
             <Row>
                 <Col xl={12}>

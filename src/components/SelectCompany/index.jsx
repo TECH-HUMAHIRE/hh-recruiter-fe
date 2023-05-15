@@ -21,12 +21,24 @@ const SelectCompany = ({ onChange = () => {} }) => {
     React.useEffect(() => {
         if (successGetCompany) {
             setCompanyList(
-                companyName.data.map((item) => {
-                    return {
-                        label: item.name,
-                        value: item.name
-                    };
-                })
+                companyName.data
+                    .reduce((acc, current) => {
+                        const x = acc.find(
+                            (filter) => filter.name === current.name
+                        );
+                        if (!x) {
+                            return acc.concat([current]);
+                        } else {
+                            return acc;
+                        }
+                    }, [])
+                    .filter((value) => value.name !== null)
+                    .map((item) => {
+                        return {
+                            label: item.name,
+                            value: item.name
+                        };
+                    })
             );
         }
     }, [successGetCompany]);
