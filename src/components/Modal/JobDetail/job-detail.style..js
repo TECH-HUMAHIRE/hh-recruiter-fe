@@ -40,6 +40,9 @@ const JobDetailStyle = styled(Modal)`
         &-header {
             position: relative;
             margin-bottom: 65px;
+            .ant-image {
+                width: 100%;
+            }
             &__info {
                 position: absolute;
                 left: 0;

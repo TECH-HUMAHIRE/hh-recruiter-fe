@@ -13,7 +13,13 @@ import JobDetailStyle from './job-detail.style.';
 import exampleImage from '../../Assets/images/example.png';
 import defaultImage from '../../Assets/images/defaultImage.png';
 import convertEmployeType from '../../Utils/convertEmployeType';
-const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
+import { Image, Skeleton } from 'antd';
+const JobDetail = ({
+    isOpen = false,
+    onClose = () => {},
+    data = {},
+    loading = true
+}) => {
     return (
         <JobDetailStyle
             title={'Job Detail'}
@@ -23,21 +29,33 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
             onCancel={onClose}>
             <div>
                 <div className="job-header">
-                    <img
+                    <Image
+                        preview={false}
+                        loading={loading}
                         src={data?.company?.photo_url || defaultImage}
                         alt=""
                         className="job-banner"
                     />
                     <div className="job-info job-header__info">
                         <div className="job-header__company">
-                            <img
+                            <Image
+                                preview={false}
+                                loading={loading}
                                 src={data?.company?.logo_url || defaultImage}
                                 alt=""
                                 className="job-header__logo"
                             />
                             <div>
-                                <h3 className="title">{data?.title}</h3>
-                                <div>{data?.company?.name}</div>
+                                {loading ? (
+                                    <Skeleton.Input />
+                                ) : (
+                                    <h3 className="title">{data?.title}</h3>
+                                )}
+                                {loading ? (
+                                    <Skeleton.Input />
+                                ) : (
+                                    <div>{data?.company?.name}</div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -57,20 +75,24 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                                 <img src={starIcon} alt="" />
                             </div>
                             <div>
-                                <div className="job-information__value">
-                                    {data?.skills?.length > 0
-                                        ? data?.skills.map((item, key) => {
-                                              return `${
-                                                  item.name || item.label
-                                              }${
-                                                  key + 1 ===
-                                                  data?.skills_id.length
-                                                      ? ''
-                                                      : ', '
-                                              }`;
-                                          })
-                                        : '-'}
-                                </div>
+                                {loading ? (
+                                    <Skeleton.Input />
+                                ) : (
+                                    <div className="job-information__value">
+                                        {data?.skills?.length > 0
+                                            ? data?.skills.map((item, key) => {
+                                                  return `${
+                                                      item.name || item.label
+                                                  }${
+                                                      key + 1 ===
+                                                      data?.skills_id.length
+                                                          ? ''
+                                                          : ', '
+                                                  }`;
+                                              })
+                                            : '-'}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </Col>
@@ -83,11 +105,15 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                                 <img src={BagIcon} alt="" />
                             </div>
                             <div>
-                                <div className="job-information__value">
-                                    {convertEmployeType(
-                                        data?.employment_type
-                                    ) || '-'}
-                                </div>
+                                {loading ? (
+                                    <Skeleton.Input />
+                                ) : (
+                                    <div className="job-information__value">
+                                        {convertEmployeType(
+                                            data?.employment_type
+                                        ) || '-'}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </Col>
@@ -100,9 +126,13 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                                 <img src={placeIcon} alt="" />
                             </div>
                             <div>
-                                <div className="job-information__value">
-                                    {data?.type_of_work || '-'}
-                                </div>
+                                {loading ? (
+                                    <Skeleton.Input />
+                                ) : (
+                                    <div className="job-information__value">
+                                        {data?.type_of_work || '-'}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </Col>
@@ -115,9 +145,13 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                                 <img src={dressIcon} alt="" />
                             </div>
                             <div>
-                                <div className="job-information__value">
-                                    {data?.min_education || '-'}
-                                </div>
+                                {loading ? (
+                                    <Skeleton.Input />
+                                ) : (
+                                    <div className="job-information__value">
+                                        {data?.min_education || '-'}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </Col>
@@ -128,19 +162,25 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                                 <img src={chatIcon} alt="" />
                             </div>
                             <div>
-                                <div className="job-information__value">
-                                    {data?.languages?.length > 0
-                                        ? data?.languages.map((item, key) => {
-                                              return (
-                                                  item +
-                                                  (key + 1 ===
-                                                  data?.languages.length
-                                                      ? ''
-                                                      : ', ')
-                                              );
-                                          })
-                                        : '-'}
-                                </div>
+                                {loading ? (
+                                    <Skeleton.Input />
+                                ) : (
+                                    <div className="job-information__value">
+                                        {data?.languages?.length > 0
+                                            ? data?.languages.map(
+                                                  (item, key) => {
+                                                      return (
+                                                          item +
+                                                          (key + 1 ===
+                                                          data?.languages.length
+                                                              ? ''
+                                                              : ', ')
+                                                      );
+                                                  }
+                                              )
+                                            : '-'}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </Col>
@@ -154,44 +194,57 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                             Location
                         </label>
                         <div className="job-overview__desc">
-                            <div
-                                dangerouslySetInnerHTML={{
-                                    __html: data?.work_location || '-'
-                                }}
-                            />
-                            <div>
-                                {`${
-                                    data?.sub_district?.district?.city?.province
-                                        ?.country?.name
-                                        ? data?.sub_district?.district?.city
-                                              ?.province?.country?.name + ', '
-                                        : ''
-                                }`}
-                                {`${
-                                    data?.sub_district?.district?.city?.province
-                                        ?.name
-                                        ? data?.sub_district?.district?.city
-                                              ?.province?.name + ', '
-                                        : ''
-                                }`}
-                                {`${
-                                    data?.sub_district?.district?.city?.name
-                                        ? data?.sub_district?.district?.city
-                                              ?.name + ', '
-                                        : ''
-                                }`}
-                                {data?.sub_district?.postal_code}
-                            </div>
+                            {loading ? (
+                                <Skeleton.Input />
+                            ) : (
+                                <React.Fragment>
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: data?.work_location || '-'
+                                        }}
+                                    />
+                                    <div>
+                                        {`${
+                                            data?.sub_district?.district?.city
+                                                ?.province?.country?.name
+                                                ? data?.sub_district?.district
+                                                      ?.city?.province?.country
+                                                      ?.name + ', '
+                                                : ''
+                                        }`}
+                                        {`${
+                                            data?.sub_district?.district?.city
+                                                ?.province?.name
+                                                ? data?.sub_district?.district
+                                                      ?.city?.province?.name +
+                                                  ', '
+                                                : ''
+                                        }`}
+                                        {`${
+                                            data?.sub_district?.district?.city
+                                                ?.name
+                                                ? data?.sub_district?.district
+                                                      ?.city?.name + ', '
+                                                : ''
+                                        }`}
+                                        {data?.sub_district?.postal_code}
+                                    </div>
+                                </React.Fragment>
+                            )}
                         </div>
                     </Col>
                     <Col xl={12}>
                         <label htmlFor="" className="sub-title">
                             Salary
                         </label>
-                        <div>
-                            {formatMoney(data?.rate_start || 0)} -{' '}
-                            {formatMoney(data?.rate_end || 0)}
-                        </div>
+                        {loading ? (
+                            <Skeleton.Input />
+                        ) : (
+                            <div>
+                                {formatMoney(data?.rate_start || 0)} -{' '}
+                                {formatMoney(data?.rate_end || 0)}
+                            </div>
+                        )}
                     </Col>
                 </Row>
             </div>
@@ -202,12 +255,16 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                         <label htmlFor="" className="sub-title">
                             Job requirement
                         </label>
-                        <div
-                            className="job-overview__desc"
-                            dangerouslySetInnerHTML={{
-                                __html: data?.job_requirements || '-'
-                            }}
-                        />
+                        {loading ? (
+                            <Skeleton.Input />
+                        ) : (
+                            <div
+                                className="job-overview__desc"
+                                dangerouslySetInnerHTML={{
+                                    __html: data?.job_requirements || '-'
+                                }}
+                            />
+                        )}
                     </Col>
                 </Row>
             </div>
@@ -218,12 +275,16 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                         <label htmlFor="" className="sub-title">
                             Responsibility
                         </label>
-                        <div
-                            className="job-overview__desc"
-                            dangerouslySetInnerHTML={{
-                                __html: data?.responsibilities || '-'
-                            }}
-                        />
+                        {loading ? (
+                            <Skeleton.Input />
+                        ) : (
+                            <div
+                                className="job-overview__desc"
+                                dangerouslySetInnerHTML={{
+                                    __html: data?.responsibilities || '-'
+                                }}
+                            />
+                        )}
                     </Col>
                 </Row>
             </div>
@@ -234,7 +295,11 @@ const JobDetail = ({ isOpen = false, onClose = () => {}, data = {} }) => {
                         <label htmlFor="" className="sub-title">
                             Benefit
                         </label>
-                        <div>{data?.benefit || '-'}</div>
+                        {loading ? (
+                            <Skeleton.Input />
+                        ) : (
+                            <div>{data?.benefit || '-'}</div>
+                        )}
                     </Col>
                 </Row>
             </div>
