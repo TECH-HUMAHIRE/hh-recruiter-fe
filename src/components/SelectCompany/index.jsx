@@ -37,7 +37,6 @@ const SelectCompany = ({ onChange = () => {} }) => {
             options={[
                 {
                     label: 'From All Company',
-                    disabled: true,
                     value: ''
                 },
                 ...companyList
