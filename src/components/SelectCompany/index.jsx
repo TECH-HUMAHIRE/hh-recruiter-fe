@@ -34,7 +34,6 @@ const SelectCompany = ({ onChange = () => {} }) => {
                     }, [])
                     .filter((value) => value.name !== null)
                     .map((item) => {
-                        console.log('item', item.name);
                         return {
                             label: item.name,
                             value: item.name
