@@ -3,7 +3,6 @@ import { Col, Row } from '../../Grid';
 import { monthName } from '../../Utils/variable';
 
 const Education = ({ data = [] }) => {
-    console.log(data);
     return (
         <div>
             <Row>
