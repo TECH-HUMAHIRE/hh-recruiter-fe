@@ -82,9 +82,8 @@ const CandidatesSearch = ({ status }) => {
         const value = e.target.value;
         await setParams({
             ...params,
-            searchByName: value
+            name: value
         });
-        refetch();
     }, 750);
     const onReferJobList = () => {
         setReferJobList(!isReferJobList);

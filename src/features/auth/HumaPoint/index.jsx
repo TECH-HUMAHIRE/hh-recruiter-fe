@@ -77,8 +77,8 @@ const HumaPoint = () => {
                             width: 100,
                             dataIndex: 'created_at',
                             key: 'created_at',
-                            render: (date) => {
-                                return moment(date).format('DD-MM-Y');
+                            render: (created_at) => {
+                                return moment(created_at).format('DD-MM-Y');
                             }
                         },
 

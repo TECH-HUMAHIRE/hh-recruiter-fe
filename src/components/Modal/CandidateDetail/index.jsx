@@ -64,7 +64,6 @@ const CandidateDetail = ({
             desc: "You are my fire the one desire believe when I say I want it that way. But we are two worlds apart can't reach to your heart when you say that I want it that way."
         }
     ];
-    console.log('educationList', educationList);
     return (
         <CandidateDetailStyle
             title={

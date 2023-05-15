@@ -9,14 +9,18 @@ import {
     useUpdateProfileMutation
 } from '../../../app/actions/profile';
 
-const ProfileTab = ({ onClose = () => {} }) => {
+const ProfileTab = ({ onClose = () => {}, profile = [] }) => {
     const [updateProfile, response] = useUpdateProfileMutation();
     const [messageApi, contextHolder] = message.useMessage();
     const { data, isSuccess: successGetProfile } = useGetProfileQuery();
     const [form] = Form.useForm();
     const [, forceUpdate] = React.useState({});
     const onFinish = (values) => {
-        updateProfile({ ...values, email: data?.data?.email });
+        updateProfile({
+            ...values,
+            email: data?.data?.email,
+            photo_url: profile[0].url
+        });
     };
     // To disable submit button at the beginning.
     React.useEffect(() => {
