@@ -103,7 +103,7 @@ const Jobist = () => {
         let value = e.target.value;
         await setParams({
             ...params,
-            ['sub_district.district.city.name']: value
+            ['sub_district.district.city.province.name']: value
         });
     }, 750);
     React.useEffect(() => {

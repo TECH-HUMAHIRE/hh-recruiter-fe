@@ -81,7 +81,12 @@ const ModalHeader = ({
                     {
                         label: `Profile`,
                         key: '1',
-                        children: <ProfileTab onClose={onCloseModal} />
+                        children: (
+                            <ProfileTab
+                                profile={profile}
+                                onClose={onCloseModal}
+                            />
+                        )
                     },
                     {
                         label: `Email`,
