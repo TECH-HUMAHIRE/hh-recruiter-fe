@@ -14,7 +14,7 @@ export const profileAuth = createApi({
             return headers;
         }
     }),
-    tagTypes: ['get_my_company'],
+    tagTypes: ['get_my_company', 'getBankList'],
     endpoints: (builder) => ({
         getProfile: builder.query({
             query: (params) => {
@@ -70,6 +70,22 @@ export const profileAuth = createApi({
                 method: 'POST',
                 body
             })
+        }),
+        postBank: builder.mutation({
+            query: (body) => ({
+                url: '/bank_account',
+                method: 'POST',
+                body
+            }),
+            invalidatesTags: ['getBankList']
+        }),
+        getBankList: builder.query({
+            query: (params) => ({
+                url: '/bank_account',
+                method: 'GET',
+                params
+            }),
+            providesTags: ['getBankList']
         })
     })
 });
@@ -83,5 +99,7 @@ export const {
     useSendOTPEmailMutation,
     useResendOTPEmailMutation,
     useGetEducationCandidateQuery,
-    useUploadeImageMutation
+    useUploadeImageMutation,
+    usePostBankMutation,
+    useGetBankListQuery
 } = profileAuth;

@@ -109,5 +109,16 @@ const Style = styled(Modal)`
             font-weight: normal;
         }
     }
+    .account {
+        &-list {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            .title {
+                margin-bottom: 7px;
+            }
+        }
+    }
 `;
 export default Style;
