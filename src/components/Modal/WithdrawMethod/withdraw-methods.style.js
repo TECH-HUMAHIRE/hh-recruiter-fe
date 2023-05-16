@@ -41,6 +41,8 @@ const WithdrawMethodStyle = styled(Modal)`
             margin-bottom: 25px;
             .ant-radio-wrapper {
                 align-items: center;
+                width: 100%;
+                margin-bottom: 25px;
             }
         }
         &-instructions {

@@ -109,7 +109,10 @@ const ModalHeader = ({
                         label: `Account Number`,
                         key: '4',
                         children: (
-                            <AccountNumber changePassword={changePassword} />
+                            <AccountNumber
+                                onClose={onCloseModal}
+                                changePassword={changePassword}
+                            />
                         )
                     }
                 ]}

@@ -33,7 +33,7 @@ const MyTask = () => {
     const [isDecline, setDecline] = React.useState(false);
 
     // fetch api
-    const [getTaskDetail, { data: taskDetail }] =
+    const [getTaskDetail, { data: taskDetail, isLoading }] =
         jobApi.endpoints.getTaskId.useLazyQuery();
     const [
         deleteTask,
@@ -175,6 +175,7 @@ const MyTask = () => {
             </Row>
 
             <JobDetail
+                loading={isLoading}
                 onClose={onDetailJob}
                 isOpen={isOpen}
                 data={taskDetail?.data?.job}

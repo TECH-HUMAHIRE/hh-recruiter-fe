@@ -7,6 +7,7 @@ import PrintIcon from '../../Icon/Print';
 import OrderSummary from '../../OrderSummary';
 import WithdrawMethodStyle from './withdraw-methods.style';
 import bcaIcon from '../../Assets/images/example2.png';
+import { useGetBankListQuery } from '../../../app/actions/profile';
 
 const WithdrawMethod = ({
     isOpen = true,
@@ -14,6 +15,7 @@ const WithdrawMethod = ({
     onClose = () => {},
     onShowVerify = () => {}
 }) => {
+    const { data: bankListQuery, isSuccess } = useGetBankListQuery();
     return (
         <WithdrawMethodStyle
             title={
@@ -39,28 +41,38 @@ const WithdrawMethod = ({
                     <div className="payment-list">
                         <div>
                             <Radio.Group name="payment-channel">
-                                <Radio value="transfer">
-                                    <div className="payment-account">
-                                        <div className="payment-account__info">
-                                            <div className="payment-account__bank">
-                                                PT BCA TBK
-                                            </div>
-                                            <div className="payment-account__number">
-                                                08872661237 an John Doe
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img
-                                                src={bcaIcon}
-                                                alt=""
-                                                className="payment-account__image"
-                                            />
-                                        </div>
-                                    </div>
-                                </Radio>
+                                {isSuccess &&
+                                    bankListQuery?.data?.map((item, key) => {
+                                        return (
+                                            <Radio value={item.id} key={key}>
+                                                <div className="payment-account">
+                                                    <div className="payment-account__info">
+                                                        <div className="payment-account__bank">
+                                                            {item.bank}
+                                                        </div>
+                                                        <div className="payment-account__number">
+                                                            {
+                                                                item.account_number
+                                                            }{' '}
+                                                            an{' '}
+                                                            {item.account_name}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        {/* <img
+                                                            src={bcaIcon}
+                                                            alt=""
+                                                            className="payment-account__image"
+                                                        /> */}
+                                                    </div>
+                                                </div>
+                                            </Radio>
+                                        );
+                                    })}
                             </Radio.Group>
                         </div>
                     </div>
+
                     <div className="payment-instructions">
                         <h4 className="title">Instructions</h4>
                         <List itemLayout="vertical">
