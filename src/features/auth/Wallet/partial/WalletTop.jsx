@@ -6,7 +6,7 @@ import WalletIcon from '../../../../components/Icon/Wallet';
 import { formatMoney } from '../../../../components/Utils/formatMoney';
 import { color } from '../../../../components/Utils/variable';
 
-const WalletTop = ({ onShowWithdraw = () => {} }) => {
+const WalletTop = ({ onShowWithdraw = () => {}, data }) => {
     return (
         <Row align="center">
             <Col md={6} style={{ borderRight: '1px solid #E8E8E8' }}>
@@ -17,7 +17,7 @@ const WalletTop = ({ onShowWithdraw = () => {} }) => {
                     <div className="wallet-top__info">
                         <div>All balance</div>
                         <h4>
-                            <b>{formatMoney(2000000)}</b>
+                            <b>{formatMoney(data?.wallet_balance)}</b>
                         </h4>
                         <div className="wallet-top__info-note">
                             You can only withdraw <b>90%</b> of the total
@@ -33,9 +33,13 @@ const WalletTop = ({ onShowWithdraw = () => {} }) => {
                             <WalletIcon color={color.employee.primary} />
                         </div>
                         <div className="wallet-top__info">
-                            <div>All balance</div>
+                            <div>Max withdraw balance</div>
                             <h4>
-                                <b>{formatMoney(2000000)}</b>
+                                <b>
+                                    {formatMoney(
+                                        (data?.wallet_balance / 100) * 90
+                                    )}
+                                </b>
                             </h4>
                         </div>
                     </div>

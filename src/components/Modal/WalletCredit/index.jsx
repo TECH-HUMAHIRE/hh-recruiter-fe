@@ -10,7 +10,8 @@ import WalletCreditStyle from './wallet-credit.style';
 const WalletCredit = ({
     open = false,
     onClose = () => {},
-    onShowWithdrawNext = () => {}
+    onShowWithdrawNext = () => {},
+    data
 }) => {
     const nominalButton = [
         {
@@ -43,6 +44,11 @@ const WalletCredit = ({
             withdraw_nominal: value
         });
     };
+    const handleAllBalance = () => {
+        form.setFieldsValue({
+            withdraw_nominal: data?.wallet_balance
+        });
+    };
     React.useEffect(() => {
         forceUpdate({});
     }, []);
@@ -59,7 +65,8 @@ const WalletCredit = ({
                         <WalletIcon color={color.employee.primary} />
                     </div>
                     <div>
-                        Max Withdraw Balance : <b>{formatMoney(1800000)}</b>
+                        Max Withdraw Balance :{' '}
+                        <b>{formatMoney((data?.wallet_balance / 100) * 90)}</b>
                     </div>
                 </div>
             </Card>
@@ -114,7 +121,11 @@ const WalletCredit = ({
                                     prefix="Rp "
                                 />
                             </Form.Item>
-                            <div className="withdraw-all">All Balance</div>
+                            <div
+                                className="withdraw-all"
+                                onClick={handleAllBalance}>
+                                All Balance
+                            </div>
                         </div>
                     </Col>
                     <Col xl={12}>

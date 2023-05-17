@@ -2,8 +2,11 @@ import React from 'react';
 import { Table } from 'antd';
 import ArrowIcon from '../../../../components/Icon/Arrow';
 import moment from 'moment';
+import { useGetCreditHistoryQuery } from '../../../../app/actions/walletApi';
 
 const CreditHistory = () => {
+    const { data } = useGetCreditHistoryQuery();
+    console.log(data);
     return (
         <div className="table-history">
             <Table
