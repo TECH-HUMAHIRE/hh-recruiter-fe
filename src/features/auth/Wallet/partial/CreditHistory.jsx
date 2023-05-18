@@ -2,8 +2,12 @@ import React from 'react';
 import { Table } from 'antd';
 import ArrowIcon from '../../../../components/Icon/Arrow';
 import moment from 'moment';
+import { useGetCreditHistoryQuery } from '../../../../app/actions/walletApi';
+import { formatMoney } from '../../../../components/Utils/formatMoney';
 
 const CreditHistory = () => {
+    const { data } = useGetCreditHistoryQuery();
+    console.log(data);
     return (
         <div className="table-history">
             <Table
@@ -27,11 +31,8 @@ const CreditHistory = () => {
                     {
                         title: 'User',
                         width: 100,
-                        dataIndex: 'user',
-                        key: 'user.name',
-                        render: (user) => {
-                            return user.name;
-                        }
+                        dataIndex: 'jobseeker',
+                        key: 'jobseeker'
                     },
                     {
                         title: 'Job',
@@ -43,26 +44,28 @@ const CreditHistory = () => {
                         title: 'Item',
                         dataIndex: 'item',
                         key: 'item',
-                        width: 150
+                        width: 150,
+                        render: (date) => {
+                            return 'Success Reffered';
+                        }
                     },
                     {
                         title: 'Total Amount',
-                        dataIndex: 'total_amount',
-                        key: '1',
+                        dataIndex: 'commission',
+                        key: 'commission',
                         width: 150,
-                        render: (user) => {
+                        render: (commission) => {
                             return (
-                                <div className={`credit`}>
-                                    <ArrowIcon color={`red`} />
+                                <div className={`debit`}>
                                     <span className="value">
-                                        {user.total_amount}
+                                        {formatMoney(commission)}
                                     </span>
                                 </div>
                             );
                         }
                     }
                 ]}
-                dataSource={[]}
+                dataSource={data?.data}
                 scroll={{
                     x: 1500,
                     y: 500

@@ -25,10 +25,20 @@ export const walletApi = createApi({
                 };
             },
             providesTags: ['huma_point']
+        }),
+        getCreditHistory: builder.query({
+            query: (params) => {
+                return {
+                    url: `/wallet/credit`,
+                    method: 'GET',
+                    params
+                };
+            },
+            providesTags: ['credit_history']
         })
     })
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useHumaPointQuery } = walletApi;
+export const { useHumaPointQuery, useGetCreditHistoryQuery } = walletApi;

@@ -9,12 +9,19 @@ import WalletTop from './partial/WalletTop';
 import WalletCredit from '../../../components/Modal/WalletCredit';
 import WithdrawMethod from '../../../components/Modal/WithdrawMethod';
 import EmailVerification from '../../../components/Modal/ModalHeader/EmailVerification';
+import { useGetProfileQuery } from '../../../app/actions/profile';
 
 const Wallet = () => {
+    // STATE
     const [isWithdraw, setWithdraw] = React.useState(false);
     const [isWithdrawNext, setWithdrawNext] = React.useState(false);
     const [isVerifyEmail, setVerifyEmail] = React.useState(false);
+    // fetch api
+    const { data } = useGetProfileQuery({
+        fakeAuthProvider: 'myCompany'
+    });
 
+    // FUNCTION
     const onShowWithdraw = () => {
         setWithdraw(!isWithdraw);
         setWithdrawNext(false);
@@ -34,7 +41,10 @@ const Wallet = () => {
             <Card className="wallet-header">
                 <Row>
                     <Col xl={12}>
-                        <WalletTop onShowWithdraw={onShowWithdraw} />
+                        <WalletTop
+                            data={data?.data}
+                            onShowWithdraw={onShowWithdraw}
+                        />
                     </Col>
                 </Row>
             </Card>
@@ -53,6 +63,7 @@ const Wallet = () => {
                 ]}
             />
             <WalletCredit
+                data={data?.data}
                 open={isWithdraw}
                 onClose={onShowWithdraw}
                 onShowWithdrawNext={onShowWithdrawNext}

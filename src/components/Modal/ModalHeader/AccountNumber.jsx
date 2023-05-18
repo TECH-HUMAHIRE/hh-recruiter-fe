@@ -28,7 +28,8 @@ const AccountNumber = ({ onClose = () => {} }) => {
     // FETCH API
     const [postBank, { data, isSuccess, reset, isLoading }] =
         usePostBankMutation();
-    const { data: bankListQuery } = useGetBankListQuery();
+    const { data: bankListQuery, isSuccess: successGetAccountNumber } =
+        useGetBankListQuery();
     const onFinish = (values) => {
         postBank(values);
     };
@@ -61,6 +62,14 @@ const AccountNumber = ({ onClose = () => {} }) => {
             reset();
         }
     }, [isSuccess]);
+    React.useEffect(() => {
+        if (successGetAccountNumber) {
+            console.log(bankListQuery);
+            if (bankListQuery?.data?.length < 1) {
+                setShowForm(true);
+            }
+        }
+    }, [successGetAccountNumber]);
     return (
         <React.Fragment>
             {contextHolder}
@@ -76,128 +85,121 @@ const AccountNumber = ({ onClose = () => {} }) => {
                     </div>
                 </div>
             )}
-            {bankListQuery?.data?.length < 1 ||
-                (isShowForm && (
-                    <Form
-                        requiredMark={'optional'}
-                        form={form}
-                        name="profile"
-                        layout="vertical"
-                        onFinish={onFinish}>
-                        <div className="modal-body">
-                            <Row>
-                                <Col md={6}>
-                                    <Form.Item
-                                        name="bank"
-                                        label="Select Bank"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    'Please input your username!'
-                                            }
-                                        ]}>
-                                        <SelectOption options={bankList} />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={6}>
-                                    <Form.Item
-                                        label="Account Number"
-                                        name="account_number"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    'Please input your phone!',
-                                                pattern: new RegExp(/^[0-9]+$/)
-                                            }
-                                        ]}>
-                                        <Input
-                                            size="large"
-                                            type="number"
-                                            placeholder="Phone number"
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={6}>
-                                    <Form.Item
-                                        name="account_name"
-                                        label="Account Name"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    'Please input your job!'
-                                            }
-                                        ]}>
-                                        <Input
-                                            type={'text'}
-                                            size="large"
-                                            placeholder="Account Name"
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={6}>
-                                    <Form.Item
-                                        name="bank_branch"
-                                        label="Bank Branch"
-                                        // rules={[
-                                        //     {
-                                        //         required: false,
-                                        //         message: 'Please input your departement!'
-                                        //     }
-                                        // ]}
-                                    >
-                                        <Input
-                                            type={'text'}
-                                            size="large"
-                                            placeholder="Bank Branch"
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col
-                                    md={
-                                        bankListQuery?.data?.length > 0 ? 12 : 8
-                                    }>
-                                    <Form.Item shouldUpdate>
-                                        {() => (
-                                            <Button
-                                                loading={isLoading}
-                                                block
-                                                color="primary"
-                                                htmlType="submit"
-                                                disabled={
-                                                    !form.isFieldsTouched(
-                                                        true
-                                                    ) ||
-                                                    !!form
-                                                        .getFieldsError()
-                                                        .filter(
-                                                            ({ errors }) =>
-                                                                errors.length
-                                                        ).length
-                                                }>
-                                                Save
-                                            </Button>
-                                        )}
-                                    </Form.Item>
-                                </Col>
-                                {bankListQuery?.data?.length < 1 && (
-                                    <Col md={4}>
+            {isShowForm && (
+                <Form
+                    requiredMark={'optional'}
+                    form={form}
+                    name="profile"
+                    layout="vertical"
+                    onFinish={onFinish}>
+                    <div className="modal-body">
+                        <Row>
+                            <Col md={6}>
+                                <Form.Item
+                                    name="bank"
+                                    label="Select Bank"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message:
+                                                'Please input your username!'
+                                        }
+                                    ]}>
+                                    <SelectOption options={bankList} />
+                                </Form.Item>
+                            </Col>
+                            <Col md={6}>
+                                <Form.Item
+                                    label="Account Number"
+                                    name="account_number"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please input your phone!',
+                                            pattern: new RegExp(/^[0-9]+$/)
+                                        }
+                                    ]}>
+                                    <Input
+                                        size="large"
+                                        type="number"
+                                        placeholder="Phone number"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col md={6}>
+                                <Form.Item
+                                    name="account_name"
+                                    label="Account Name"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please input your job!'
+                                        }
+                                    ]}>
+                                    <Input
+                                        type={'text'}
+                                        size="large"
+                                        placeholder="Account Name"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col md={6}>
+                                <Form.Item
+                                    name="bank_branch"
+                                    label="Bank Branch"
+                                    // rules={[
+                                    //     {
+                                    //         required: false,
+                                    //         message: 'Please input your departement!'
+                                    //     }
+                                    // ]}
+                                >
+                                    <Input
+                                        type={'text'}
+                                        size="large"
+                                        placeholder="Bank Branch"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={bankListQuery?.data?.length > 0 ? 12 : 8}>
+                                <Form.Item shouldUpdate>
+                                    {() => (
                                         <Button
+                                            loading={isLoading}
                                             block
-                                            color="outline-primary"
-                                            onClick={onClose}>
-                                            Close
+                                            color="primary"
+                                            htmlType="submit"
+                                            disabled={
+                                                !form.isFieldsTouched(true) ||
+                                                !!form
+                                                    .getFieldsError()
+                                                    .filter(
+                                                        ({ errors }) =>
+                                                            errors.length
+                                                    ).length
+                                            }>
+                                            Save
                                         </Button>
-                                    </Col>
-                                )}
-                            </Row>
-                        </div>
-                    </Form>
-                ))}
+                                    )}
+                                </Form.Item>
+                            </Col>
+                            {bankListQuery?.data?.length < 1 && (
+                                <Col md={4}>
+                                    <Button
+                                        block
+                                        color="outline-primary"
+                                        onClick={onClose}>
+                                        Close
+                                    </Button>
+                                </Col>
+                            )}
+                        </Row>
+                    </div>
+                </Form>
+            )}
+
             {bankListQuery?.data?.length > 0 && (
                 <div className="modal-body">
                     {bankListQuery?.data?.map((item, key) => {
