@@ -46,7 +46,7 @@ const WalletCredit = ({
     };
     const handleAllBalance = () => {
         form.setFieldsValue({
-            withdraw_nominal: data?.wallet_balance
+            withdraw_nominal: (data?.wallet_balance / 100) * 90
         });
     };
     React.useEffect(() => {
