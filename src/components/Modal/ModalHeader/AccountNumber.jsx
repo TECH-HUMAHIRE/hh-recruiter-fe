@@ -3,9 +3,10 @@ import MessegerIcon from '../../Icon/Messeger';
 import Button from '../../Button';
 import { Col, Row } from '../../Grid';
 import ChatMessegerIcon from '../../Icon/ChatMesseger';
-import { Form, Input, message, Radio } from 'antd';
+import { Form, Image, Input, message, Radio } from 'antd';
 import SelectOption from '../../Form/SelectOption';
 import {
+    useGetBankListNameQuery,
     useGetBankListQuery,
     usePostBankMutation
 } from '../../../app/actions/profile';
@@ -26,6 +27,7 @@ const AccountNumber = ({ onClose = () => {} }) => {
     const [isShowForm, setShowForm] = React.useState(false);
 
     // FETCH API
+    const { data: listBank } = useGetBankListNameQuery();
     const [postBank, { data, isSuccess, reset, isLoading }] =
         usePostBankMutation();
     const { data: bankListQuery, isSuccess: successGetAccountNumber } =
@@ -64,12 +66,12 @@ const AccountNumber = ({ onClose = () => {} }) => {
     }, [isSuccess]);
     React.useEffect(() => {
         if (successGetAccountNumber) {
-            console.log(bankListQuery);
             if (bankListQuery?.data?.length < 1) {
                 setShowForm(true);
             }
         }
     }, [successGetAccountNumber]);
+    console.log('listBank', listBank);
     return (
         <React.Fragment>
             {contextHolder}
@@ -96,7 +98,7 @@ const AccountNumber = ({ onClose = () => {} }) => {
                         <Row>
                             <Col md={6}>
                                 <Form.Item
-                                    name="bank"
+                                    name="bank_id"
                                     label="Select Bank"
                                     rules={[
                                         {
@@ -105,7 +107,14 @@ const AccountNumber = ({ onClose = () => {} }) => {
                                                 'Please input your username!'
                                         }
                                     ]}>
-                                    <SelectOption options={bankList} />
+                                    <SelectOption
+                                        options={listBank?.data?.map((bank) => {
+                                            return {
+                                                label: bank.name,
+                                                value: bank.id
+                                            };
+                                        })}
+                                    />
                                 </Form.Item>
                             </Col>
                             <Col md={6}>
@@ -200,19 +209,19 @@ const AccountNumber = ({ onClose = () => {} }) => {
                 </Form>
             )}
 
-            {bankListQuery?.data?.length > 0 && (
+            {successGetAccountNumber && bankListQuery?.data?.length > 0 && (
                 <div className="modal-body">
                     {bankListQuery?.data?.map((item, key) => {
                         return (
                             <div className="account-list" key={key}>
                                 <div>
-                                    <h4 className="title">{item.bank}</h4>
+                                    <h4 className="title">{item.bank.name}</h4>
                                     <div>
                                         {item.account_number} an{' '}
                                         {item.account_name}
                                     </div>
                                 </div>
-                                <div>{/* IMAGE BANK */}</div>
+                                <div></div>
                             </div>
                         );
                     })}

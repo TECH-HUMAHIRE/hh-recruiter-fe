@@ -35,10 +35,23 @@ export const walletApi = createApi({
                 };
             },
             providesTags: ['credit_history']
+        }),
+        postWithDraw: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/withdraw`,
+                    method: 'POST',
+                    body
+                };
+            }
         })
     })
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useHumaPointQuery, useGetCreditHistoryQuery } = walletApi;
+export const {
+    useHumaPointQuery,
+    useGetCreditHistoryQuery,
+    usePostWithDrawMutation
+} = walletApi;
