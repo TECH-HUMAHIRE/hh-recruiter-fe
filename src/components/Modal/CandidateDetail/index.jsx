@@ -31,42 +31,25 @@ const CandidateDetail = ({
     handlerLockCandidates = () => {},
     handlerReferCandidates = () => {}
 }) => {
+    // state
+    const [initialName, setInitialName] = React.useState('');
+    // fetchapi
     const [getEducationCandidate, { data: educationList }] =
         profileAuth.endpoints.getEducationCandidate.useLazyQuery();
     const [getExperienceCandidate, { data: experienceList }] =
         profileAuth.endpoints.getExperienceCandidate.useLazyQuery();
+    // function
     React.useEffect(() => {
         if (data?.id) {
             getEducationCandidate(data.id);
             getExperienceCandidate(data.id);
+            let splitname = data?.name.split(' ');
+            let setname = `${splitname[0][0]}${
+                splitname.length > 1 ? splitname[1][0] : ''
+            }`;
+            setInitialName(setname);
         }
     }, [data]);
-    const dummyData = [
-        {
-            name: 'Senior Product Designer',
-            job_location: 'at G****',
-            location: 'Jakarta, Indonesia',
-            date: 'Jun 2020 - Jul 2022',
-            last: '2 years 1 month',
-            desc: "You are my fire the one desire believe when I say I want it that way. But we are two worlds apart can't reach to your heart when you say that I want it that way."
-        },
-        {
-            name: 'Product Designer',
-            job_location: 'at G****',
-            location: 'Jakarta, Indonesia',
-            date: 'Jun 2020 - Jul 2022',
-            last: '2 years 1 month',
-            desc: "You are my fire the one desire believe when I say I want it that way. But we are two worlds apart can't reach to your heart when you say that I want it that way."
-        },
-        {
-            name: 'Senior Product Designer',
-            job_location: 'at G****',
-            location: 'Jakarta, Indonesia',
-            date: 'Jun 2020 - Jul 2022',
-            last: '2 years 1 month',
-            desc: "You are my fire the one desire believe when I say I want it that way. But we are two worlds apart can't reach to your heart when you say that I want it that way."
-        }
-    ];
     return (
         <CandidateDetailStyle
             title={
@@ -78,7 +61,9 @@ const CandidateDetail = ({
                             onClick={onClose}
                             className="close-icon"
                         />
-                        <div className="modal-header__initial">JR</div>
+                        <div className="modal-header__initial">
+                            {initialName}
+                        </div>
                         <div className="modal-header__info">
                             <div className="modal-header__info-name">
                                 {' '}
@@ -109,11 +94,7 @@ const CandidateDetail = ({
             closable={false}>
             <div className="modal-body">
                 <h2 className="title">About</h2>
-                <div>
-                    You are my fire the one desire believe when I say I want it
-                    that way. But we are two worlds apart can't reach to your
-                    heart when you say that I want it that way.
-                </div>
+                <div>{data?.about}</div>
             </div>
             <div className="hr"></div>
             <div className="modal-body">
@@ -129,7 +110,7 @@ const CandidateDetail = ({
                                     Experience Level
                                 </div>
                                 <div className="referred-information__value">
-                                    SeniorJava Programmer
+                                    {data?.experience_level}
                                 </div>
                             </div>
                         </div>
@@ -144,7 +125,7 @@ const CandidateDetail = ({
                                     Education
                                 </div>
                                 <div className="referred-information__value">
-                                    Master of Computer Science
+                                    {data?.education}
                                 </div>
                             </div>
                         </div>
@@ -159,7 +140,7 @@ const CandidateDetail = ({
                                     Working Experience
                                 </div>
                                 <div className="referred-information__value">
-                                    12 years of exp • 27 years old
+                                    {data?.working_experience} years of exp
                                 </div>
                             </div>
                         </div>
