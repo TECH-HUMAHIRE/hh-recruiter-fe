@@ -21,6 +21,18 @@ const CardCandidates = ({
     data,
     status = false
 }) => {
+    // state
+    const [initialName, setInitialName] = React.useState('');
+    // function
+    React.useEffect(() => {
+        if (data) {
+            let splitname = data?.name.split(' ');
+            let setname = `${splitname[0][0]}${
+                splitname.length > 1 ? splitname[1][0] : ''
+            }`;
+            setInitialName(setname);
+        }
+    }, [data]);
     const actionDropdown = [
         {
             key: '1',
@@ -89,7 +101,9 @@ const CardCandidates = ({
             title={
                 <div className="card-header">
                     <div className="card-header__right">
-                        <div className="card-header__initial">JR</div>
+                        <div className="card-header__initial">
+                            {initialName}
+                        </div>
                         <div className="card-header__info">
                             <div className="card-header__info-name">
                                 {data?.name}
