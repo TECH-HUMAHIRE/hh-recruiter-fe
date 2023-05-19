@@ -33,6 +33,7 @@ const CardCandidates = ({
             setInitialName(setname);
         }
     }, [data]);
+    console.log(data);
     const actionDropdown = [
         {
             key: '1',
@@ -130,21 +131,24 @@ const CardCandidates = ({
             }>
             <div className="card-date">
                 Last Update: {moment(data?.updated_at).format('DD MMM YYYY')} •
-                Last active: -
+                {/* Last active: - */}
             </div>
             <div className="card-info">
-                <BagIcon /> <span className="card-info__text">-</span>
+                <BagIcon />{' '}
+                <span className="card-info__text">
+                    {data?.experience_level || '-'}
+                </span>
             </div>
             <div className="card-info">
                 <DressIcon />{' '}
                 <span className="card-info__text">
-                    Master of Computer Science
+                    {data?.education || '-'}
                 </span>
             </div>
             <div className="card-info">
                 <FoundedIcon />{' '}
                 <span className="card-info__text">
-                    12 years of exp • 27 years old
+                    {data?.working_experience} years of exp
                 </span>
             </div>
             <div className="card-info">
@@ -158,7 +162,7 @@ const CardCandidates = ({
             <div className="card-info">
                 <span className="card-info__referred">Candidate Notes :</span>
             </div>
-            <div className="card-info__desc">{data?.message || '-'}</div>
+            <div className="card-info__desc">{data?.about || '-'}</div>
         </CardReferredStyle>
     );
 };

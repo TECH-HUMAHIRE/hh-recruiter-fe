@@ -258,14 +258,14 @@ const Jobist = () => {
                             </Col>
                         </Row>
                     </Col>
-                    <Col md={4} className="text-right">
+                    {/* <Col md={4} className="text-right">
                         <Button
                             onClick={onOpenFilter}
                             className="message-filter"
                             icon={<FilterOutlined />}>
                             Filter
                         </Button>
-                    </Col>
+                    </Col> */}
                 </Row>
             </div>
             <Row>

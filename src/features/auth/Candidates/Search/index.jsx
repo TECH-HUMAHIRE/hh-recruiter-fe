@@ -112,6 +112,7 @@ const CandidatesSearch = ({ status }) => {
             setReffered(true);
             setDetail(!isDetail);
             setUnlock(!isUnlock);
+            refetch();
             resetUnlock();
         }
     }, [successUnlock]);
@@ -144,7 +145,7 @@ const CandidatesSearch = ({ status }) => {
                         />
                     </Form.Item>
                 </Col>
-                <Col md={2} className="text-right">
+                {/* <Col md={2} className="text-right">
                     <Button
                         onClick={onFilterCandidates}
                         style={{ color: '#444444', borderColor: '#444444' }}
@@ -152,7 +153,7 @@ const CandidatesSearch = ({ status }) => {
                         icon={<FilterOutlined />}>
                         Filter
                     </Button>
-                </Col>
+                </Col> */}
             </Row>
             <Row>
                 {data?.data?.map((item, key) => {

@@ -18,6 +18,7 @@ const WithdrawMethod = ({
     onChooseAccount = () => {}
 }) => {
     const { data: bankListQuery, isSuccess } = useGetBankListQuery();
+
     return (
         <WithdrawMethodStyle
             title={
