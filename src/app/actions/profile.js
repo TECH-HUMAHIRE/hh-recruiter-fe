@@ -94,6 +94,13 @@ export const profileAuth = createApi({
                 params
             }),
             providesTags: ['getBankList']
+        }),
+        getBankListName: builder.query({
+            query: (params) => ({
+                url: '/bank',
+                method: 'GET',
+                params
+            })
         })
     })
 });
@@ -110,5 +117,6 @@ export const {
     useGetExperienceCandidateQuery,
     useUploadeImageMutation,
     usePostBankMutation,
-    useGetBankListQuery
+    useGetBankListQuery,
+    useGetBankListNameQuery
 } = profileAuth;

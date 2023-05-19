@@ -14,6 +14,8 @@ import { useGetProfileQuery } from '../../../app/actions/profile';
 const Wallet = () => {
     // STATE
     const [isWithdraw, setWithdraw] = React.useState(false);
+    const [valueForm, setFalueForm] = React.useState(null);
+    const [bankId, setBankId] = React.useState(null);
     const [isWithdrawNext, setWithdrawNext] = React.useState(false);
     const [isVerifyEmail, setVerifyEmail] = React.useState(false);
     // fetch api
@@ -26,14 +28,25 @@ const Wallet = () => {
         setWithdraw(!isWithdraw);
         setWithdrawNext(false);
     };
-    const onShowWithdrawNext = () => {
+    const onChooseAccount = (e) => {
+        setBankId(e.target.value);
+    };
+    const onShowWithdrawNext = (values) => {
+        // console.log(values);
+        setFalueForm(values);
         setWithdraw(!isWithdraw);
         setWithdrawNext(!isWithdrawNext);
         setVerifyEmail(false);
     };
     const onShowVerify = () => {
-        setWithdrawNext(!isWithdrawNext);
-        setVerifyEmail(!isVerifyEmail);
+        let data = {
+            amount: valueForm.withdraw_nominal,
+            account_number_id: bankId
+        };
+        console.log(data);
+        // HIDE TEMPORARY VERIFICATION SMS
+        // setWithdrawNext(!isWithdrawNext);
+        // setVerifyEmail(!isVerifyEmail);
     };
     return (
         <Style>
@@ -69,6 +82,8 @@ const Wallet = () => {
                 onShowWithdrawNext={onShowWithdrawNext}
             />
             <WithdrawMethod
+                onChooseAccount={onChooseAccount}
+                valueForm={valueForm}
                 isOpen={isWithdrawNext}
                 onClose={onShowWithdrawNext}
                 onShowVerify={onShowVerify}

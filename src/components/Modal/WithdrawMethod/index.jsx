@@ -12,8 +12,10 @@ import { useGetBankListQuery } from '../../../app/actions/profile';
 const WithdrawMethod = ({
     isOpen = true,
     packageItem,
+    valueForm,
     onClose = () => {},
-    onShowVerify = () => {}
+    onShowVerify = () => {},
+    onChooseAccount = () => {}
 }) => {
     const { data: bankListQuery, isSuccess } = useGetBankListQuery();
     return (
@@ -40,7 +42,9 @@ const WithdrawMethod = ({
                     <h3 className="title">Select Account Number</h3>
                     <div className="payment-list">
                         <div>
-                            <Radio.Group name="payment-channel">
+                            <Radio.Group
+                                name="payment-channel"
+                                onChange={onChooseAccount}>
                                 {isSuccess &&
                                     bankListQuery?.data?.map((item, key) => {
                                         return (
@@ -48,7 +52,7 @@ const WithdrawMethod = ({
                                                 <div className="payment-account">
                                                     <div className="payment-account__info">
                                                         <div className="payment-account__bank">
-                                                            {item.bank}
+                                                            {item.bank.name}
                                                         </div>
                                                         <div className="payment-account__number">
                                                             {
@@ -156,6 +160,7 @@ const WithdrawMethod = ({
                 </Col>
                 <Col md={5}>
                     <OrderSummary
+                        valueForm={valueForm}
                         onAction={onShowVerify}
                         packageItem={packageItem}
                     />
