@@ -25,8 +25,8 @@ const CardCandidates = ({
     const [initialName, setInitialName] = React.useState('');
     // function
     React.useEffect(() => {
-        if (data) {
-            let splitname = data?.name.split(' ');
+        if (data?.name) {
+            let splitname = data?.name?.split(' ');
             let setname = `${splitname[0][0]}${
                 splitname.length > 1 ? splitname[1][0] : ''
             }`;

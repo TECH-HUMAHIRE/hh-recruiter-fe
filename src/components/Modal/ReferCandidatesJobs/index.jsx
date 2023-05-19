@@ -6,10 +6,7 @@ import { useGetTaskListQuery } from '../../../app/actions/jobApi';
 import { Col, Row } from '../../Grid';
 import Button from '../../Button';
 import PaginationTable from '../../PaginationTable';
-import {
-    useReferCandidateMutation,
-    useUpdateStatusJobCandidatesMutation
-} from '../../../app/actions/candidates';
+import { useReferCandidateMutation } from '../../../app/actions/candidates';
 
 const ReferCandidatesJobs = ({
     onClose = () => {},
@@ -35,7 +32,6 @@ const ReferCandidatesJobs = ({
         referCandidate,
         { reset, isLoading: loadingRefer, isError, error, isSuccess }
     ] = useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
-    const [updateStatusJobCandidates] = useUpdateStatusJobCandidatesMutation();
     // function
     const onRefetchCandidates = async (updateParams) => {
         await setParams(updateParams);
@@ -67,10 +63,6 @@ const ReferCandidatesJobs = ({
             })
         };
         referCandidate(data);
-        const dataUpdate = {
-            status: 'invited'
-        };
-        updateStatusJobCandidates({ code: jobCode[0], ...dataUpdate });
     };
     React.useEffect(() => {
         if (isError) {
@@ -82,18 +74,6 @@ const ReferCandidatesJobs = ({
                 },
                 duration: 2
             });
-            reset();
-        }
-        if (isSuccess) {
-            console.log('masuk');
-            const data = {
-                status: 'invited'
-            };
-            console.log('inviting', inviting);
-            for (let key in inviting.length) {
-                console.log('masuk kkkk');
-                updateStatusJobCandidates({ ...inviting[key], ...data });
-            }
             reset();
         }
     }, [isError, isSuccess]);

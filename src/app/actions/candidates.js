@@ -18,7 +18,8 @@ export const candidates = createApi({
         'candidates',
         'saveCandidate',
         'unlockCandidate',
-        'get_my_company'
+        'get_my_company',
+        'counTask'
     ],
     endpoints: (builder) => ({
         getCandidatesList: builder.query({
@@ -115,6 +116,15 @@ export const candidates = createApi({
             },
             providesTags: ['get_my_company']
         }),
+        countJob: builder.query({
+            query: (id) => {
+                return {
+                    url: `/task/count`,
+                    method: 'GET'
+                };
+            },
+            providesTags: ['counTask']
+        }),
         referCandidate: builder.mutation({
             query: (body) => {
                 return {
@@ -123,7 +133,15 @@ export const candidates = createApi({
                     method: 'POST'
                 };
             },
-            invalidatesTags: ['saveCandidate', 'candidates']
+            invalidatesTags: ['saveCandidate', 'candidates', 'counTask']
+        }),
+        getJobCandidates: builder.query({
+            query: ({ code = '', ...params }) => {
+                return {
+                    url: `/job/${code}/candidates`,
+                    params: params
+                };
+            }
         })
     })
 });
@@ -139,5 +157,7 @@ export const {
     useUnlockCandidateMutation,
     useUpdateStatusJobCandidatesMutation,
     useGetCountCandidatesQuery,
-    useReferCandidateMutation
+    useCountJobQuery,
+    useReferCandidateMutation,
+    useGetJobCandidatesQuery
 } = candidates;
