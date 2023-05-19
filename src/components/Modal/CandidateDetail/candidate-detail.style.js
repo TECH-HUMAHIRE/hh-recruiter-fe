@@ -45,6 +45,8 @@ const CandidateDetailStyle = styled(Modal)`
                 color: #fff;
                 background-color: ${randomColor()};
                 border-radius: 8px;
+                min-width: 46px;
+                text-align: center;
             }
 
             &__left {

@@ -10,7 +10,7 @@ import companyDummy from '../../../../components/Assets/icon/company-dummy.png';
 import { MoreOutlined, SearchOutlined } from '@ant-design/icons';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../../components/Modal/CancelInvitation';
-import { useGetTaskInvitationQuery } from '../../../../app/actions/jobApi';
+import { jobApi } from '../../../../app/actions/jobApi';
 
 const InviteCandidates = () => {
     const [itemTabs, setItemTabs] = React.useState([]);
@@ -21,8 +21,8 @@ const InviteCandidates = () => {
         page_size: 12,
         status: 'invited'
     });
-    const { data: jobInvitation, isSuccess } =
-        useGetTaskInvitationQuery(params);
+    const [getJobInvitation, { data: jobInvitation, isSuccess }] =
+        jobApi.endpoints.getTaskInvitation.useLazyQuery();
 
     const onViewDetail = () => {
         setDetailInfo(!isDetailInfo);
@@ -30,6 +30,9 @@ const InviteCandidates = () => {
     const onCancelInvitation = () => {
         setCancelInvitation(!isCancelInvitation);
     };
+    React.useEffect(() => {
+        getJobInvitation(params);
+    }, []);
     React.useEffect(() => {
         if (isSuccess) {
             setItemTabs(

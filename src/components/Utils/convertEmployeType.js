@@ -1,6 +1,6 @@
 const convertEmployeType = (type) => {
     switch (type) {
-        case 'fullTime':
+        case 'fulltime':
             return 'Full Time';
         case 'freelance':
             return 'Freelance';
