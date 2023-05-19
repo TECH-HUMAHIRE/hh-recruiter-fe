@@ -83,15 +83,6 @@ export const jobApi = createApi({
                 { type: 'counTask', id: 1 }
             ]
         }),
-        countJob: builder.query({
-            query: (id) => {
-                return {
-                    url: `/task/count`,
-                    method: 'GET'
-                };
-            },
-            providesTags: [{ type: 'counTask', id: 1 }]
-        }),
         getCompanyName: builder.query({
             query: (params) => {
                 return {
@@ -113,6 +104,5 @@ export const {
     useGetTaskIdQuery,
     useGetTaskListQuery,
     useDeleteTaskMutation,
-    useCountJobQuery,
     useGetCompanyNameQuery
 } = jobApi;

@@ -5,7 +5,7 @@ import UsersIcon from '../Icon/Users';
 import CheckIcon from '../Icon/Check';
 import CloseIcon from '../Icon/Close';
 import { Style, MenuLink } from './style';
-import { useCountJobQuery } from '../../app/actions/jobApi';
+import { useCountJobQuery } from '../../app/actions/candidates';
 
 const TapHeader = () => {
     const { data } = useCountJobQuery();

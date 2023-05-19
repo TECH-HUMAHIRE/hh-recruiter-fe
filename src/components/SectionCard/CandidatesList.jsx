@@ -1,13 +1,32 @@
 import { SearchOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import React from 'react';
+import { candidates } from '../../app/actions/candidates';
 import CardCandidates from '../Card/CardCandidates';
 import { Col, Row } from '../Grid';
 // const { Search } = Input;
 const CandidatesList = ({
     onViewDetail = () => {},
-    onCancelInvitation = () => {}
+    onCancelInvitation = () => {},
+    code = ''
 }) => {
+    // state
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 12
+    });
+    // fetchapi
+    const [
+        getJobCandidates,
+        { data: dataCandidates, isSuccess: successGetJobCandidates }
+    ] = candidates.endpoints.getJobCandidates.useLazyQuery({
+        fixedCacheKey: 'getJobCandidates'
+    });
+    React.useEffect(() => {
+        if (code) {
+            getJobCandidates({ code, ...params });
+        }
+    }, [code]);
     return (
         <div style={{ minHeight: 300 }}>
             <Row>
