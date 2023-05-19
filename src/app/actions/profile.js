@@ -64,6 +64,14 @@ export const profileAuth = createApi({
                 };
             }
         }),
+        getExperienceCandidate: builder.query({
+            query: (id) => {
+                return {
+                    url: `/experience/${id}`,
+                    method: 'GET'
+                };
+            }
+        }),
         uploadeImage: builder.mutation({
             query: (body) => ({
                 url: '/upload/image',
@@ -99,6 +107,7 @@ export const {
     useSendOTPEmailMutation,
     useResendOTPEmailMutation,
     useGetEducationCandidateQuery,
+    useGetExperienceCandidateQuery,
     useUploadeImageMutation,
     usePostBankMutation,
     useGetBankListQuery
