@@ -1,4 +1,4 @@
-import { Card } from 'antd';
+import { Card, message } from 'antd';
 import React from 'react';
 import { Row, Col } from '../../../components/Grid';
 import { Style } from './wallet.style';
@@ -10,8 +10,10 @@ import WalletCredit from '../../../components/Modal/WalletCredit';
 import WithdrawMethod from '../../../components/Modal/WithdrawMethod';
 import EmailVerification from '../../../components/Modal/ModalHeader/EmailVerification';
 import { useGetProfileQuery } from '../../../app/actions/profile';
+import { usePostWithDrawMutation } from '../../../app/actions/walletApi';
 
 const Wallet = () => {
+    const [messageApi, contextHolder] = message.useMessage();
     // STATE
     const [isWithdraw, setWithdraw] = React.useState(false);
     const [valueForm, setFalueForm] = React.useState(null);
@@ -21,6 +23,12 @@ const Wallet = () => {
     // fetch api
     const { data } = useGetProfileQuery({
         fakeAuthProvider: 'myCompany'
+    });
+    const [
+        postWithDraw,
+        { isSuccess, reset, data: responsePostWithDraw, isLoading }
+    ] = usePostWithDrawMutation({
+        fixedCacheKey: 'postWithDraw'
     });
 
     // FUNCTION
@@ -43,13 +51,25 @@ const Wallet = () => {
             amount: valueForm.withdraw_nominal,
             account_number_id: bankId
         };
-        console.log(data);
-        // HIDE TEMPORARY VERIFICATION SMS
-        // setWithdrawNext(!isWithdrawNext);
-        // setVerifyEmail(!isVerifyEmail);
+        postWithDraw(data);
     };
+    React.useEffect(() => {
+        if (isSuccess) {
+            setWithdrawNext(false);
+            messageApi.open({
+                type: 'success',
+                content: responsePostWithDraw.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+            reset();
+        }
+    }, [isSuccess]);
     return (
         <Style>
+            {contextHolder}
             <h2 className="title">Wallet</h2>
             <Card className="wallet-header">
                 <Row>

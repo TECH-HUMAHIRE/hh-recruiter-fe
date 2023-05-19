@@ -6,12 +6,15 @@ import LockIcon from '../../Assets/icon/Lock_background.png';
 import WalletIcon from '../../Icon/Wallet';
 import { color } from '../../Utils/variable';
 import Style from './unlock-candidates.style';
+import { useGetProfileQuery } from '../../../app/actions/profile';
+import { formatNumber } from '../../Utils/formatMoney';
 
 const UnlockCandidates = ({
     onClose = () => {},
     isOpen = true,
     unLockCandidate = () => {}
 }) => {
+    const { data } = useGetProfileQuery();
     return (
         <Style open={isOpen} footer={null} onCancel={onClose}>
             <div>
@@ -29,7 +32,7 @@ const UnlockCandidates = ({
             <Row justify="end">
                 <Col md={6}>
                     <Button block color="primary" onClick={unLockCandidate}>
-                        Unlock 2.000 Pts
+                        Unlock 50 Pts
                     </Button>
                 </Col>
             </Row>
@@ -39,7 +42,13 @@ const UnlockCandidates = ({
                     height="22"
                     color={color.employee.primary}
                 />{' '}
-                My Point: <b>50.000 Pts</b>
+                My Point:{' '}
+                <b>
+                    {formatNumber(
+                        data?.data?.credit_amount - data?.data?.credit_used
+                    )}{' '}
+                    Pts
+                </b>
             </div>
         </Style>
     );

@@ -21,7 +21,6 @@ const CreditHistory = () => {
                             return moment(date).format('DD-MM-Y');
                         }
                     },
-
                     {
                         title: 'Job ID',
                         width: 100,

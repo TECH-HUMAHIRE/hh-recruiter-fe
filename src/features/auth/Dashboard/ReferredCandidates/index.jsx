@@ -17,7 +17,8 @@ const ReferredCandidates = () => {
         page_size: 12,
         status: 'accepted'
     });
-    const { data: jobInvitation } = useGetTaskInvitationQuery(params);
+    const { data: jobInvitation, isSuccess } =
+        useGetTaskInvitationQuery(params);
 
     const onViewDetail = () => {
         setDetailInfo(!isDetailInfo);
@@ -27,56 +28,60 @@ const ReferredCandidates = () => {
     };
 
     React.useEffect(() => {
-        setItemTabs(
-            jobInvitation?.data?.map((item) => {
-                return {
-                    label: (
-                        <div className="referred-tabs">
-                            <div className="card-earn__price">
-                                <span>Earn</span> {formatMoney(item.commission)}
-                            </div>
-                            <div className="referred-card">
-                                <img src={companyDummy} alt="" />
-                                <div style={{ width: '100%' }}>
-                                    <div className="referred-tabs__header">
-                                        <div>
-                                            <div className="referred-tabs__title">
-                                                {item.title}
+        if (isSuccess) {
+            setItemTabs(
+                jobInvitation?.data?.map((item) => {
+                    return {
+                        label: (
+                            <div className="referred-tabs">
+                                <div className="card-earn__price">
+                                    <span>Earn</span>{' '}
+                                    {formatMoney(item.commission)}
+                                </div>
+                                <div className="referred-card">
+                                    <img src={companyDummy} alt="" />
+                                    <div style={{ width: '100%' }}>
+                                        <div className="referred-tabs__header">
+                                            <div>
+                                                <div className="referred-tabs__title">
+                                                    {item.title}
+                                                </div>
+                                                <div className="referred-tabs__company">
+                                                    PT Grab Indonesia
+                                                </div>
+                                                <div className="referred-tabs__city">
+                                                    Jakarta, Indonesia
+                                                </div>
                                             </div>
-                                            <div className="referred-tabs__company">
-                                                PT Grab Indonesia
-                                            </div>
-                                            <div className="referred-tabs__city">
-                                                Jakarta, Indonesia
-                                            </div>
+                                            {/* <Dropdown
+                                                menu={[]}
+                                                placement="bottomCenter"
+                                                trigger="click"> */}
+                                            <MoreOutlined className="card-action" />
+                                            {/* </Dropdown> */}
                                         </div>
-                                        {/* <Dropdown
-                                            menu={[]}
-                                            placement="bottomCenter"
-                                            trigger="click"> */}
-                                        <MoreOutlined className="card-action" />
-                                        {/* </Dropdown> */}
-                                    </div>
-                                    <div className="referred-tabs__city">
-                                        Posted 11 Jun 2022 • Expired: 9 Jul 2022
+                                        <div className="referred-tabs__city">
+                                            Posted 11 Jun 2022 • Expired: 9 Jul
+                                            2022
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ),
-                    key: `${item.id}`,
-                    children: (
-                        <CandidatesList
-                            onViewDetail={onViewDetail}
-                            onCancelInvitation={onCancelInvitation}
-                            code={item.code}
-                            actionText="Unlock"
-                        />
-                    )
-                };
-            })
-        );
-    }, []);
+                        ),
+                        key: `${item.id}`,
+                        children: (
+                            <CandidatesList
+                                onViewDetail={onViewDetail}
+                                onCancelInvitation={onCancelInvitation}
+                                code={item.code}
+                                actionText="Unlock"
+                            />
+                        )
+                    };
+                })
+            );
+        }
+    }, [isSuccess]);
     return (
         <DashboardCandidatesStyle>
             {jobInvitation?.data?.length > 0 && (

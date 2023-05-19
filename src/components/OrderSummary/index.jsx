@@ -1,9 +1,13 @@
 import React from 'react';
+import { usePostWithDrawMutation } from '../../app/actions/walletApi';
 import Button from '../Button';
 import { formatMoney, formatNumber } from '../Utils/formatMoney';
 import OrderSummaryStyle from './order-summary.style';
 
 const OrderSummary = ({ onAction = () => {}, packageItem, valueForm }) => {
+    const [_, { isLoading }] = usePostWithDrawMutation({
+        fixedCacheKey: 'postWithDraw'
+    });
     return (
         <OrderSummaryStyle>
             <h2 className="title">Order Summary</h2>
@@ -29,7 +33,11 @@ const OrderSummary = ({ onAction = () => {}, packageItem, valueForm }) => {
                     {formatMoney(valueForm.withdraw_nominal) || '-'}
                 </div>
             </div>
-            <Button block color="primary" onClick={() => onAction(packageItem)}>
+            <Button
+                loading={isLoading}
+                block
+                color="primary"
+                onClick={() => onAction(packageItem)}>
                 Withdraw now
             </Button>
         </OrderSummaryStyle>

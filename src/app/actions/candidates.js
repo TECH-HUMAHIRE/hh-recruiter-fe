@@ -60,7 +60,7 @@ export const candidates = createApi({
                     method: 'GET'
                 };
             },
-            providesTags: ['unlockCandidate']
+            providesTags: ['unlockCandidate', 'saveCandidate']
         }),
         saveCandidate: builder.mutation({
             query: (body) => {

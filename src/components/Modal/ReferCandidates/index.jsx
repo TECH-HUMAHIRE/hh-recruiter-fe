@@ -7,6 +7,7 @@ import EmailTab from './EmailTab';
 import ReferralLinkTab from './ReferralLinkTab';
 
 const ReferCandidates = ({ isRefer = false, onClose = () => {}, data }) => {
+    console.log(data);
     return (
         <ReferCandidatesStyle
             open={isRefer}

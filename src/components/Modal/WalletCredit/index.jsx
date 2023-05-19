@@ -15,20 +15,16 @@ const WalletCredit = ({
 }) => {
     const nominalButton = [
         {
-            value: 1000000,
-            id: 1
+            value: 1000000
         },
         {
-            value: 3000000,
-            id: 2
+            value: 3000000
         },
         {
-            value: 5000000,
-            id: 3
+            value: 5000000
         },
         {
-            value: 10000000,
-            id: 4
+            value: 10000000
         }
     ];
     const [form] = Form.useForm();
@@ -38,8 +34,8 @@ const WalletCredit = ({
     const onChangeForm = (changedFields, allFields) => {
         setActive('');
     };
-    const onClickNominal = (name, value) => {
-        setActive(name);
+    const onClickNominal = (value) => {
+        setActive(value);
         form.setFieldsValue({
             withdraw_nominal: value
         });
@@ -52,6 +48,11 @@ const WalletCredit = ({
     React.useEffect(() => {
         forceUpdate({});
     }, []);
+    React.useEffect(() => {
+        if (open) {
+            setActive(form.getFieldValue('withdraw_nominal'));
+        }
+    }, [open]);
     return (
         <WalletCreditStyle
             open={open}
@@ -135,16 +136,13 @@ const WalletCredit = ({
                                     <Col md={3} key={key}>
                                         <Button
                                             className={`btn-withdraw ${
-                                                isActive === item.id
+                                                isActive === item.value
                                                     ? 'active'
                                                     : ''
                                             }`}
                                             block
                                             onClick={() =>
-                                                onClickNominal(
-                                                    item.id,
-                                                    item.value
-                                                )
+                                                onClickNominal(item.value)
                                             }>
                                             {formatMoney(item.value)}
                                         </Button>
