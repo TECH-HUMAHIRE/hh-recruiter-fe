@@ -4,7 +4,7 @@ import { Col, Row } from '../../../../components/Grid';
 import { DashboardCandidatesStyle } from '../style';
 import EmptyJob from '../../../../components/EmptyJob';
 import TabMenu from '../../../../components/Tabs';
-import { useGetTaskInvitationQuery } from '../../../../app/actions/jobApi';
+import { jobApi } from '../../../../app/actions/jobApi';
 import { MoreOutlined, SearchOutlined } from '@ant-design/icons';
 import CandidatesList from '../../../../components/SectionCard/CandidatesList';
 
@@ -17,16 +17,18 @@ const ReferredCandidates = () => {
         page_size: 12,
         status: 'accepted'
     });
-    const { data: jobInvitation, isSuccess } =
-        useGetTaskInvitationQuery(params);
 
+    const [getJobInvitation, { data: jobInvitation, isSuccess }] =
+        jobApi.endpoints.getTaskInvitation.useLazyQuery();
     const onViewDetail = () => {
         setDetailInfo(!isDetailInfo);
     };
     const onCancelInvitation = () => {
         setCancelInvitation(!isCancelInvitation);
     };
-
+    React.useEffect(() => {
+        getJobInvitation(params);
+    }, []);
     React.useEffect(() => {
         if (isSuccess) {
             setItemTabs(

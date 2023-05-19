@@ -167,6 +167,8 @@ export const CardReferredStyle = styled(Card)`
                 color: #fff;
                 background-color: ${randomColor()};
                 border-radius: 8px;
+                min-width: 46px;
+                text-align: center;
             }
 
             &__left {
