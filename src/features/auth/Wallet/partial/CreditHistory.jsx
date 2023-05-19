@@ -15,8 +15,8 @@ const CreditHistory = () => {
                     {
                         title: 'Date',
                         width: 100,
-                        dataIndex: 'created_at',
-                        key: 'created_at',
+                        dataIndex: 'date',
+                        key: 'date',
                         render: (date) => {
                             return moment(date).format('DD-MM-Y');
                         }
@@ -31,13 +31,13 @@ const CreditHistory = () => {
                     {
                         title: 'User',
                         width: 100,
-                        dataIndex: 'jobseeker',
-                        key: 'jobseeker'
+                        dataIndex: 'user',
+                        key: 'user'
                     },
                     {
                         title: 'Job',
-                        dataIndex: 'Job',
-                        key: 'Job',
+                        dataIndex: 'job',
+                        key: 'job',
                         width: 150
                     },
                     {

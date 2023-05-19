@@ -33,9 +33,12 @@ const CandidateDetail = ({
 }) => {
     const [getEducationCandidate, { data: educationList }] =
         profileAuth.endpoints.getEducationCandidate.useLazyQuery();
+    const [getExperienceCandidate, { data: experienceList }] =
+        profileAuth.endpoints.getExperienceCandidate.useLazyQuery();
     React.useEffect(() => {
         if (data?.id) {
             getEducationCandidate(data.id);
+            getExperienceCandidate(data.id);
         }
     }, [data]);
     const dummyData = [
@@ -226,7 +229,7 @@ const CandidateDetail = ({
                         {
                             label: `Experience`,
                             key: '1',
-                            children: <Experience data={dummyData} />
+                            children: <Experience data={experienceList?.data} />
                         },
                         {
                             label: `Education`,

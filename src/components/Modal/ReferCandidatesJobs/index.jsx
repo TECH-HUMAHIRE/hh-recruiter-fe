@@ -6,7 +6,10 @@ import { useGetTaskListQuery } from '../../../app/actions/jobApi';
 import { Col, Row } from '../../Grid';
 import Button from '../../Button';
 import PaginationTable from '../../PaginationTable';
-import { useReferCandidateMutation } from '../../../app/actions/candidates';
+import {
+    useReferCandidateMutation,
+    useUpdateStatusJobCandidatesMutation
+} from '../../../app/actions/candidates';
 
 const ReferCandidatesJobs = ({
     onClose = () => {},
@@ -14,43 +17,60 @@ const ReferCandidatesJobs = ({
     candidate = null
 }) => {
     const [messageApi, contextHolder] = message.useMessage();
+    // state
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 5
     });
     const [jobId, setJobId] = React.useState(null);
     const [inviting, setInviting] = React.useState([]);
+    const [jobCode, setJobCode] = React.useState([]);
+    // fetch api
     const {
         data: jobList,
         refetch: refetchJobList,
         isLoading
     } = useGetTaskListQuery(params);
-    const [referCandidate, { reset, isLoading: loadingRefer, isError, error }] =
-        useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
+    const [
+        referCandidate,
+        { reset, isLoading: loadingRefer, isError, error, isSuccess }
+    ] = useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
+    const [updateStatusJobCandidates] = useUpdateStatusJobCandidatesMutation();
+    // function
     const onRefetchCandidates = async (updateParams) => {
         await setParams(updateParams);
         refetchJobList();
     };
-    const handleChooseTask = (e) => {
+    const handleChooseTask = (e, code) => {
         if (e.target.checked) {
             setJobId(Number(e.target.value));
-            setInviting([...inviting, Number(e.target.value)])
+            setInviting([...inviting, Number(e.target.value)]);
+            setJobCode([...jobCode, code]);
         } else {
             setJobId(null);
-            setInviting(inviting.filter(item=> item !== Number(e.target.value)))
+            setJobCode(
+                jobCode.filter((item) => item !== Number(e.target.value))
+            );
+            setInviting(
+                inviting.filter((item) => item !== Number(e.target.value))
+            );
         }
     };
     const handleSendRefer = (values) => {
-        let data= {
+        let data = {
             jobseeker_id: candidate.id,
             inviting: inviting.map((item) => {
                 return {
                     job_id: item,
                     message: values.message || ''
-                }
+                };
             })
-        }
+        };
         referCandidate(data);
+        const dataUpdate = {
+            status: 'invited'
+        };
+        updateStatusJobCandidates({ code: jobCode[0], ...dataUpdate });
     };
     React.useEffect(() => {
         if (isError) {
@@ -64,7 +84,19 @@ const ReferCandidatesJobs = ({
             });
             reset();
         }
-    }, [isError]);
+        if (isSuccess) {
+            console.log('masuk');
+            const data = {
+                status: 'invited'
+            };
+            console.log('inviting', inviting);
+            for (let key in inviting.length) {
+                console.log('masuk kkkk');
+                updateStatusJobCandidates({ ...inviting[key], ...data });
+            }
+            reset();
+        }
+    }, [isError, isSuccess]);
     return (
         <Style
             title="Refer Candidates"
@@ -104,7 +136,12 @@ const ReferCandidatesJobs = ({
                                         <div className="job-card" key={key}>
                                             <Checkbox
                                                 value={item?.job?.id}
-                                                onChange={handleChooseTask}
+                                                onChange={(e) =>
+                                                    handleChooseTask(
+                                                        e,
+                                                        item?.job?.code
+                                                    )
+                                                }
                                             />
                                             <img
                                                 src={
