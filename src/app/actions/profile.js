@@ -101,6 +101,13 @@ export const profileAuth = createApi({
                 method: 'GET',
                 params
             })
+        }),
+        getCertificate: builder.query({
+            query: (id) => ({
+                url: `/certificate/${id}`,
+                method: 'GET'
+                // params
+            })
         })
     })
 });
@@ -118,5 +125,6 @@ export const {
     useUploadeImageMutation,
     usePostBankMutation,
     useGetBankListQuery,
-    useGetBankListNameQuery
+    useGetBankListNameQuery,
+    useGetCertificateQuery
 } = profileAuth;

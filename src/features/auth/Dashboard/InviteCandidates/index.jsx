@@ -47,7 +47,7 @@ const InviteCandidates = () => {
         getJobInvitation(newParams);
         setParams(newParams);
     }, 750);
-    const onCancelInvitation = () => {
+    const onCancelInvitation = (candidates) => {
         setCancelInvitation(!isCancelInvitation);
     };
     React.useEffect(() => {
@@ -171,6 +171,7 @@ const InviteCandidates = () => {
                 </Col>
             </Row>
             <CandidateDetail
+                isAssign
                 open={isDetailInfo}
                 data={candidateInfo}
                 onClose={onViewDetail}

@@ -14,7 +14,7 @@ export const jobApi = createApi({
             return headers;
         }
     }),
-    tagTypes: ['Post'],
+    tagTypes: ['Post', 'counTask'],
     endpoints: (builder) => ({
         getJobsList: builder.query({
             query: (params) => {
@@ -55,6 +55,7 @@ export const jobApi = createApi({
             },
             providesTags: [{ type: 'TaskId', id: 1 }]
         }),
+
         addTask: builder.mutation({
             query: (body) => {
                 return {
