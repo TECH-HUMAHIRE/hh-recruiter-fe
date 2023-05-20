@@ -33,7 +33,6 @@ const TabMenu = ({
     defaultActiveKey = '1',
     // eslint-disable-next-line react/prop-types
     item = [],
-
     // eslint-disable-next-line react/prop-types
     onChange = () => {},
     tabPosition = 'top'

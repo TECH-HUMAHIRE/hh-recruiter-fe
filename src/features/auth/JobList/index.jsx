@@ -120,7 +120,7 @@ const Jobist = () => {
                                 <div className="job-card">
                                     <img
                                         src={
-                                            item.company.photo_profile ||
+                                            item.company.logo_url ||
                                             companyDummy
                                         }
                                         alt=""
