@@ -71,7 +71,6 @@ const AccountNumber = ({ onClose = () => {} }) => {
             }
         }
     }, [successGetAccountNumber]);
-    console.log('listBank', listBank);
     return (
         <React.Fragment>
             {contextHolder}

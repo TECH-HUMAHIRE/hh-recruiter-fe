@@ -7,7 +7,6 @@ import { formatMoney } from '../../../../components/Utils/formatMoney';
 
 const CreditHistory = () => {
     const { data } = useGetCreditHistoryQuery();
-    console.log(data);
     return (
         <div className="table-history">
             <Table

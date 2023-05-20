@@ -8,7 +8,8 @@ import { Col, Row } from '../Grid';
 const CandidatesList = ({
     onViewDetail = () => {},
     onCancelInvitation = () => {},
-    code = ''
+    code = '',
+    status = ''
 }) => {
     // state
     const [params, setParams] = React.useState({
@@ -46,7 +47,8 @@ const CandidatesList = ({
                     return (
                         <Col xl={6} md={6} sm={6} key={key}>
                             <CardCandidates
-                                data={item}
+                                status={status}
+                                data={item.jobseeker}
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}
                             />

@@ -33,7 +33,6 @@ const CardCandidates = ({
             setInitialName(setname);
         }
     }, [data]);
-    console.log(data);
     const actionDropdown = [
         {
             key: '1',
@@ -79,19 +78,73 @@ const CardCandidates = ({
                     Remove
                 </CardMenu>
             )
+        },
+        {
+            key: '6',
+            label: (
+                <CardMenu onClick={() => onRevomeCandidate(data)}>
+                    <CloseOutlined />
+                    Cancel Invitation
+                </CardMenu>
+            )
+        },
+        {
+            key: '7',
+            label: (
+                <CardMenu onClick={() => onRevomeCandidate(data)}>
+                    <CloseOutlined />
+                    Cancel Reffered
+                </CardMenu>
+            )
         }
     ];
     const [items, setItems] = React.useState(actionDropdown);
     React.useEffect(() => {
         if (status) {
+            console.log(status);
             setItems(
                 actionDropdown.filter((item) => {
                     switch (status) {
                         case 'search':
-                            return item.key !== '4' && item.key !== '5';
+                            return (
+                                item.key !== '4' &&
+                                item.key !== '5' &&
+                                item.key !== '6' &&
+                                item.key !== '7'
+                            );
+                        case 'invited':
+                            return (
+                                item.key !== '2' &&
+                                item.key !== '3' &&
+                                item.key !== '4' &&
+                                item.key !== '5' &&
+                                item.key !== '7'
+                            );
+                        case 'referred':
+                            return (
+                                item.key !== '2' &&
+                                item.key !== '3' &&
+                                item.key !== '4' &&
+                                item.key !== '5' &&
+                                item.key !== '6'
+                            );
+                        case 'shortlisted':
+                            return (
+                                item.key !== '2' &&
+                                item.key !== '3' &&
+                                item.key !== '4' &&
+                                item.key !== '5' &&
+                                item.key !== '6' &&
+                                item.key !== '7'
+                            );
 
                         default:
-                            return item.key !== '3' && item.key !== '5';
+                            return (
+                                item.key !== '3' &&
+                                item.key !== '5' &&
+                                item.key !== '6' &&
+                                item.key !== '7'
+                            );
                     }
                 })
             );

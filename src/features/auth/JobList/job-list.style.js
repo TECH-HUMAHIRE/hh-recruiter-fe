@@ -81,6 +81,7 @@ export const DashboardCandidatesStyle = styled.div`
             img {
                 width: 60px;
                 margin-right: 10px;
+                border-radius: 8px;
             }
         }
         &-tabs {

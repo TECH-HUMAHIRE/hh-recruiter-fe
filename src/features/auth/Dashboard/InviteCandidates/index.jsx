@@ -11,28 +11,49 @@ import { MoreOutlined, SearchOutlined } from '@ant-design/icons';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../../components/Modal/CancelInvitation';
 import { jobApi } from '../../../../app/actions/jobApi';
+import moment from 'moment';
+import debounce from '../../../../components/Utils/debounce';
+import PaginationTable from '../../../../components/PaginationTable';
 
 const InviteCandidates = () => {
+    // state
     const [itemTabs, setItemTabs] = React.useState([]);
+
     const [isDetailInfo, setDetailInfo] = React.useState(false);
+    const [candidateInfo, setCandidateInfo] = React.useState(null);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 12,
         status: 'invited'
     });
+    // fetch api
     const [getJobInvitation, { data: jobInvitation, isSuccess }] =
         jobApi.endpoints.getTaskInvitation.useLazyQuery();
-
-    const onViewDetail = () => {
+    // function
+    const onViewDetail = (candidate) => {
+        setCandidateInfo(candidate);
         setDetailInfo(!isDetailInfo);
     };
+    const onRefetchCandidates = async (updateParams) => {
+        await setParams(updateParams);
+        getJobInvitation(updateParams);
+    };
+    const onSearchJob = debounce((e) => {
+        let newParams = {
+            ...params,
+            title: e.target.value
+        };
+        getJobInvitation(newParams);
+        setParams(newParams);
+    }, 750);
     const onCancelInvitation = () => {
         setCancelInvitation(!isCancelInvitation);
     };
     React.useEffect(() => {
         getJobInvitation(params);
     }, []);
+
     React.useEffect(() => {
         if (isSuccess) {
             setItemTabs(
@@ -45,7 +66,7 @@ const InviteCandidates = () => {
                                     {formatMoney(item?.commission)}
                                 </div>
                                 <div className="referred-card">
-                                    <img src={companyDummy} alt="" />
+                                    <img src={item?.company?.logo_url} alt="" />
                                     <div style={{ width: '100%' }}>
                                         <div className="referred-tabs__header">
                                             <div>
@@ -56,7 +77,18 @@ const InviteCandidates = () => {
                                                     {item.company.name}
                                                 </div>
                                                 <div className="referred-tabs__city">
-                                                    Jakarta, Indonesia
+                                                    {
+                                                        item?.sub_district
+                                                            ?.district?.city
+                                                            ?.province?.name
+                                                    }
+                                                    ,{' '}
+                                                    {
+                                                        item?.sub_district
+                                                            ?.district?.city
+                                                            ?.province?.country
+                                                            ?.name
+                                                    }
                                                 </div>
                                             </div>
                                             {/* <Dropdown
@@ -67,16 +99,23 @@ const InviteCandidates = () => {
                                             {/* </Dropdown> */}
                                         </div>
                                         <div className="referred-tabs__city">
-                                            Posted 11 Jun 2022 • Expired: 9 Jul
-                                            2022
+                                            Posted{' '}
+                                            {moment(item.created_at).format(
+                                                'DD MMM YYYY'
+                                            )}{' '}
+                                            • Expired:{' '}
+                                            {moment(item.expired_at).format(
+                                                'DD MMM YYYY'
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         ),
-                        key: `${item.id}`,
+                        key: item.id,
                         children: (
                             <CandidatesList
+                                status="invited"
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}
                                 code={item.code}
@@ -92,13 +131,14 @@ const InviteCandidates = () => {
         <DashboardCandidatesStyle>
             {jobInvitation?.data?.length > 0 && (
                 <Row>
-                    <Col xl={3} lg={3} md={12}>
+                    <Col xl={4} lg={4} md={12}>
                         <Form.Item>
                             <Input
+                                onChange={onSearchJob}
                                 prefix={<SearchOutlined />}
                                 size="large"
                                 type={'text'}
-                                placeholder="Search Candidates"
+                                placeholder="Search Job"
                             />
                         </Form.Item>
                     </Col>
@@ -108,15 +148,33 @@ const InviteCandidates = () => {
             <Row>
                 <Col xl={12}>
                     {jobInvitation?.data?.length > 0 ? (
-                        <TabMenu item={itemTabs} tabPosition="left" />
+                        <TabMenu
+                            item={itemTabs}
+                            tabPosition="left"
+                            // activeKey="188"
+                        />
                     ) : (
                         <Card>
                             <EmptyJob button={false} />
                         </Card>
                     )}
+                    {jobInvitation?.meta?.info?.count > 0 && (
+                        <div className="job-pagination">
+                            <PaginationTable
+                                showSizeChanger={false}
+                                data={jobInvitation}
+                                refetch={onRefetchCandidates}
+                                params={params}
+                            />
+                        </div>
+                    )}
                 </Col>
             </Row>
-            <CandidateDetail open={isDetailInfo} onClose={onViewDetail} />
+            <CandidateDetail
+                open={isDetailInfo}
+                data={candidateInfo}
+                onClose={onViewDetail}
+            />
             <CancelInvitation
                 isOpen={isCancelInvitation}
                 onClose={onCancelInvitation}

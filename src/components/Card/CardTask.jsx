@@ -102,8 +102,16 @@ const CardTask = ({
                                 {data?.job.title}
                             </div>
                             <div className="card-header__info-location">
-                                {data?.job.company.name} <br /> Jakarta,
-                                Indonesia
+                                {data?.job.company.name} <br />{' '}
+                                {
+                                    data?.job?.sub_district?.district?.city
+                                        ?.province?.name
+                                }
+                                ,{' '}
+                                {
+                                    data?.job?.sub_district?.district?.city
+                                        ?.province?.country?.name
+                                }
                             </div>
                         </div>
                     </div>
@@ -145,7 +153,18 @@ const CardTask = ({
                     <span>{convertEmployeType(data?.job.employment_type)}</span>
                 </div>
             </div>
-
+            <Link
+                to={`/invited-candidates?id=${data?.id}`}
+                disabled={
+                    data?.job?.count_invitation_status.invited_candidates < 1
+                }>
+                <div className="card-info">
+                    <b>
+                        {data?.job?.count_invitation_status?.invited_candidates}
+                    </b>{' '}
+                    Invited Candidates
+                </div>
+            </Link>
             <Link
                 to={`/referred-candidates?id=${data?.id}`}
                 disabled={
@@ -175,18 +194,6 @@ const CardTask = ({
                         }
                     </b>{' '}
                     Shortlisted Candidates
-                </div>
-            </Link>
-            <Link
-                to={`/interview-candidates?id=${data?.id}`}
-                disabled={
-                    data?.job.count_invitation_status.interview_candidates < 1
-                }>
-                <div className="card-info last">
-                    <b>
-                        {data?.job.count_invitation_status.interview_candidates}
-                    </b>{' '}
-                    Interview Candidates
                 </div>
             </Link>
         </CardJobStyle>
