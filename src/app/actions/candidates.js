@@ -96,16 +96,7 @@ export const candidates = createApi({
             },
             providesTags: ['saveCandidate', 'unlockCandidate']
         }),
-        updateStatusJobCandidates: builder.mutation({
-            query: ({ code, ...body }) => {
-                return {
-                    url: `/job/invitation/${code}/status`,
-                    method: 'PUT',
-                    body
-                };
-            },
-            invalidatesTags: ['saveCandidate', 'unlockCandidate', 'candidates']
-        }),
+
         getProfile: builder.query({
             query: (params) => {
                 return {
@@ -155,7 +146,6 @@ export const {
     useGetCandidatesUnlockListQuery,
     useSaveCandidateMutation,
     useUnlockCandidateMutation,
-    useUpdateStatusJobCandidatesMutation,
     useGetCountCandidatesQuery,
     useCountJobQuery,
     useReferCandidateMutation,

@@ -2,6 +2,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import React from 'react';
 import { candidates } from '../../app/actions/candidates';
+import { useUpdateStatusJobCandidatesMutation } from '../../app/actions/jobApi';
 import CardCandidates from '../Card/CardCandidates';
 import { Col, Row } from '../Grid';
 // const { Search } = Input;
@@ -23,6 +24,18 @@ const CandidatesList = ({
     ] = candidates.endpoints.getJobCandidates.useLazyQuery({
         fixedCacheKey: 'getJobCandidates'
     });
+    const [_, { isSuccess: successUpdateStatus, reset }] =
+        useUpdateStatusJobCandidatesMutation({
+            fixedCacheKey: 'statusJobCandidates'
+        });
+    const [getCountTask] = candidates.endpoints.countJob.useLazyQuery();
+    React.useEffect(() => {
+        if (successUpdateStatus) {
+            getJobCandidates({ code, ...params });
+            getCountTask();
+            reset();
+        }
+    }, [successUpdateStatus]);
     React.useEffect(() => {
         if (code) {
             getJobCandidates({ code, ...params });
@@ -48,6 +61,7 @@ const CandidatesList = ({
                         <Col xl={6} md={6} sm={6} key={key}>
                             <CardCandidates
                                 status={status}
+                                dataParent={item}
                                 data={item.jobseeker}
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}

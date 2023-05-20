@@ -92,6 +92,16 @@ export const jobApi = createApi({
                     params
                 };
             }
+        }),
+        updateStatusJobCandidates: builder.mutation({
+            query: ({ code, ...body }) => {
+                return {
+                    url: `/job/invitation/${code}/status`,
+                    method: 'PUT',
+                    body
+                };
+            },
+            invalidatesTags: [{ type: 'Post', id: 2 }]
         })
     })
 });
@@ -105,5 +115,6 @@ export const {
     useGetTaskIdQuery,
     useGetTaskListQuery,
     useDeleteTaskMutation,
-    useGetCompanyNameQuery
+    useGetCompanyNameQuery,
+    useUpdateStatusJobCandidatesMutation
 } = jobApi;
