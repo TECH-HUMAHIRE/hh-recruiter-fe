@@ -14,7 +14,7 @@ export const walletApi = createApi({
             return headers;
         }
     }),
-    tagTypes: ['huma_point'],
+    tagTypes: ['huma_point', 'withdraw'],
     endpoints: (builder) => ({
         humaPoint: builder.query({
             query: (params) => {
@@ -43,7 +43,18 @@ export const walletApi = createApi({
                     method: 'POST',
                     body
                 };
-            }
+            },
+            invalidatesTags: ['withdraw']
+        }),
+        getWithdraw: builder.query({
+            query: (params) => {
+                return {
+                    url: `/withdraw`,
+                    method: 'GET',
+                    params
+                };
+            },
+            providesTags: ['withdraw']
         })
     })
 });
@@ -53,5 +64,6 @@ export const walletApi = createApi({
 export const {
     useHumaPointQuery,
     useGetCreditHistoryQuery,
-    usePostWithDrawMutation
+    usePostWithDrawMutation,
+    useGetWithdrawQuery
 } = walletApi;

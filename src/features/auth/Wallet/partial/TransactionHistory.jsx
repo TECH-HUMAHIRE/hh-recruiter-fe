@@ -4,8 +4,21 @@ import { EyeOutlined } from '@ant-design/icons';
 import DownloadIcon from '../../../../components/Icon/Download';
 import moment from 'moment';
 import { formatMoney } from '../../../../components/Utils/formatMoney';
+import { useGetWithdrawQuery } from '../../../../app/actions/walletApi';
+import PaginationTable from '../../../../components/PaginationTable';
 
 const TransactionHistory = ({ onShowDetail = () => {} }) => {
+    // STATE
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 10
+    });
+    // FETCH API
+    const { data: dataTable, isSuccess } = useGetWithdrawQuery();
+    // FUNCTION
+    const onRefetchCandidates = (updateParams) => {
+        setParams(updateParams);
+    };
     return (
         <div>
             <Table
@@ -28,7 +41,7 @@ const TransactionHistory = ({ onShowDetail = () => {} }) => {
                             return (
                                 <>
                                     <span style={{ marginRight: 5 }}>
-                                        {data.code}
+                                        {data.receipt_number}
                                     </span>
                                     <Tag
                                         color={
@@ -48,22 +61,19 @@ const TransactionHistory = ({ onShowDetail = () => {} }) => {
                     {
                         title: 'Account Number',
                         width: 100,
-                        dataIndex: 'user',
-                        key: 'user.name',
-                        render: (user) => {
-                            return user.name;
-                        }
+                        dataIndex: 'account_number',
+                        key: 'account_number'
                     },
                     {
                         title: 'Withdrawal Amount',
-                        dataIndex: 'items',
-                        key: 'items[0].item',
+                        dataIndex: 'withdrawal_amount',
+                        key: 'withdrawal_amount',
                         width: 150,
-                        render: (item) => {
-                            return item[0].item;
+                        render: (withdrawal_amount) => {
+                            return formatMoney(withdrawal_amount);
                         }
                     },
-                    
+
                     {
                         title: 'Action',
                         dataIndex: '',
@@ -89,12 +99,22 @@ const TransactionHistory = ({ onShowDetail = () => {} }) => {
                         }
                     }
                 ]}
-                dataSource={[]}
+                dataSource={dataTable?.data}
                 scroll={{
                     x: 1500,
                     y: 500
                 }}
             />
+            {dataTable?.meta?.info?.count > 0 && (
+                <div style={{ marginTop: 20 }}>
+                    <PaginationTable
+                        data={dataTable}
+                        showSizeChanger={false}
+                        refetch={onRefetchCandidates}
+                        params={params}
+                    />
+                </div>
+            )}
         </div>
     );
 };

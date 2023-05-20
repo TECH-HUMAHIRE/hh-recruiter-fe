@@ -10,7 +10,10 @@ import companyDummy from '../../../../components/Assets/icon/company-dummy.png';
 import { MoreOutlined, SearchOutlined } from '@ant-design/icons';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../../components/Modal/CancelInvitation';
-import { jobApi } from '../../../../app/actions/jobApi';
+import {
+    jobApi,
+    useUpdateStatusJobCandidatesMutation
+} from '../../../../app/actions/jobApi';
 import moment from 'moment';
 import debounce from '../../../../components/Utils/debounce';
 import PaginationTable from '../../../../components/PaginationTable';
@@ -20,6 +23,8 @@ const InviteCandidates = () => {
     const [itemTabs, setItemTabs] = React.useState([]);
 
     const [isDetailInfo, setDetailInfo] = React.useState(false);
+    const [fullInfoStatusCandidates, setFullInfoCandidateStatus] =
+        React.useState(null);
     const [candidateInfo, setCandidateInfo] = React.useState(null);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
     const [params, setParams] = React.useState({
@@ -30,6 +35,12 @@ const InviteCandidates = () => {
     // fetch api
     const [getJobInvitation, { data: jobInvitation, isSuccess }] =
         jobApi.endpoints.getTaskInvitation.useLazyQuery();
+    const [
+        updateStatusCandidate,
+        { isSuccess: successUpdateStatus, reset, isLoading: loadingButton }
+    ] = useUpdateStatusJobCandidatesMutation({
+        fixedCacheKey: 'statusJobCandidates'
+    });
     // function
     const onViewDetail = (candidate) => {
         setCandidateInfo(candidate);
@@ -47,12 +58,28 @@ const InviteCandidates = () => {
         getJobInvitation(newParams);
         setParams(newParams);
     }, 750);
-    const onCancelInvitation = (candidates) => {
+    const onCancelInvitation = (candidates, fullInfo) => {
         setCancelInvitation(!isCancelInvitation);
+        setFullInfoCandidateStatus(fullInfo);
+    };
+    const onActionCancel = () => {
+        let code = fullInfoStatusCandidates.code;
+        const data = {
+            status: 'cancelled'
+        };
+        updateStatusCandidate({ code, ...data });
     };
     React.useEffect(() => {
         getJobInvitation(params);
     }, []);
+    React.useEffect(() => {
+        if (successUpdateStatus) {
+            getJobInvitation(params);
+            setCancelInvitation(!isCancelInvitation);
+
+            reset();
+        }
+    }, [successUpdateStatus]);
 
     React.useEffect(() => {
         if (isSuccess) {
@@ -177,6 +204,8 @@ const InviteCandidates = () => {
                 onClose={onViewDetail}
             />
             <CancelInvitation
+                loadingButton={loadingButton}
+                onActionCancel={onActionCancel}
                 isOpen={isCancelInvitation}
                 onClose={onCancelInvitation}
             />

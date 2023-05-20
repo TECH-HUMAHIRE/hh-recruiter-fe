@@ -4,7 +4,12 @@ import Button from '../../Button';
 import { Col, Row } from '../../Grid';
 import Cancel_invitation from '../../Assets/icon/Cancel_invitation.png';
 
-const CancelInvitation = ({ onClose = () => {}, isOpen = true }) => {
+const CancelInvitation = ({
+    onClose = () => {},
+    isOpen = true,
+    onActionCancel = () => {},
+    loadingButton = false
+}) => {
     return (
         <Modal open={isOpen} footer={null} onCancel={onClose}>
             <div>
@@ -25,7 +30,11 @@ const CancelInvitation = ({ onClose = () => {}, isOpen = true }) => {
                     </Button>
                 </Col>
                 <Col md={6}>
-                    <Button block color="primary">
+                    <Button
+                        block
+                        color="primary"
+                        onClick={onActionCancel}
+                        loading={loadingButton}>
                         Cancel Invitation
                     </Button>
                 </Col>

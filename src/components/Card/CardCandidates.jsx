@@ -19,6 +19,7 @@ const CardCandidates = ({
     onCancelInvitation = () => {},
     onRevomeCandidate = () => {},
     data,
+    dataParent,
     status = false
 }) => {
     // state
@@ -82,7 +83,7 @@ const CardCandidates = ({
         {
             key: '6',
             label: (
-                <CardMenu onClick={() => onCancelInvitation(data)}>
+                <CardMenu onClick={() => onCancelInvitation(data, dataParent)}>
                     <CloseOutlined />
                     Cancel Invitation
                 </CardMenu>
@@ -91,7 +92,7 @@ const CardCandidates = ({
         {
             key: '7',
             label: (
-                <CardMenu onClick={() => onCancelInvitation(data)}>
+                <CardMenu onClick={() => onCancelInvitation(data, dataParent)}>
                     <CloseOutlined />
                     Cancel Reffered
                 </CardMenu>
@@ -136,7 +137,8 @@ const CardCandidates = ({
                                 item.key !== '6' &&
                                 item.key !== '7'
                             );
-
+                        case 'archived':
+                            return false;
                         default:
                             return (
                                 item.key !== '3' &&
