@@ -154,7 +154,11 @@ const CardTask = ({
                 </div>
             </div>
             <Link
-                to={`/invited-candidates?id=${data?.id}`}
+                to={
+                    data?.job?.count_invitation_status.invited_candidates < 1
+                        ? '#'
+                        : `/invited-candidates?id=${data?.id}`
+                }
                 disabled={
                     data?.job?.count_invitation_status.invited_candidates < 1
                 }>
@@ -166,7 +170,11 @@ const CardTask = ({
                 </div>
             </Link>
             <Link
-                to={`/referred-candidates?id=${data?.id}`}
+                to={
+                    data?.job?.count_invitation_status?.referred_candidates < 1
+                        ? '#'
+                        : `/referred-candidates?id=${data?.id}`
+                }
                 disabled={
                     data?.job?.count_invitation_status?.referred_candidates < 1
                 }>
@@ -181,7 +189,12 @@ const CardTask = ({
                 </div>
             </Link>
             <Link
-                to={`/shortlisted-candidates?id=${data?.id}`}
+                to={
+                    data?.job?.count_invitation_status.shortlisted_candidates <
+                    1
+                        ? '#'
+                        : `/shortlisted-candidates?id=${data?.id}`
+                }
                 disabled={
                     data?.job?.count_invitation_status.shortlisted_candidates <
                     1

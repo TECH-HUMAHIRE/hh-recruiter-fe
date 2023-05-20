@@ -58,6 +58,12 @@ const Jobist = () => {
         page_size: 10,
         status: 'active'
     });
+    const [paramsTask, _] = React.useState({
+        page: 1,
+        sort: 'desc',
+        sort_by: 'id',
+        page_size: 12
+    });
     const [isFilter, setFilter] = React.useState(false);
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
@@ -65,7 +71,7 @@ const Jobist = () => {
 
     // fetch api
     const { data: jobList } = useGetJobsListQuery(params);
-    const { refetch } = useGetTaskListQuery();
+    const { refetch } = useGetTaskListQuery(paramsTask);
     const [addMyTask, response] = useAddTaskMutation();
 
     // function

@@ -23,6 +23,8 @@ const MyTask = () => {
     // state
     const [params, setParams] = React.useState({
         page: 1,
+        sort: 'desc',
+        sort_by: 'id',
         page_size: 12
     });
     const [messageApi, contextHolder] = message.useMessage();

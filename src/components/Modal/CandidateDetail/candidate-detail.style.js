@@ -221,6 +221,15 @@ const CandidateDetailStyle = styled(Modal)`
                 font-size: 12px;
             }
         }
+        &-certification {
+            display: flex;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #aaaaaa;
+            &__info {
+                width: 100%;
+            }
+        }
     }
 `;
 export default CandidateDetailStyle;

@@ -23,9 +23,11 @@ import {
     profileAuth,
     useGetEducationCandidateQuery
 } from '../../../app/actions/profile';
+import Certification from './Certification';
 const CandidateDetail = ({
     open = false,
     data,
+    isAssign = false,
     isReffered = false,
     onClose = () => {},
     handlerLockCandidates = () => {},
@@ -38,9 +40,12 @@ const CandidateDetail = ({
         profileAuth.endpoints.getEducationCandidate.useLazyQuery();
     const [getExperienceCandidate, { data: experienceList }] =
         profileAuth.endpoints.getExperienceCandidate.useLazyQuery();
+    const [getCertificateCandidate, { data: certificateList }] =
+        profileAuth.endpoints.getCertificate.useLazyQuery();
     // function
     React.useEffect(() => {
         if (data?.id) {
+            getCertificateCandidate(data.id);
             getEducationCandidate(data.id);
             getExperienceCandidate(data.id);
             let splitname = data?.name.split(' ');
@@ -220,7 +225,9 @@ const CandidateDetail = ({
                         {
                             label: `Certification`,
                             key: '3',
-                            children: <div>Certification</div>
+                            children: (
+                                <Certification data={certificateList?.data} />
+                            )
                         }
                     ]}
                 />
@@ -234,22 +241,24 @@ const CandidateDetail = ({
                 </div>
 
                 <Row>
-                    <Col md={3}>
+                    <Col md={isAssign ? 4 : 3}>
                         <Button color="outline-primary" onClick={onClose} block>
                             Back
                         </Button>
                     </Col>
-                    <Col md={3}>
+                    <Col md={isAssign ? 4 : 3}>
                         <Button color="outline-primary" block>
                             Print
                         </Button>
                     </Col>
-                    <Col md={3}>
+                    <Col md={isAssign ? 4 : 3}>
                         <Button color="outline-primary" block>
                             Download
                         </Button>
                     </Col>
-                    {data?.is_unlocked || isReffered ? (
+                    {isAssign ? (
+                        <></>
+                    ) : data?.is_unlocked || isReffered ? (
                         <Col md={3}>
                             <Button
                                 onClick={() => handlerReferCandidates(data)}

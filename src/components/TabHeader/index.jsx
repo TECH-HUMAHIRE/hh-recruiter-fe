@@ -8,7 +8,7 @@ import { Style, MenuLink } from './style';
 import { useCountJobQuery } from '../../app/actions/candidates';
 
 const TapHeader = () => {
-    const { data } = useCountJobQuery();
+    const { data, refetch } = useCountJobQuery();
     const [menu, setMenu] = React.useState([
         {
             total: 0,
@@ -51,6 +51,10 @@ const TapHeader = () => {
             key: 'archived'
         }
     ]);
+    const checkActiveLink = () => {
+        let url = window.location.pathname.split('/');
+        return url[1];
+    };
     React.useEffect(() => {
         if (data?.data) {
             return setMenu(
@@ -63,10 +67,9 @@ const TapHeader = () => {
             );
         }
     }, [data]);
-    const checkActiveLink = () => {
-        let url = window.location.pathname.split('/');
-        return url[1];
-    };
+    React.useEffect(() => {
+        refetch();
+    }, []);
 
     return (
         <Style>
@@ -74,6 +77,7 @@ const TapHeader = () => {
                 {menu.map((item, key) => {
                     return (
                         <MenuLink
+                            onClick={() => refetch()}
                             activecolor={item.activeColor}
                             key={key}
                             to={`/${item.activeLink}`}

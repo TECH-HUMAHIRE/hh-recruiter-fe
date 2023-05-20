@@ -17,6 +17,8 @@ const ReferCandidatesJobs = ({
     // state
     const [params, setParams] = React.useState({
         page: 1,
+        sort: 'desc',
+        sort_by: 'id',
         page_size: 5
     });
     const [jobId, setJobId] = React.useState(null);

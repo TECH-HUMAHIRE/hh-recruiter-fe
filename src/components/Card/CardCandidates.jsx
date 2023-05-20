@@ -82,7 +82,7 @@ const CardCandidates = ({
         {
             key: '6',
             label: (
-                <CardMenu onClick={() => onRevomeCandidate(data)}>
+                <CardMenu onClick={() => onCancelInvitation(data)}>
                     <CloseOutlined />
                     Cancel Invitation
                 </CardMenu>
@@ -91,7 +91,7 @@ const CardCandidates = ({
         {
             key: '7',
             label: (
-                <CardMenu onClick={() => onRevomeCandidate(data)}>
+                <CardMenu onClick={() => onCancelInvitation(data)}>
                     <CloseOutlined />
                     Cancel Reffered
                 </CardMenu>
@@ -101,7 +101,6 @@ const CardCandidates = ({
     const [items, setItems] = React.useState(actionDropdown);
     React.useEffect(() => {
         if (status) {
-            console.log(status);
             setItems(
                 actionDropdown.filter((item) => {
                     switch (status) {

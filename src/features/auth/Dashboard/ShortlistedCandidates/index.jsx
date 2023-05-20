@@ -171,6 +171,7 @@ const ShortlistedCandidates = () => {
                 </Col>
             </Row>
             <CandidateDetail
+                isAssign
                 open={isDetailInfo}
                 data={candidateInfo}
                 onClose={onViewDetail}
