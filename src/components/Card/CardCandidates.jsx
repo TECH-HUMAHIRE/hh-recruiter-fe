@@ -137,7 +137,7 @@ const CardCandidates = ({
                                 item.key !== '6' &&
                                 item.key !== '7'
                             );
-                        case 'archived':
+                        case 'rejected':
                             return false;
                         default:
                             return (
