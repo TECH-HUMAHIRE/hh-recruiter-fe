@@ -78,7 +78,7 @@ const Header = () => {
                         <div className="header-user__image" onClick={showModal}>
                             <img
                                 className="img-user"
-                                src={userDefault}
+                                src={profile?.data?.photo_url || userDefault}
                                 alt="default user"
                             />
                         </div>

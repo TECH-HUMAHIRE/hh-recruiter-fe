@@ -45,7 +45,6 @@ const Wallet = () => {
         setWithdrawNext(false);
     };
     const onShowDetail = (data) => {
-        console.log(data);
         setDetail(!isDetail);
         if (!isDetail) {
             setTransactionDetail(data);

@@ -8,7 +8,11 @@ import PasswordTab from './Password';
 import { useNavigate } from 'react-router-dom';
 import AccountNumber from './AccountNumber';
 import UploadImages from '../../Form/UploadImages';
-import { useUploadeImageMutation } from '../../../app/actions/profile';
+import {
+    useGetProfileQuery,
+    useUpdatePhotoProfileMutation,
+    useUploadeImageMutation
+} from '../../../app/actions/profile';
 
 const ModalHeader = ({
     isOpen = false,
@@ -20,14 +24,16 @@ const ModalHeader = ({
 
     // state
     const [activeTab, setActiveTab] = React.useState('1');
-    const [profile, setProfile] = React.useState([]);
+    const [profile, setProfile] = React.useState([{ url: defaultImage }]);
     const [nameUpload, setNameUpload] = React.useState('');
 
     // fetch api
-
-    const [uploadImage, { isSuccess: successUpload, data: responseUpload }] =
-        useUploadeImageMutation();
-
+    const { data: profileAccount, isSuccess } = useGetProfileQuery();
+    const [
+        uploadImage,
+        { isSuccess: successUpload, data: responseUpload, reset }
+    ] = useUploadeImageMutation();
+    const [updatePhotoProfile, {}] = useUpdatePhotoProfileMutation();
     // function
     const onChangeTab = (key) => {
         setActiveTab(key);
@@ -56,12 +62,24 @@ const ModalHeader = ({
     React.useEffect(() => {
         if (successUpload) {
             setProfile([{ url: responseUpload.data }]);
+            updatePhotoProfile({ photo_profile_url: responseUpload.data });
+            reset();
         }
     }, [successUpload, nameUpload]);
+    React.useEffect(() => {
+        if (isSuccess) {
+            setProfile(
+                profileAccount.data.photo_url
+                    ? [{ url: profileAccount.data.photo_url }]
+                    : []
+            );
+        }
+    }, [isSuccess]);
     return (
         <Style width={730} open={isOpen} footer={null} onCancel={onCloseModal}>
             <div className="modal-body">
                 <UploadImages
+                    defaultImage={profile}
                     name="logo_url"
                     onChange={onUploadImageLogo}
                     width="170px"

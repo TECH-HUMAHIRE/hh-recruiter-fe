@@ -82,7 +82,7 @@ const DetailTransasction = ({
                                         Payment method
                                     </div>
                                     <div className="transaction-information__value">
-                                        {data?.payment_method}
+                                        {data?.account_number?.bank?.name}
                                     </div>
                                 </div>
                             </div>

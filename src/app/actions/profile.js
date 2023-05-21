@@ -108,6 +108,14 @@ export const profileAuth = createApi({
                 method: 'GET'
                 // params
             })
+        }),
+        updatePhotoProfile: builder.mutation({
+            query: (body) => ({
+                url: '/user/change_photo_profile',
+                method: 'PUT',
+                body
+            }),
+            invalidatesTags: ['get_my_company']
         })
     })
 });
@@ -126,5 +134,6 @@ export const {
     usePostBankMutation,
     useGetBankListQuery,
     useGetBankListNameQuery,
-    useGetCertificateQuery
+    useGetCertificateQuery,
+    useUpdatePhotoProfileMutation
 } = profileAuth;

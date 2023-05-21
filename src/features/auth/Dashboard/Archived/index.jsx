@@ -75,7 +75,7 @@ const Archived = () => {
                         key: `${item.id}`,
                         children: (
                             <CandidatesList
-                                status="rejected"
+                                status="cancelled"
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}
                                 code={item.code}
