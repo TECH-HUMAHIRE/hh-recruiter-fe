@@ -19,7 +19,7 @@ const ProfileTab = ({ onClose = () => {}, profile = [] }) => {
         updateProfile({
             ...values,
             email: data?.data?.email,
-            photo_url: profile[0].url
+            photo_profile_url: profile[0].url
         });
     };
     // To disable submit button at the beginning.
@@ -105,7 +105,7 @@ const ProfileTab = ({ onClose = () => {}, profile = [] }) => {
                     <Col md={6}>
                         <Form.Item
                             label="Linked URL"
-                            name="website_url"
+                            name="linked_url"
                             rules={[
                                 {
                                     required: true,
@@ -125,19 +125,18 @@ const ProfileTab = ({ onClose = () => {}, profile = [] }) => {
                     </Col>
                     <Col md={6}>
                         <Form.Item
-                            // name="departement"
+                            name="recruiting_specialization"
                             label="Recruiting Specialization"
-                            // rules={[
-                            //     {
-                            //         required: false,
-                            //         message: 'Please input your departement!'
-                            //     }
-                            // ]}
-                        >
+                            rules={[
+                                {
+                                    required: false,
+                                    message: 'Please input your departement!'
+                                }
+                            ]}>
                             <Input
                                 type={'text'}
                                 size="large"
-                                placeholder="Departement"
+                                placeholder="Recruiting Specialization"
                             />
                         </Form.Item>
                     </Col>

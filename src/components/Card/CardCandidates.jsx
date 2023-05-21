@@ -120,7 +120,7 @@ const CardCandidates = ({
                                 item.key !== '5' &&
                                 item.key !== '7'
                             );
-                        case 'referred':
+                        case 'accepted':
                             return (
                                 item.key !== '2' &&
                                 item.key !== '3' &&
@@ -137,7 +137,7 @@ const CardCandidates = ({
                                 item.key !== '6' &&
                                 item.key !== '7'
                             );
-                        case 'archived':
+                        case 'rejected':
                             return false;
                         default:
                             return (

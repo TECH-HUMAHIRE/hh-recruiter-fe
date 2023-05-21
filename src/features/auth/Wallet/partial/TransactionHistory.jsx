@@ -62,7 +62,10 @@ const TransactionHistory = ({ onShowDetail = () => {} }) => {
                         title: 'Account Number',
                         width: 100,
                         dataIndex: 'account_number',
-                        key: 'account_number'
+                        key: 'account_number',
+                        render: (account_number) => {
+                            return account_number.account_number;
+                        }
                     },
                     {
                         title: 'Withdrawal Amount',
@@ -99,6 +102,7 @@ const TransactionHistory = ({ onShowDetail = () => {} }) => {
                         }
                     }
                 ]}
+                pagination={false}
                 dataSource={dataTable?.data}
                 scroll={{
                     x: 1500,

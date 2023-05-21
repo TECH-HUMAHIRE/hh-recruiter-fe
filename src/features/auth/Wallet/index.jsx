@@ -10,12 +10,18 @@ import WalletCredit from '../../../components/Modal/WalletCredit';
 import WithdrawMethod from '../../../components/Modal/WithdrawMethod';
 import EmailVerification from '../../../components/Modal/ModalHeader/EmailVerification';
 import { useGetProfileQuery } from '../../../app/actions/profile';
-import { usePostWithDrawMutation } from '../../../app/actions/walletApi';
+import {
+    usePostWithDrawMutation,
+    walletApi
+} from '../../../app/actions/walletApi';
+import DetailTransasction from '../../../components/Modal/DetailTransasction';
 
 const Wallet = () => {
     const [messageApi, contextHolder] = message.useMessage();
     // STATE
     const [isWithdraw, setWithdraw] = React.useState(false);
+    const [isDetail, setDetail] = React.useState(false);
+    const [transactionDetail, setTransactionDetail] = React.useState(null);
     const [valueForm, setFalueForm] = React.useState(null);
     const [bankId, setBankId] = React.useState(null);
     const [isWithdrawNext, setWithdrawNext] = React.useState(false);
@@ -24,6 +30,8 @@ const Wallet = () => {
     const { data } = useGetProfileQuery({
         fakeAuthProvider: 'myCompany'
     });
+    const [getTransactionDetail, response] =
+        walletApi.endpoints.getTransactionDetail.useLazyQuery();
     const [
         postWithDraw,
         { isSuccess, reset, data: responsePostWithDraw, isLoading }
@@ -35,6 +43,12 @@ const Wallet = () => {
     const onShowWithdraw = () => {
         setWithdraw(!isWithdraw);
         setWithdrawNext(false);
+    };
+    const onShowDetail = (data) => {
+        setDetail(!isDetail);
+        if (!isDetail) {
+            setTransactionDetail(data);
+        }
     };
     const onChooseAccount = (e) => {
         setBankId(e.target.value);
@@ -91,7 +105,9 @@ const Wallet = () => {
                     {
                         label: `Transaction history`,
                         key: '2',
-                        children: <TransactionHistory />
+                        children: (
+                            <TransactionHistory onShowDetail={onShowDetail} />
+                        )
                     }
                 ]}
             />
@@ -112,6 +128,11 @@ const Wallet = () => {
                 verificationText="SMS"
                 isOpen={isVerifyEmail}
                 onClose={onShowVerify}
+            />
+            <DetailTransasction
+                isOpen={isDetail}
+                onClose={onShowDetail}
+                data={transactionDetail}
             />
         </Style>
     );

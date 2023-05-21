@@ -135,6 +135,11 @@ const WalletCredit = ({
                                 return (
                                     <Col md={3} key={key}>
                                         <Button
+                                            disabled={
+                                                (data?.wallet_balance / 100) *
+                                                    90 <
+                                                item.value
+                                            }
                                             className={`btn-withdraw ${
                                                 isActive === item.value
                                                     ? 'active'

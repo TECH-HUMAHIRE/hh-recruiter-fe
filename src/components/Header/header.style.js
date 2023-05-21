@@ -42,5 +42,8 @@ const HeaderStyle = styled.header`
             }
         }
     }
+    .img-user {
+        border-radius: 50%;
+    }
 `;
 export default HeaderStyle;

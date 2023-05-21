@@ -1,6 +1,6 @@
 import { Form, Modal, Upload } from 'antd';
 import React, { useState } from 'react';
-import defaultImage from '../../Assets/images/defaultCompany.png';
+import defaultImageDisplay from '../../Assets/images/defaultCompany.png';
 import iconEdit from '../../Assets/icon/edit.png';
 import UploadStyle from './upload-image.style';
 const getBase64 = (file) =>
@@ -17,12 +17,13 @@ const UploadImages = (props) => {
         label,
         width = '100%',
         onChange = () => {},
-        className = ''
+        className = '',
+        defaultImage = []
     } = props;
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
-    const [fileList, setFileList] = useState([]);
+    const [fileList, setFileList] = useState(defaultImage);
     // eslint-disable-next-line
     const handleCancel = () => setPreviewOpen(false);
     const dummyRequest = ({ file, onSuccess }) => {
@@ -65,7 +66,7 @@ const UploadImages = (props) => {
                         <img
                             alt={previewTitle}
                             className="defaultimage"
-                            src={defaultImage}
+                            src={defaultImageDisplay}
                         />
                         <div className="label">
                             <img className="edit" src={iconEdit} alt="Edit" />{' '}

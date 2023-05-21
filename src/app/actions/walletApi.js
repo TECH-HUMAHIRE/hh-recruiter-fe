@@ -55,6 +55,9 @@ export const walletApi = createApi({
                 };
             },
             providesTags: ['withdraw']
+        }),
+        getTransactionDetail: builder.query({
+            query: (code) => `/transaction/order/${code}`
         })
     })
 });
@@ -65,5 +68,6 @@ export const {
     useHumaPointQuery,
     useGetCreditHistoryQuery,
     usePostWithDrawMutation,
-    useGetWithdrawQuery
+    useGetWithdrawQuery,
+    useGetTransactionDetailQuery
 } = walletApi;
