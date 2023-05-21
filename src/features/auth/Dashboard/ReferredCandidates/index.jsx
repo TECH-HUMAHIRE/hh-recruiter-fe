@@ -115,7 +115,7 @@ const ReferredCandidates = () => {
                         key: item.id,
                         children: (
                             <CandidatesList
-                                status="referred"
+                                status="accepted"
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}
                                 code={item.code}

@@ -15,7 +15,8 @@ const CandidatesList = ({
     // state
     const [params, setParams] = React.useState({
         page: 1,
-        page_size: 12
+        page_size: 12,
+        status: status
     });
     // fetchapi
     const [
