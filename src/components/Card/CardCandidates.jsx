@@ -138,7 +138,21 @@ const CardCandidates = ({
                                 item.key !== '7'
                             );
                         case 'rejected':
-                            return false;
+                            return (
+                                item.key !== '3' &&
+                                item.key !== '4' &&
+                                item.key !== '5' &&
+                                item.key !== '6' &&
+                                item.key !== '7'
+                            );
+                        case 'cancelled':
+                            return (
+                                item.key !== '3' &&
+                                item.key !== '4' &&
+                                item.key !== '5' &&
+                                item.key !== '6' &&
+                                item.key !== '7'
+                            );
                         default:
                             return (
                                 item.key !== '3' &&
@@ -153,6 +167,7 @@ const CardCandidates = ({
     }, [status]);
     return (
         <CardReferredStyle
+            keyColor={data.id}
             title={
                 <div className="card-header">
                     <div className="card-header__right">

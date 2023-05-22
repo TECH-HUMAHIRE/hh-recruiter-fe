@@ -17,7 +17,7 @@ const Archived = () => {
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 12,
-        status: 'rejected'
+        status: 'rejected,cencelled'
     });
 
     const [getJobInvitation, { data: jobInvitation, isSuccess }] =
@@ -75,7 +75,7 @@ const Archived = () => {
                         key: `${item.id}`,
                         children: (
                             <CandidatesList
-                                status="cancelled"
+                                status="cancelled,rejected"
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}
                                 code={item.code}
