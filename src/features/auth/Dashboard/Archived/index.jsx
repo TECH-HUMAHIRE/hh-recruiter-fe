@@ -1,4 +1,4 @@
-import { Card, Form, Input } from 'antd';
+import { Card, Form, Input, message } from 'antd';
 import React from 'react';
 import { Col, Row } from '../../../../components/Grid';
 import { DashboardCandidatesStyle } from '../style';
@@ -9,21 +9,49 @@ import { jobApi } from '../../../../app/actions/jobApi';
 import { MoreOutlined, SearchOutlined } from '@ant-design/icons';
 import CandidatesList from '../../../../components/SectionCard/CandidatesList';
 import { formatMoney } from '../../../../components/Utils/formatMoney';
+import CandidateDetail from '../../../../components/Modal/CandidateDetail';
+import ReferCandidatesJobs from '../../../../components/Modal/ReferCandidatesJobs';
+import { useReferCandidateMutation } from '../../../../app/actions/candidates';
 
 const Archived = () => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
+    const [candidateInfo, setCandidateInfo] = React.useState(null);
+    const [isReferJobList, setReferJobList] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 12,
-        status: 'rejected'
+        status: 'rejected,cancelled'
     });
-
+    const [
+        _,
+        {
+            isSuccess: successRefer,
+            data: responseRefer,
+            reset: resetResponseRefer
+        }
+    ] = useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
     const [getJobInvitation, { data: jobInvitation, isSuccess }] =
         jobApi.endpoints.getTaskInvitation.useLazyQuery();
-    const onViewDetail = () => {
+    const onViewDetail = (candidate) => {
+        setCandidateInfo(candidate);
         setDetailInfo(!isDetailInfo);
+    };
+    const onReferJobList = (candidate) => {
+        setCandidateInfo(candidate);
+        setReferJobList(!isReferJobList);
+        setDetailInfo(false);
+    };
+    const handlerLockCandidates = (candidates) => {
+        setCandidateInfo(candidates);
+        if (!candidates.is_unlocked) {
+            setUnlock(!isUnlock);
+            setDetail(false);
+        } else {
+            setReferJobList(true);
+        }
     };
     const onCancelInvitation = () => {
         setCancelInvitation(!isCancelInvitation);
@@ -75,7 +103,8 @@ const Archived = () => {
                         key: `${item.id}`,
                         children: (
                             <CandidatesList
-                                status="cancelled"
+                                onRefer={onReferJobList}
+                                status="cancelled,rejected"
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}
                                 code={item.code}
@@ -87,8 +116,23 @@ const Archived = () => {
             );
         }
     }, [isSuccess]);
+    React.useEffect(() => {
+        if (successRefer) {
+            setReferJobList(false);
+            messageApi.open({
+                type: 'success',
+                content: responseRefer.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+            resetResponseRefer();
+        }
+    }, [successRefer]);
     return (
         <DashboardCandidatesStyle>
+            {contextHolder}
             {jobInvitation?.data?.length > 0 && (
                 <Row>
                     <Col xl={3} lg={3} md={12}>
@@ -118,6 +162,16 @@ const Archived = () => {
                     )}
                 </Col>
             </Row>
+            <CandidateDetail
+                open={isDetailInfo}
+                data={candidateInfo}
+                onClose={onViewDetail}
+            />
+            <ReferCandidatesJobs
+                candidate={candidateInfo}
+                onClose={onReferJobList}
+                isOpen={isReferJobList}
+            />
         </DashboardCandidatesStyle>
     );
 };

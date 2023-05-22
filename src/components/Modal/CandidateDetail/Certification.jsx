@@ -16,11 +16,14 @@ const Certification = ({ data }) => {
                                                 style={{
                                                     marginBottom: 10
                                                 }}>
-                                                <h2
+                                                <h4
                                                     className="title"
-                                                    style={{ margin: 0 }}>
+                                                    style={{
+                                                        margin: 0,
+                                                        fontSize: 18
+                                                    }}>
                                                     {item.certification_name}
-                                                </h2>
+                                                </h4>
                                                 <div>{item.organization}</div>
                                             </div>
                                         </div>

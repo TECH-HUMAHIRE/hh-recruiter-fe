@@ -9,6 +9,7 @@ import { Col, Row } from '../Grid';
 const CandidatesList = ({
     onViewDetail = () => {},
     onCancelInvitation = () => {},
+    onRefer = () => {},
     code = '',
     status = ''
 }) => {
@@ -61,6 +62,7 @@ const CandidatesList = ({
                     return (
                         <Col xl={6} md={6} sm={6} key={key}>
                             <CardCandidates
+                                onRefer={onRefer}
                                 status={status}
                                 dataParent={item}
                                 data={item.jobseeker}
