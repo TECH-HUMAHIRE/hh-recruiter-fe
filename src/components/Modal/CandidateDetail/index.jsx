@@ -57,6 +57,7 @@ const CandidateDetail = ({
     }, [data]);
     return (
         <CandidateDetailStyle
+            keyColor={data?.id}
             title={
                 <div className="modal-header">
                     <div className="modal-header__right">
