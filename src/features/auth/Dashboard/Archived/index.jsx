@@ -13,6 +13,7 @@ import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import ReferCandidatesJobs from '../../../../components/Modal/ReferCandidatesJobs';
 import { useReferCandidateMutation } from '../../../../app/actions/candidates';
 import moment from 'moment';
+import PaginationTable from '../../../../components/PaginationTable';
 
 const Archived = () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -44,6 +45,10 @@ const Archived = () => {
         setCandidateInfo(candidate);
         setReferJobList(!isReferJobList);
         setDetailInfo(false);
+    };
+    const onRefetchCandidates = async (updateParams) => {
+        await setParams(updateParams);
+        getJobInvitation(updateParams);
     };
     const handlerLockCandidates = (candidates) => {
         setCandidateInfo(candidates);
@@ -177,6 +182,16 @@ const Archived = () => {
                         <Card>
                             <EmptyJob button={false} />
                         </Card>
+                    )}
+                    {jobInvitation?.meta?.info?.count > 0 && (
+                        <div className="job-pagination">
+                            <PaginationTable
+                                showSizeChanger={false}
+                                data={jobInvitation}
+                                refetch={onRefetchCandidates}
+                                params={params}
+                            />
+                        </div>
                     )}
                 </Col>
             </Row>
