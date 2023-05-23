@@ -49,14 +49,14 @@ const CreditHistory = () => {
                     },
                     {
                         title: 'Total Amount',
-                        dataIndex: 'commission',
-                        key: 'commission',
+                        dataIndex: 'total_amount',
+                        key: 'total_amount',
                         width: 150,
-                        render: (commission) => {
+                        render: (total_amount) => {
                             return (
                                 <div className={`debit`}>
                                     <span className="value">
-                                        {formatMoney(commission)}
+                                        {formatMoney(total_amount)}
                                     </span>
                                 </div>
                             );
