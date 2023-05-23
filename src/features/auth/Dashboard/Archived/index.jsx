@@ -12,6 +12,7 @@ import { formatMoney } from '../../../../components/Utils/formatMoney';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import ReferCandidatesJobs from '../../../../components/Modal/ReferCandidatesJobs';
 import { useReferCandidateMutation } from '../../../../app/actions/candidates';
+import moment from 'moment';
 
 const Archived = () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -68,10 +69,10 @@ const Archived = () => {
                             <div className="referred-tabs">
                                 <div className="card-earn__price">
                                     <span>Earn</span>{' '}
-                                    {formatMoney(item.commission)}
+                                    {formatMoney(item?.commission)}
                                 </div>
                                 <div className="referred-card">
-                                    <img src={companyDummy} alt="" />
+                                    <img src={item?.company?.logo_url} alt="" />
                                     <div style={{ width: '100%' }}>
                                         <div className="referred-tabs__header">
                                             <div>
@@ -79,22 +80,39 @@ const Archived = () => {
                                                     {item.title}
                                                 </div>
                                                 <div className="referred-tabs__company">
-                                                    PT Grab Indonesia
+                                                    {item.company.name}
                                                 </div>
                                                 <div className="referred-tabs__city">
-                                                    Jakarta, Indonesia
+                                                    {
+                                                        item?.sub_district
+                                                            ?.district?.city
+                                                            ?.province?.name
+                                                    }
+                                                    ,{' '}
+                                                    {
+                                                        item?.sub_district
+                                                            ?.district?.city
+                                                            ?.province?.country
+                                                            ?.name
+                                                    }
                                                 </div>
                                             </div>
                                             {/* <Dropdown
-                                                menu={[]}
-                                                placement="bottomCenter"
-                                                trigger="click"> */}
+                                            menu={[]}
+                                            placement="bottomCenter"
+                                            trigger="click"> */}
                                             <MoreOutlined className="card-action" />
                                             {/* </Dropdown> */}
                                         </div>
                                         <div className="referred-tabs__city">
-                                            Posted 11 Jun 2022 • Expired: 9 Jul
-                                            2022
+                                            Posted{' '}
+                                            {moment(item.created_at).format(
+                                                'DD MMM YYYY'
+                                            )}{' '}
+                                            • Expired:{' '}
+                                            {moment(item.expired_at).format(
+                                                'DD MMM YYYY'
+                                            )}
                                         </div>
                                     </div>
                                 </div>
