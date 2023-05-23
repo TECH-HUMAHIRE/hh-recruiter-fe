@@ -113,10 +113,18 @@ const ReferCandidatesJobs = ({
                             jobList?.data?.map((item, key) => {
                                 return (
                                     <Form.Item
+                                        initialValue={inviting}
                                         name={'job_id'}
                                         valuePropName="checked">
                                         <div className="job-card" key={key}>
                                             <Checkbox
+                                                checked={
+                                                    inviting.filter(
+                                                        (value) =>
+                                                            value ===
+                                                            item?.job?.id
+                                                    ).length === 1
+                                                }
                                                 value={item?.job?.id}
                                                 onChange={(e) =>
                                                     handleChooseTask(
