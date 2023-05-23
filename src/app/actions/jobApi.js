@@ -93,6 +93,7 @@ export const jobApi = createApi({
                 };
             }
         }),
+
         updateStatusJobCandidates: builder.mutation({
             query: ({ code, ...body }) => {
                 return {

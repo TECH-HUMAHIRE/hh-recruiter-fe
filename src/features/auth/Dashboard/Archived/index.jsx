@@ -23,7 +23,7 @@ const Archived = () => {
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 12,
-        status: 'rejected,cancelled'
+        status: 'rejected'
     });
     const [
         _,
@@ -60,7 +60,7 @@ const Archived = () => {
         getJobInvitation(params);
     }, []);
     React.useEffect(() => {
-        if (isSuccess) {
+        if (jobInvitation) {
             setItemTabs(
                 jobInvitation?.data?.map((item) => {
                     return {
@@ -104,7 +104,7 @@ const Archived = () => {
                         children: (
                             <CandidatesList
                                 onRefer={onReferJobList}
-                                status="cancelled,rejected"
+                                status="rejected"
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}
                                 code={item.code}
@@ -115,7 +115,7 @@ const Archived = () => {
                 })
             );
         }
-    }, [isSuccess]);
+    }, [jobInvitation]);
     React.useEffect(() => {
         if (successRefer) {
             setReferJobList(false);

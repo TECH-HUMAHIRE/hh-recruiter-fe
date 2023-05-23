@@ -82,7 +82,7 @@ const InviteCandidates = () => {
     }, [successUpdateStatus]);
 
     React.useEffect(() => {
-        if (isSuccess) {
+        if (jobInvitation) {
             setItemTabs(
                 jobInvitation?.data?.map((item) => {
                     return {
@@ -153,7 +153,7 @@ const InviteCandidates = () => {
                 })
             );
         }
-    }, [isSuccess]);
+    }, [jobInvitation]);
     return (
         <DashboardCandidatesStyle>
             {jobInvitation?.data?.length > 0 && (
