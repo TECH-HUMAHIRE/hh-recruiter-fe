@@ -55,7 +55,7 @@ const ReferredCandidates = () => {
     }, []);
 
     React.useEffect(() => {
-        if (isSuccess) {
+        if (jobInvitation) {
             setItemTabs(
                 jobInvitation?.data?.map((item) => {
                     return {
@@ -126,7 +126,7 @@ const ReferredCandidates = () => {
                 })
             );
         }
-    }, [isSuccess]);
+    }, [jobInvitation]);
     return (
         <DashboardCandidatesStyle>
             {jobInvitation?.data?.length > 0 && (
