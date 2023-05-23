@@ -31,6 +31,12 @@ const CandidatesList = ({
             fixedCacheKey: 'statusJobCandidates'
         });
     const [getCountTask] = candidates.endpoints.countJob.useLazyQuery();
+    const dataJobsList = async (newParams) => {
+        await setParams({
+            ...newParams
+        });
+        getJobCandidates({ code, ...newParams });
+    };
     React.useEffect(() => {
         if (successUpdateStatus) {
             getJobCandidates({ code, ...params });
@@ -73,6 +79,14 @@ const CandidatesList = ({
                     );
                 })}
             </Row>
+            {dataCandidates?.meta?.info?.total_page > 1 && (
+                <PaginationTable
+                    data={dataCandidates}
+                    refetch={dataJobsList}
+                    params={params}
+                    showSizeChanger={false}
+                />
+            )}
         </div>
     );
 };
