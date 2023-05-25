@@ -4,9 +4,8 @@ import { Col, Row } from '../../../../components/Grid';
 import { DashboardCandidatesStyle } from '../style';
 import EmptyJob from '../../../../components/EmptyJob';
 import TabMenu from '../../../../components/Tabs';
-import companyDummy from '../../../../components/Assets/icon/company-dummy.png';
 import { jobApi } from '../../../../app/actions/jobApi';
-import { MoreOutlined, SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 import CandidatesList from '../../../../components/SectionCard/CandidatesList';
 import { formatMoney } from '../../../../components/Utils/formatMoney';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
@@ -102,12 +101,6 @@ const Archived = () => {
                                                     }
                                                 </div>
                                             </div>
-                                            {/* <Dropdown
-                                            menu={[]}
-                                            placement="bottomCenter"
-                                            trigger="click"> */}
-                                            <MoreOutlined className="card-action" />
-                                            {/* </Dropdown> */}
                                         </div>
                                         <div className="referred-tabs__city">
                                             Posted{' '}
