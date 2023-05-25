@@ -19,6 +19,9 @@ import DetailTransasction from '../../../components/Modal/DetailTransasction';
 const Wallet = () => {
     const [messageApi, contextHolder] = message.useMessage();
     // STATE
+    const { refetch } = useGetProfileQuery({
+        fakeAuthProvider: 'myCompany'
+    });
     const [isWithdraw, setWithdraw] = React.useState(false);
     const [isDetail, setDetail] = React.useState(false);
     const [transactionDetail, setTransactionDetail] = React.useState(null);
@@ -78,6 +81,7 @@ const Wallet = () => {
                 },
                 duration: 2
             });
+            refetch();
             reset();
         }
     }, [isSuccess]);

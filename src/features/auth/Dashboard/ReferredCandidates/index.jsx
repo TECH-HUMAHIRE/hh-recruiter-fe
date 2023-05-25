@@ -6,8 +6,7 @@ import EmptyJob from '../../../../components/EmptyJob';
 import TabMenu from '../../../../components/Tabs';
 import CandidatesList from '../../../../components/SectionCard/CandidatesList';
 import { formatMoney } from '../../../../components/Utils/formatMoney';
-import companyDummy from '../../../../components/Assets/icon/company-dummy.png';
-import { MoreOutlined, SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../../components/Modal/CancelInvitation';
 import { jobApi } from '../../../../app/actions/jobApi';
@@ -91,12 +90,6 @@ const ReferredCandidates = () => {
                                                     }
                                                 </div>
                                             </div>
-                                            {/* <Dropdown
-                                                menu={[]}
-                                                placement="bottomCenter"
-                                                trigger="click"> */}
-                                            <MoreOutlined className="card-action" />
-                                            {/* </Dropdown> */}
                                         </div>
                                         <div className="referred-tabs__city">
                                             Posted{' '}
