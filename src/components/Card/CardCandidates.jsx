@@ -205,7 +205,7 @@ const CardCandidates = ({
             <div className="card-info">
                 <BagIcon />{' '}
                 <span className="card-info__text">
-                    {data?.experience_level || '-'}
+                    {data?.job_preference?.job_title || '-'}
                 </span>
             </div>
             <div className="card-info">
