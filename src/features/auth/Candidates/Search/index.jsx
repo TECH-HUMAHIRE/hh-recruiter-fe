@@ -22,7 +22,7 @@ const CandidatesSearch = ({ status }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [params, setParams] = React.useState({
         page: 1,
-        page_size: 10
+        page_size: 12
     });
     const [isReffered, setReffered] = React.useState(false);
     const [isFilter, setFilter] = React.useState(false);
@@ -82,7 +82,7 @@ const CandidatesSearch = ({ status }) => {
         const value = e.target.value;
         await setParams({
             ...params,
-            name: value
+            job_title: value
         });
     }, 750);
     const onReferJobList = () => {
@@ -141,7 +141,7 @@ const CandidatesSearch = ({ status }) => {
                             prefix={<SearchOutlined />}
                             size="large"
                             type={'text'}
-                            placeholder="Search Candidates"
+                            placeholder="Search job title"
                         />
                     </Form.Item>
                 </Col>
