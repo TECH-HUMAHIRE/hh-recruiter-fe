@@ -47,7 +47,7 @@ const CardCandidates = ({
         {
             key: '2',
             label: (
-                <CardMenu onClick={() => onRefer(data)}>
+                <CardMenu onClick={() => onRefer(data, dataParent)}>
                     <img src={ShareIcon} alt="" />
                     Refer
                 </CardMenu>
@@ -101,7 +101,7 @@ const CardCandidates = ({
     ];
     const [items, setItems] = React.useState(actionDropdown);
     React.useEffect(() => {
-        if (status) {
+        if (data || status) {
             setItems(
                 actionDropdown.filter((item) => {
                     switch (status) {
@@ -164,7 +164,7 @@ const CardCandidates = ({
                 })
             );
         }
-    }, [status]);
+    }, [data, status]);
     return (
         <CardReferredStyle
             keyColor={data.id}
