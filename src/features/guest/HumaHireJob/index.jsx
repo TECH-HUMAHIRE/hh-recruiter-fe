@@ -84,22 +84,20 @@ const HumaHireJob = () => {
                                                 </div>
                                                 <div>
                                                     <div className="job-information__value">
-                                                        {data?.data.skills
+                                                        {data?.data
+                                                            .specialization
                                                             ?.length > 0
-                                                            ? data?.data.skills.map(
+                                                            ? data?.data.specialization.map(
                                                                   (
                                                                       item,
                                                                       key
                                                                   ) => {
-                                                                      return `${
-                                                                          item.name ||
-                                                                          item.label
-                                                                      }${
+                                                                      return `${item}${
                                                                           key +
                                                                               1 ===
                                                                           data
                                                                               ?.data
-                                                                              .skills_id
+                                                                              .specialization
                                                                               .length
                                                                               ? ''
                                                                               : ', '

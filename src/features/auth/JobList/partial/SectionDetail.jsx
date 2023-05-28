@@ -56,17 +56,18 @@ const SectionDetail = ({ data = {}, handleAddTask = () => {} }) => {
                                 </div>
                                 <div>
                                     <div className="job-information__value">
-                                        {data?.skills?.length > 0
-                                            ? data?.skills.map((item, key) => {
-                                                  return `${
-                                                      item.name || item.label
-                                                  }${
-                                                      key + 1 ===
-                                                      data?.skills_id.length
-                                                          ? ''
-                                                          : ', '
-                                                  }`;
-                                              })
+                                        {data?.specialization?.length > 0
+                                            ? data?.specialization.map(
+                                                  (item, key) => {
+                                                      return `${item}${
+                                                          key + 1 ===
+                                                          data?.specialization
+                                                              ?.length
+                                                              ? ''
+                                                              : ', '
+                                                      }`;
+                                                  }
+                                              )
                                             : '-'}
                                     </div>
                                 </div>
