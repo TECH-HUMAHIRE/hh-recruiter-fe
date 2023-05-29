@@ -237,7 +237,7 @@ const CandidateDetail = ({
             <div className="modal-body">
                 <div style={{ marginBottom: 25 }}>
                     <h3 style={{ fontWeight: 'bold' }}>Candidate Note:</h3>
-                    <div>-</div>
+                    <div>{data?.about || '-'}</div>
                     <div className="hr"></div>
                 </div>
 
