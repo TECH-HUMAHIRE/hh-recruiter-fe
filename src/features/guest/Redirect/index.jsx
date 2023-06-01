@@ -29,8 +29,7 @@ const RedirectPage = () => {
     }, [token]);
     React.useEffect(() => {
         if (unComplateCompany) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('profile_completed');
+            localStorage.clear();
             window.location = `${
                 import.meta.env.VITE_REDIRECT_URL
             }?logout=true`;

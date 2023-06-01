@@ -49,7 +49,6 @@ export function RequireAuth({ children }) {
             }?isError=true`;
         }
     }, [unComplateCompany]);
-    // console.log(auth, 'import.meta.env.VITE_REDIRECT_URL');
 
     if (!auth) {
         localStorage.removeItem('token');
