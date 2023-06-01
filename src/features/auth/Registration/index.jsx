@@ -19,7 +19,7 @@ const Registration = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const [setOptEmail, response] = useSendOTPEmailMutation();
-    const [resetOtp, { data, isLoading, isSuccess }] =
+    const [resetOtp, { data, isLoading, isSuccess, reset }] =
         useResendOTPEmailMutation();
     const [otp, setOtp] = React.useState('');
     const { data: profile, refetch } = useGetProfileQuery();
@@ -42,9 +42,11 @@ const Registration = () => {
     };
     React.useEffect(() => {
         if (response?.isSuccess) {
+            response.reset();
             navigate('/');
         }
         if (response?.isError) {
+            response.reset();
             messageApi.open({
                 type: 'error',
                 content: response?.meta?.message,
@@ -66,6 +68,7 @@ const Registration = () => {
                 },
                 duration: 2
             });
+            reset();
         }
     }, [isSuccess]);
     return (
