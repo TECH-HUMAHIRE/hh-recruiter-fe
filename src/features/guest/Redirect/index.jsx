@@ -15,6 +15,10 @@ const RedirectPage = () => {
             }?isError=true`;
         } else {
             localStorage.setItem('token', paramsUrl.get('token'));
+            localStorage.setItem(
+                'refresh_token',
+                paramsUrl.get('refresh_token')
+            );
             setToken(paramsUrl.get('token'));
         }
     }, [paramsUrl]);
@@ -42,8 +46,8 @@ const RedirectPage = () => {
                 navigate('/registration');
             }
             if (data?.data.email_verified === false) {
-                // navigate('/verification');
-                navigate('/');
+                navigate('/verification');
+                // navigate('/');
             }
             if (data?.data.email_verified) {
                 navigate('/');

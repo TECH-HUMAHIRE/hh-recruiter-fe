@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get } from 'firebase/database';
+import { getFirestore } from 'firebase/firestore';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -12,9 +13,10 @@ const firebaseConfig = {
     appId: '1:429929150508:web:687fb47330460ea07ff989',
     measurementId: 'G-2HB2XKVP6G'
 };
-
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
 const auth = getAuth(app);
-signInWithEmailAndPassword(auth, 'recruiter_texting_1@gmail.com', '123456');
-export { database, auth };
+// signInWithEmailAndPassword(auth, 'recruiter_texting_1@gmail.com', '123456');
+
+const database = getDatabase(app);
+const firestore = getFirestore(app);
+export { database, auth, firestore };

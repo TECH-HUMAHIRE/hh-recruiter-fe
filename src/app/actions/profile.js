@@ -116,6 +116,13 @@ export const profileAuth = createApi({
                 body
             }),
             invalidatesTags: ['get_my_company']
+        }),
+        refreshToken: builder.mutation({
+            query: (body) => ({
+                url: '/auth/refresh',
+                method: 'POST',
+                body
+            })
         })
     })
 });
@@ -135,5 +142,6 @@ export const {
     useGetBankListQuery,
     useGetBankListNameQuery,
     useGetCertificateQuery,
-    useUpdatePhotoProfileMutation
+    useUpdatePhotoProfileMutation,
+    useRefreshTokenMutation
 } = profileAuth;

@@ -25,19 +25,20 @@ const Inbox = () => {
     //     });
     // }, []);
     React.useEffect(() => {
-        const dataRef = ref(database, 'test/');
-        get(dataRef)
-            .then((snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    // Do something with the data
-                } else {
-                    console.log('No data available');
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        // const dataRef = ref(database, 'test/');
+        // get(dataRef)
+        //     .then((snapshot) => {
+        //         if (snapshot.exists()) {
+        //             const data = snapshot.val();
+        //             console.log('data', data);
+        //             // Do something with the data
+        //         } else {
+        //             console.log('No data available');
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
     }, []);
     return (
         <Style>
