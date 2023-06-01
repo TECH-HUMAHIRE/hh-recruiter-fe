@@ -43,8 +43,7 @@ const ModalHeader = ({
         onClose();
     };
     const onLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('profile_completed');
+        localStorage.clear();
         window.location = `${import.meta.env.VITE_REDIRECT_URL}/?logout=true`;
     };
     const onUploadImageLogo = (value, name) => {

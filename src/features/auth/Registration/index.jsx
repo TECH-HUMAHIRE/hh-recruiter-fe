@@ -19,7 +19,8 @@ const Registration = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const [setOptEmail, response] = useSendOTPEmailMutation();
-    const [resetOtp, {data, isLoading, isSuccess}] = useResendOTPEmailMutation()
+    const [resetOtp, { data, isLoading, isSuccess }] =
+        useResendOTPEmailMutation();
     const [otp, setOtp] = React.useState('');
     const { data: profile, refetch } = useGetProfileQuery();
     const onSubmitOtp = (data) => {
@@ -32,9 +33,9 @@ const Registration = () => {
         }
         setOtp({ otp: otp });
     };
-    const handleResendOtp = ()=>{
-        resetOtp()
-    }
+    const handleResendOtp = () => {
+        resetOtp();
+    };
     const onSubmit = () => {
         const uid = profile.data.uid;
         setOptEmail({ uid, ...otp });
@@ -56,7 +57,7 @@ const Registration = () => {
     }, [response]);
     React.useEffect(() => {
         if (isSuccess) {
-            setChangePass(false);
+            // setChangePass(false);
             messageApi.open({
                 type: 'success',
                 content: data.meta.message,
@@ -143,9 +144,17 @@ const Registration = () => {
                                 <div>
                                     Haven't received the verification code yet?
                                 </div>
-                                {isLoading ? <div style={{marginBottom: 40}}>Sending OTP...</div> :  <div className="code-resend" onClick={handleResendOtp}>
-                                    Resending Code
-                                </div>}
+                                {isLoading ? (
+                                    <div style={{ marginBottom: 40 }}>
+                                        Sending OTP...
+                                    </div>
+                                ) : (
+                                    <div
+                                        className="code-resend"
+                                        onClick={handleResendOtp}>
+                                        Resending Code
+                                    </div>
+                                )}
                                 <Button
                                     loading={response.isLoading}
                                     color="primary"

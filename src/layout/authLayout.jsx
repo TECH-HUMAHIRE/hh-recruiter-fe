@@ -9,7 +9,10 @@ import {
     useNavigate,
     useSearchParams
 } from 'react-router-dom';
-import { useGetProfileQuery } from '../app/actions/profile';
+import {
+    useGetProfileQuery,
+    useRefreshTokenMutation
+} from '../app/actions/profile';
 // import UnCompleteProfile from '../components/Modal/UnCompleteProfile';
 // import { useGetMyCompanyQuery } from '../app/actions/companyApi';
 
@@ -20,6 +23,14 @@ const AuthLayout = () => {
     const [collapsed, setCollapsed] = React.useState(false);
     const [isOpen, setOpen] = React.useState(false);
     const { data, isError, isSuccess } = useGetProfileQuery();
+    const [
+        refreshToken,
+        {
+            data: dataRefreshToken,
+            reset: resetResponseRefreshToken,
+            isSuccess: successRefresToken
+        }
+    ] = useRefreshTokenMutation();
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
     };
@@ -62,8 +73,68 @@ const AuthLayout = () => {
             }
         }
     }, [isSuccess]);
+    React.useEffect(() => {
+        if (isSuccess) {
+            if (localStorage.getItem('EX') === null) {
+                let ex_date = new Date();
+                localStorage.setItem(
+                    'EX',
+                    `${new Date(ex_date.getTime() + 0.5 * 60 * 60 * 1000)}`
+                );
+            }
+        }
+    }, [isSuccess]);
+    const useOutsideAlerter = (ref) => {
+        React.useEffect(() => {
+            /**
+             * Alert if clicked on outside of element
+             */
+            function handleClickOutside(event) {
+                let expired = localStorage.getItem('EX');
+                var countDownDate = new Date(expired).getTime();
+
+                // Update the count down every 1 second
+                var x = setInterval(function () {
+                    var now = new Date().getTime();
+                    var distance = countDownDate - now;
+                    if (distance < 0) {
+                        clearInterval(x);
+                        refreshToken({
+                            refresh_token: localStorage.getItem('refresh_token')
+                        });
+                        // LocalStorage().remove("EX");
+                        // LocalStorage().remove("auth");
+                        // LocalStorage().remove(`${token?.access_token}`);
+                    }
+                }, 1000);
+            }
+            // Bind the event listener
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => {
+                // Unbind the event listener on clean up
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [ref]);
+    };
+    React.useEffect(() => {
+        if (successRefresToken) {
+            localStorage.setItem('token', dataRefreshToken?.data?.id_token);
+            localStorage.setItem(
+                'refresh_token',
+                dataRefreshToken?.data?.refresh_token
+            );
+            let ex_date = new Date();
+            localStorage.setItem(
+                'EX',
+                `${new Date(ex_date.getTime() + 0.5 * 60 * 60 * 1000)}`
+            );
+            resetResponseRefreshToken();
+        }
+    });
+    const wrapperRef = React.useRef(null);
+    useOutsideAlerter(wrapperRef);
     return (
-        <Style id="huma-hire" collapsed={collapsed}>
+        <Style ref={wrapperRef} id="huma-hire" collapsed={collapsed}>
             <Header collapsed={collapsed} />
             <section className="section">
                 <Sidebar

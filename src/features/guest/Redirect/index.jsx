@@ -15,6 +15,10 @@ const RedirectPage = () => {
             }?isError=true`;
         } else {
             localStorage.setItem('token', paramsUrl.get('token'));
+            localStorage.setItem(
+                'refresh_token',
+                paramsUrl.get('refresh_token')
+            );
             setToken(paramsUrl.get('token'));
         }
     }, [paramsUrl]);
@@ -25,8 +29,7 @@ const RedirectPage = () => {
     }, [token]);
     React.useEffect(() => {
         if (unComplateCompany) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('profile_completed');
+            localStorage.clear();
             window.location = `${
                 import.meta.env.VITE_REDIRECT_URL
             }?logout=true`;
@@ -42,8 +45,8 @@ const RedirectPage = () => {
                 navigate('/registration');
             }
             if (data?.data.email_verified === false) {
-                // navigate('/verification');
-                navigate('/');
+                navigate('/verification');
+                // navigate('/');
             }
             if (data?.data.email_verified) {
                 navigate('/');
