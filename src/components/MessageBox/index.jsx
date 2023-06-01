@@ -8,9 +8,14 @@ import Button from '../Button';
 import AttachIcon from '../Assets/icon/attach.png';
 import DeleteIcon from '../Assets/icon/Trash.png';
 import { CardMenu } from '../Card/card.style';
+import { database } from '../../firebase';
+import { useGetProfileQuery } from '../../app/actions/profile';
+import { onValue, push, ref, set } from 'firebase/database';
 
 const MessageBox = ({ onDeleteMessage = () => {} }) => {
+    const messagesRef = ref(database, 'messages');
     const [form] = Form.useForm();
+    const { data } = useGetProfileQuery();
     const items = [
         {
             key: '2',
@@ -22,9 +27,39 @@ const MessageBox = ({ onDeleteMessage = () => {} }) => {
             )
         }
     ];
-    const hanldeSendMessage = (value) => {
-        form.setFieldValue('text_chat', '');
+    const createMessage = (message) => {
+        const newMessageRef = push(messagesRef);
+        set(newMessageRef, message)
+            .then(() => {
+                console.log('Message created successfully');
+            })
+            .catch((error) => {
+                console.log('Error creating message:', error);
+            });
     };
+    const hanldeSendMessage = (value) => {
+        // const messagesRef = ref(database, 'messages');
+        const message = {
+            text: form.getFieldValue('text_chat'),
+            sender: data?.data?.id,
+            timestamp: Date.now()
+        };
+
+        createMessage(message);
+    };
+    const retrieveMessages = () => {
+        onValue(
+            messagesRef,
+            (snapshot) => {
+                const messages = snapshot.val();
+                console.log('Messages:', messages);
+            },
+            (error) => {
+                console.log('Error retrieving messages:', error);
+            }
+        );
+    };
+    retrieveMessages();
     return (
         <MessageBoxStyle>
             <div className="message-header">

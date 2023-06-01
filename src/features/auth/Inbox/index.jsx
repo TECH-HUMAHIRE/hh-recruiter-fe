@@ -5,9 +5,8 @@ import Style from './inbox.style';
 import MessageTab from './partial/Message';
 import NotificationTab from './partial/Notification';
 
-import { getDatabase, ref, get } from 'firebase/database';
-import { database, auth } from '../../../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, get, onValue } from 'firebase/database';
+import { database } from '../../../firebase';
 
 const Inbox = () => {
     const [activeTab, setActiveTab] = useActiveTab('message');
@@ -25,6 +24,22 @@ const Inbox = () => {
     //     });
     // }, []);
     React.useEffect(() => {
+        const dataRef = ref(database, 'test');
+        onValue(
+            dataRef,
+            (snapshot) => {
+                // Handle the data changes here
+                const data = snapshot.val();
+                console.log('Real-time data:', data);
+            },
+            (error) => {
+                console.log(
+                    'Error retrieving real-time data:',
+                    error.code,
+                    error.message
+                );
+            }
+        );
         // const dataRef = ref(database, 'test/');
         // get(dataRef)
         //     .then((snapshot) => {

@@ -85,6 +85,7 @@ const AuthLayout = () => {
         }
     }, [isSuccess]);
     const useOutsideAlerter = (ref) => {
+        // eslint-disable-next-line react/prop-types
         React.useEffect(() => {
             /**
              * Alert if clicked on outside of element

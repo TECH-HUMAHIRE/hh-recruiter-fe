@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-// signInWithEmailAndPassword(auth, 'recruiter_texting_1@gmail.com', '123456');
+signInWithEmailAndPassword(auth, 'g22642873@gmail.com', '123456');
 
 const database = getDatabase(app);
 const firestore = getFirestore(app);
