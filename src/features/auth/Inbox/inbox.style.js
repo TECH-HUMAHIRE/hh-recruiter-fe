@@ -34,6 +34,7 @@ const Style = styled.div`
             display: flex;
             align-items: center;
             cursor: pointer;
+            margin-bottom: 20px;
             &__name {
                 font-weight: 600;
                 font-size: 12px;

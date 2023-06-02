@@ -1,6 +1,6 @@
 import { Card, Form, Input } from 'antd';
 import React from 'react';
-// import EmptyMessage from '../../../../components/EmptyMessage';
+import EmptyMessage from '../../../../components/EmptyMessage';
 import { Col, Row } from '../../../../components/Grid';
 import UserListMessage from './UserListMessage';
 // import TabMenu from '../../../../components/Tabs';
@@ -8,12 +8,54 @@ import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import Button from '../../../../components/Button';
 import MessageBox from '../../../../components/MessageBox';
 import DeleteMessage from '../../../../components/Modal/DeleteMessage';
+import { onValue, push, ref, set } from 'firebase/database';
+import { database } from '../../../../firebase';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const MessageTab = ({ message = [1, 2] }) => {
+const MessageTab = ({ message = [1, 2], dataProfile }) => {
+    let navigate = useNavigate();
+    const [paramsUrl, _] = useSearchParams();
     const [isDelete, setDelete] = React.useState(false);
+    const [chatActiveId, setChatAvtiveId] = React.useState(null);
+    const [dataUsers, setDataUsers] = React.useState([]);
     const onDeleteMessage = () => {
         setDelete(!isDelete);
     };
+    const onTabMessage = (uid) => {
+        setChatAvtiveId(uid);
+        navigate(`?message=${uid}`);
+        paramsUrl.set('message', uid);
+    };
+    React.useEffect(() => {
+        const dataRef = ref(database, `messages/${dataProfile?.data?.uid}`);
+        onValue(
+            dataRef,
+            (snapshot) => {
+                // Handle the data changes here
+                const data = snapshot.val();
+                const dataChat = Object.values(data);
+                // setMessagesData(messageDataList);
+                setDataUsers(dataChat);
+            },
+            (error) => {
+                console.log(
+                    'Error retrieving real-time data:',
+                    error.code,
+                    error.message
+                );
+            }
+        );
+    }, []);
+    React.useEffect(() => {
+        if (dataUsers.length > 0 && !paramsUrl.get('message')) {
+            setChatAvtiveId(Object.values(dataUsers[0])[0].userTarget);
+        }
+    }, [dataUsers]);
+    React.useEffect(() => {
+        if (paramsUrl.get('message')) {
+            setChatAvtiveId(paramsUrl.get('message'));
+        }
+    }, [paramsUrl]);
     return (
         <div>
             <Row>
@@ -36,12 +78,28 @@ const MessageTab = ({ message = [1, 2] }) => {
                                 icon={<FilterOutlined />}></Button>
                         </Col>
                     </Row>
-                    <UserListMessage />
+                    {dataUsers.length > 0 &&
+                        dataUsers.map((item, key) => {
+                            return (
+                                <UserListMessage
+                                    onTabMessage={onTabMessage}
+                                    data={item}
+                                    key={key}
+                                />
+                            );
+                        })}
+
                     {/* <TabMenu item={itemTabs} tabPosition="left" /> */}
                 </Col>
                 <Col md={8}>
-                    {/* <EmptyMessage /> */}
-                    <MessageBox onDeleteMessage={onDeleteMessage} />
+                    {chatActiveId ? (
+                        <MessageBox
+                            uid={chatActiveId}
+                            onDeleteMessage={onDeleteMessage}
+                        />
+                    ) : (
+                        <EmptyMessage />
+                    )}
                 </Col>
             </Row>
             <DeleteMessage isOpen={isDelete} onClose={onDeleteMessage} />

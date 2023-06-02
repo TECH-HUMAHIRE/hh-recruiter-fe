@@ -180,6 +180,7 @@ const MyTask = () => {
                 loading={isLoading}
                 onClose={onDetailJob}
                 isOpen={isOpen}
+                dataCompany={taskDetail?.data}
                 data={taskDetail?.data?.job}
             />
             <ReferCandidates

@@ -5,12 +5,15 @@ import Style from './inbox.style';
 import MessageTab from './partial/Message';
 import NotificationTab from './partial/Notification';
 
-import { getDatabase, ref, get } from 'firebase/database';
-import { database, auth } from '../../../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, get, onValue } from 'firebase/database';
+import { database } from '../../../firebase';
+import { useGetProfileQuery } from '../../../app/actions/profile';
+import { Skeleton } from 'antd';
 
 const Inbox = () => {
+    const { data: dataProfile } = useGetProfileQuery();
     const [activeTab, setActiveTab] = useActiveTab('message');
+
     // console.log(firebase.database())
     // console.log('Asdasdasd', firebase);
 
@@ -24,22 +27,7 @@ const Inbox = () => {
     //         // User signed in successfully
     //     });
     // }, []);
-    React.useEffect(() => {
-        // const dataRef = ref(database, 'test/');
-        // get(dataRef)
-        //     .then((snapshot) => {
-        //         if (snapshot.exists()) {
-        //             const data = snapshot.val();
-        //             console.log('data', data);
-        //             // Do something with the data
-        //         } else {
-        //             console.log('No data available');
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
-    }, []);
+
     return (
         <Style>
             <h1 className="title">Inbox</h1>
@@ -56,7 +44,11 @@ const Inbox = () => {
                     {
                         label: `Message`,
                         key: 'message',
-                        children: <MessageTab />
+                        children: dataProfile?.data ? (
+                            <MessageTab dataProfile={dataProfile} />
+                        ) : (
+                            <Skeleton />
+                        )
                     },
                     {
                         label: `Notification`,

@@ -133,6 +133,14 @@ export const candidates = createApi({
                     params: params
                 };
             }
+        }),
+        getUserDetail: builder.query({
+            query: (id) => {
+                return {
+                    url: `/user/${id}`,
+                    method: 'GET'
+                };
+            }
         })
     })
 });
@@ -149,5 +157,6 @@ export const {
     useGetCountCandidatesQuery,
     useCountJobQuery,
     useReferCandidateMutation,
-    useGetJobCandidatesQuery
+    useGetJobCandidatesQuery,
+    useGetUserDetailQuery
 } = candidates;

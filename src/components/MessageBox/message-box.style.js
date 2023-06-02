@@ -47,6 +47,36 @@ const MessageBoxStyle = styled(Card)`
                 margin-bottom: 30px;
             }
         }
+        &-box {
+            padding: 8px 16px;
+
+            font-size: 16px;
+            color: #666666;
+            display: flex;
+            align-items: flex-end;
+            width: max-content;
+            max-width: 80%;
+            &__sender {
+                background-color: #f4fcfb;
+                border: 1px solid #8fe0d4;
+                margin: 0 0 0 auto;
+                margin-bottom: 20px;
+                border-radius: 8px 8px 0px 8px;
+            }
+            &__for {
+                background-color: #ffffff;
+                border: 1px solid #e8e8e8;
+                margin: 0 auto 0 0;
+                margin-bottom: 20px;
+                border-radius: 0px 8px 8px 8px;
+            }
+            &__text {
+                margin-right: 15px;
+            }
+            &__time {
+                font-size: 10px;
+            }
+        }
         &-bottom {
             padding: 16px 24px;
             display: flex;
