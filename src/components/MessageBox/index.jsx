@@ -22,7 +22,7 @@ const MessageData = ({
 }) => {
     const boxRef = React.useRef(null);
     const [messagesData, setMessagesData] = React.useState([]);
-
+    const [isScroll, setScroll] = React.useState(false);
     const [form] = Form.useForm();
     const { data } = useGetProfileQuery();
     const { data: dataUser } = useGetUserDetailQuery(uid);
@@ -80,12 +80,14 @@ const MessageData = ({
 
     React.useEffect(() => {
         if (messagesData && uid) {
+            setScroll(false);
             onValue(
                 messagesRef,
                 (snapshot) => {
                     const data = snapshot.val();
                     const messageDataList = Object.values(data);
                     setMessagesData(messageDataList);
+                    setScroll(true);
                 },
                 (error) => {
                     console.log('Error retrieving messages:', error);
@@ -94,10 +96,10 @@ const MessageData = ({
         }
     }, [messagesData, uid]);
     React.useEffect(() => {
-        if (messagesData.length > 0 && uid) {
+        if (isScroll || uid) {
             boxRef.current.scrollTop = boxRef.current.scrollHeight;
         }
-    }, [messagesData, uid]);
+    }, [isScroll, uid]);
     return (
         <MessageBoxStyle>
             <div className="message-header">
@@ -138,22 +140,24 @@ const MessageData = ({
                     </div>
 
                     {messagesData.map((message, key) => (
-                        <div
-                            key={key}
-                            className={`message-box  ${
-                                message.sender === dataProfile?.data?.uid
-                                    ? 'message-box__sender'
-                                    : 'message-box__for'
-                            }`}>
-                            <div className="message-box__text">
-                                {message.text}
+                        <React.Fragment>
+                            <div
+                                key={key}
+                                className={`message-box  ${
+                                    message.sender === dataProfile?.data?.uid
+                                        ? 'message-box__sender'
+                                        : 'message-box__for'
+                                }`}>
+                                <div className="message-box__text">
+                                    {message.text}
+                                </div>
+                                <div className="message-box__time">
+                                    {moment(new Date(message.timestamp)).format(
+                                        'HH:mm'
+                                    )}
+                                </div>
                             </div>
-                            <div className="message-box__time">
-                                {moment(new Date(message.timestamp)).format(
-                                    'HH:mm'
-                                )}
-                            </div>
-                        </div>
+                        </React.Fragment>
                     ))}
                     {/* CHAT MESSAGE */}
                 </div>

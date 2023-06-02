@@ -34,6 +34,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                 // Handle the data changes here
                 const data = snapshot.val();
                 const dataChat = Object.values(data);
+
                 // setMessagesData(messageDataList);
                 setDataUsers(dataChat);
             },
