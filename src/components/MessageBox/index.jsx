@@ -11,9 +11,16 @@ import { CardMenu } from '../Card/card.style';
 import { database } from '../../firebase';
 import { useGetProfileQuery } from '../../app/actions/profile';
 import { onValue, push, ref, set } from 'firebase/database';
+import moment from 'moment';
+const MessageData = ({
+    messagesRef,
+    messagesRefForCandidate,
+    onDeleteMessage = () => {},
+    dataProfile
+}) => {
+    const boxRef = React.useRef(null);
+    const [messagesData, setMessagesData] = React.useState([]);
 
-const MessageBox = ({ onDeleteMessage = () => {} }) => {
-    const messagesRef = ref(database, 'messages');
     const [form] = Form.useForm();
     const { data } = useGetProfileQuery();
     const items = [
@@ -31,13 +38,23 @@ const MessageBox = ({ onDeleteMessage = () => {} }) => {
         const newMessageRef = push(messagesRef);
         set(newMessageRef, message)
             .then(() => {
+                boxRef.current.scrollTop = boxRef.current.scrollHeight;
+                console.log('Message created successfully');
+            })
+            .catch((error) => {
+                console.log('Error creating message:', error);
+            });
+        const newMessageRefCandidate = push(messagesRefForCandidate);
+        set(newMessageRefCandidate, message)
+            .then(() => {
+                boxRef.current.scrollTop = boxRef.current.scrollHeight;
                 console.log('Message created successfully');
             })
             .catch((error) => {
                 console.log('Error creating message:', error);
             });
     };
-    const hanldeSendMessage = (value) => {
+    const hanldeSendMessage = async (value) => {
         // const messagesRef = ref(database, 'messages');
         const message = {
             text: form.getFieldValue('text_chat'),
@@ -45,21 +62,30 @@ const MessageBox = ({ onDeleteMessage = () => {} }) => {
             timestamp: Date.now()
         };
 
-        createMessage(message);
+        await createMessage(message);
+        form.setFieldsValue({
+            text_chat: ''
+        });
     };
-    const retrieveMessages = () => {
+
+    React.useEffect(() => {
         onValue(
             messagesRef,
             (snapshot) => {
-                const messages = snapshot.val();
-                console.log('Messages:', messages);
+                const data = snapshot.val();
+                const messageDataList = Object.values(data);
+                setMessagesData(messageDataList);
             },
             (error) => {
                 console.log('Error retrieving messages:', error);
             }
         );
-    };
-    retrieveMessages();
+    }, []);
+    React.useEffect(() => {
+        if (messagesData.length > 0) {
+            boxRef.current.scrollTop = boxRef.current.scrollHeight;
+        }
+    }, [messagesData]);
     return (
         <MessageBoxStyle>
             <div className="message-header">
@@ -94,12 +120,31 @@ const MessageBox = ({ onDeleteMessage = () => {} }) => {
                     alt=""
                     className="message-body__background"
                 />
-                <div className="message-body__chat">
+                <div ref={boxRef} className="message-body__chat">
                     <div className="message-body__conversation">
                         {' '}
                         <LockOutlined /> This conversation is confidential and
                         cannot be seen by other users.
                     </div>
+
+                    {messagesData.map((message, key) => (
+                        <div
+                            key={key}
+                            className={`message-box  ${
+                                message.sender === dataProfile?.data?.id
+                                    ? 'message-box__sender'
+                                    : 'message-box__for'
+                            }`}>
+                            <div className="message-box__text">
+                                {message.text}
+                            </div>
+                            <div className="message-box__time">
+                                {moment(new Date(message.timestamp)).format(
+                                    'HH:mm'
+                                )}
+                            </div>
+                        </div>
+                    ))}
                     {/* CHAT MESSAGE */}
                 </div>
             </div>
@@ -121,6 +166,27 @@ const MessageBox = ({ onDeleteMessage = () => {} }) => {
                 </div>
             </Form>
         </MessageBoxStyle>
+    );
+};
+const MessageBox = ({ onDeleteMessage = () => {} }) => {
+    const { data: dataProfile } = useGetProfileQuery();
+    const messagesRef = ref(
+        database,
+        `messages/${dataProfile?.data?.id}/${274}/`
+    );
+    const messagesRefForCandidate = ref(
+        database,
+        `messages/${274}/${dataProfile?.data?.id}/`
+    );
+    return (
+        dataProfile?.data && (
+            <MessageData
+                dataProfile={dataProfile}
+                onDeleteMessage={onDeleteMessage}
+                messagesRef={messagesRef}
+                messagesRefForCandidate={messagesRefForCandidate}
+            />
+        )
     );
 };
 export default MessageBox;
