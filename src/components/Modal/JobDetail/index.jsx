@@ -14,12 +14,15 @@ import exampleImage from '../../Assets/images/example.png';
 import defaultImage from '../../Assets/images/defaultImage.png';
 import convertEmployeType from '../../Utils/convertEmployeType';
 import { Image, Skeleton } from 'antd';
+import { useNavigate } from 'react-router-dom';
 const JobDetail = ({
     isOpen = false,
     onClose = () => {},
     data = {},
-    loading = true
+    loading = true,
+    dataCompany = {}
 }) => {
+    let navigate = useNavigate();
     return (
         <JobDetailStyle
             title={'Job Detail'}
@@ -159,7 +162,13 @@ const JobDetail = ({
                     <Col sm={6}>
                         <div className="job-information__label">Language</div>
                         <div className="job-information__card">
-                            <div className="job-information__icon">
+                            <div
+                                className="job-information__icon"
+                                onClick={() =>
+                                    navigate(
+                                        `/Inbox?message=${dataCompany?.uid}`
+                                    )
+                                }>
                                 <img src={chatIcon} alt="" />
                             </div>
                             <div>
