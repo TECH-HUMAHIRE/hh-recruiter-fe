@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get } from 'firebase/database';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithCustomToken } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyBKXYoTKmo4ZlVcoUbJR95yxp10IuzlqsE',
@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-signInWithEmailAndPassword(auth, 'g22642873@gmail.com', '123456');
+signInWithCustomToken(auth, localStorage.getItem('tlfb'));
 
 const database = getDatabase(app);
 const firestore = getFirestore(app);

@@ -13,6 +13,8 @@ import {
     useGetProfileQuery,
     useRefreshTokenMutation
 } from '../app/actions/profile';
+import { auth } from '../firebase';
+import { signInWithCustomToken } from 'firebase/auth';
 // import UnCompleteProfile from '../components/Modal/UnCompleteProfile';
 // import { useGetMyCompanyQuery } from '../app/actions/companyApi';
 
@@ -133,6 +135,11 @@ const AuthLayout = () => {
         }
     });
     const wrapperRef = React.useRef(null);
+    React.useEffect(() => {
+        if (localStorage.getItem('tlfb')) {
+            signInWithCustomToken(auth, localStorage.getItem('tlfb'));
+        }
+    }, [localStorage]);
     useOutsideAlerter(wrapperRef);
     return (
         <Style ref={wrapperRef} id="huma-hire" collapsed={collapsed}>
