@@ -5,8 +5,8 @@ import { useGetUserDetailQuery } from '../../../../app/actions/candidates';
 import dummyUser from '../../../../components/Assets/images/dummyuserchat.png';
 const UserListMessage = ({ data, onTabMessage }) => {
     const datausersChat = Object.values(data);
-    const { data: dataUser, refetch } = useGetUserDetailQuery(
-        datausersChat[0]?.uid
+    const { data: dataUser } = useGetUserDetailQuery(
+        datausersChat[0]?.userTarget
     );
     return (
         <div

@@ -37,21 +37,19 @@ const MessageData = ({
             )
         }
     ];
-    const createMessage = (messageSender) => {
+    const createMessage = (messageSender, messageSending) => {
         const newMessageRef = push(messagesRef);
         set(newMessageRef, messageSender)
             .then(() => {
                 boxRef.current.scrollTop = boxRef.current.scrollHeight;
-                console.log('Message created successfully');
             })
             .catch((error) => {
                 console.log('Error creating message:', error);
             });
         const newMessageRefCandidate = push(messagesRefForCandidate);
-        set(newMessageRefCandidate, messageSender)
+        set(newMessageRefCandidate, messageSending)
             .then(() => {
                 boxRef.current.scrollTop = boxRef.current.scrollHeight;
-                console.log('Message created successfully');
             })
             .catch((error) => {
                 console.log('Error creating message:', error);
@@ -63,10 +61,18 @@ const MessageData = ({
             text: form.getFieldValue('text_chat'),
             sender: data?.data?.uid,
             uid: uid,
+            userTarget: uid,
+            timestamp: Date.now()
+        };
+        const messageSending = {
+            text: form.getFieldValue('text_chat'),
+            sender: data?.data?.uid,
+            uid: uid,
+            userTarget: dataProfile?.data?.uid,
             timestamp: Date.now()
         };
 
-        await createMessage(messageSender);
+        await createMessage(messageSender, messageSending);
         form.setFieldsValue({
             text_chat: ''
         });
@@ -183,7 +189,6 @@ const MessageBox = ({ onDeleteMessage = () => {}, uid }) => {
         );
     React.useEffect(() => {
         if (uid) {
-            console.log('masuk', uid);
             setMessagesRef(
                 ref(database, `messages/${dataProfile?.data?.uid}/${uid}/`)
             );

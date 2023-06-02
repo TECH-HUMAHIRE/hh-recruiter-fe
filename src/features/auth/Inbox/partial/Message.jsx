@@ -28,7 +28,6 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
     };
     React.useEffect(() => {
         const dataRef = ref(database, `messages/${dataProfile?.data?.uid}`);
-
         onValue(
             dataRef,
             (snapshot) => {
@@ -37,7 +36,6 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                 const dataChat = Object.values(data);
                 // setMessagesData(messageDataList);
                 setDataUsers(dataChat);
-                console.log('Real-time data:', dataChat);
             },
             (error) => {
                 console.log(
@@ -50,8 +48,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
     }, []);
     React.useEffect(() => {
         if (dataUsers.length > 0 && !paramsUrl.get('message')) {
-            console.log('dataUsers');
-            setChatAvtiveId(Object.values(dataUsers[0])[0].userId);
+            setChatAvtiveId(Object.values(dataUsers[0])[0].userTarget);
         }
     }, [dataUsers]);
     React.useEffect(() => {
@@ -59,7 +56,6 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
             setChatAvtiveId(paramsUrl.get('message'));
         }
     }, [paramsUrl]);
-    console.log('chatActiveId', paramsUrl.get('message'));
     return (
         <div>
             <Row>
