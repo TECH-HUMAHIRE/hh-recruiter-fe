@@ -1,6 +1,6 @@
 import { Card, Form, Input } from 'antd';
 import React from 'react';
-// import EmptyMessage from '../../../../components/EmptyMessage';
+import EmptyMessage from '../../../../components/EmptyMessage';
 import { Col, Row } from '../../../../components/Grid';
 import UserListMessage from './UserListMessage';
 // import TabMenu from '../../../../components/Tabs';
@@ -8,17 +8,27 @@ import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import Button from '../../../../components/Button';
 import MessageBox from '../../../../components/MessageBox';
 import DeleteMessage from '../../../../components/Modal/DeleteMessage';
-import { onValue, ref } from 'firebase/database';
+import { onValue, push, ref, set } from 'firebase/database';
 import { database } from '../../../../firebase';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const MessageTab = ({ message = [1, 2], dataProfile }) => {
+    let navigate = useNavigate();
+    const [paramsUrl, _] = useSearchParams();
     const [isDelete, setDelete] = React.useState(false);
+    const [chatActiveId, setChatAvtiveId] = React.useState(null);
     const [dataUsers, setDataUsers] = React.useState([]);
     const onDeleteMessage = () => {
         setDelete(!isDelete);
     };
+    const onTabMessage = (id) => {
+        setChatAvtiveId(id);
+        navigate(`?message=${id}`);
+        paramsUrl.set('message', id);
+    };
     React.useEffect(() => {
         const dataRef = ref(database, `messages/${dataProfile?.data?.id}`);
+
         onValue(
             dataRef,
             (snapshot) => {
@@ -37,21 +47,19 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                 );
             }
         );
-        // const dataRef = ref(database, 'test/');
-        // get(dataRef)
-        //     .then((snapshot) => {
-        //         if (snapshot.exists()) {
-        //             const data = snapshot.val();
-        //             console.log('data', data);
-        //             // Do something with the data
-        //         } else {
-        //             console.log('No data available');
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
     }, []);
+    React.useEffect(() => {
+        if (dataUsers.length > 0 && !paramsUrl.get('message')) {
+            console.log('dataUsers');
+            setChatAvtiveId(Object.values(dataUsers[0])[0].userId);
+        }
+    }, [dataUsers]);
+    React.useEffect(() => {
+        if (paramsUrl.get('message')) {
+            setChatAvtiveId(paramsUrl.get('message'));
+        }
+    }, [paramsUrl]);
+    console.log('chatActiveId', paramsUrl.get('message'));
     return (
         <div>
             <Row>
@@ -74,15 +82,28 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                                 icon={<FilterOutlined />}></Button>
                         </Col>
                     </Row>
-                    {dataUsers.map((item, key) => {
-                        return <UserListMessage data={item} key={key} />;
-                    })}
+                    {dataUsers.length > 0 &&
+                        dataUsers.map((item, key) => {
+                            return (
+                                <UserListMessage
+                                    onTabMessage={onTabMessage}
+                                    data={item}
+                                    key={key}
+                                />
+                            );
+                        })}
 
                     {/* <TabMenu item={itemTabs} tabPosition="left" /> */}
                 </Col>
                 <Col md={8}>
-                    {/* <EmptyMessage /> */}
-                    <MessageBox onDeleteMessage={onDeleteMessage} />
+                    {chatActiveId ? (
+                        <MessageBox
+                            id={chatActiveId}
+                            onDeleteMessage={onDeleteMessage}
+                        />
+                    ) : (
+                        <EmptyMessage />
+                    )}
                 </Col>
             </Row>
             <DeleteMessage isOpen={isDelete} onClose={onDeleteMessage} />

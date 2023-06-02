@@ -12,17 +12,20 @@ import { database } from '../../firebase';
 import { useGetProfileQuery } from '../../app/actions/profile';
 import { onValue, push, ref, set } from 'firebase/database';
 import moment from 'moment';
+import { useGetUserDetailQuery } from '../../app/actions/candidates';
 const MessageData = ({
     messagesRef,
     messagesRefForCandidate,
     onDeleteMessage = () => {},
-    dataProfile
+    dataProfile,
+    id
 }) => {
     const boxRef = React.useRef(null);
     const [messagesData, setMessagesData] = React.useState([]);
 
     const [form] = Form.useForm();
     const { data } = useGetProfileQuery();
+    const { data: dataUser } = useGetUserDetailQuery(id);
     const items = [
         {
             key: '2',
@@ -34,9 +37,9 @@ const MessageData = ({
             )
         }
     ];
-    const createMessage = (message) => {
+    const createMessage = (messageSender) => {
         const newMessageRef = push(messagesRef);
-        set(newMessageRef, message)
+        set(newMessageRef, messageSender)
             .then(() => {
                 boxRef.current.scrollTop = boxRef.current.scrollHeight;
                 console.log('Message created successfully');
@@ -45,7 +48,7 @@ const MessageData = ({
                 console.log('Error creating message:', error);
             });
         const newMessageRefCandidate = push(messagesRefForCandidate);
-        set(newMessageRefCandidate, message)
+        set(newMessageRefCandidate, messageSender)
             .then(() => {
                 boxRef.current.scrollTop = boxRef.current.scrollHeight;
                 console.log('Message created successfully');
@@ -56,52 +59,53 @@ const MessageData = ({
     };
     const hanldeSendMessage = async (value) => {
         // const messagesRef = ref(database, 'messages');
-        const message = {
+        const messageSender = {
             text: form.getFieldValue('text_chat'),
             sender: data?.data?.id,
+            userId: id,
             timestamp: Date.now()
         };
 
-        await createMessage(message);
+        await createMessage(messageSender);
         form.setFieldsValue({
             text_chat: ''
         });
     };
 
     React.useEffect(() => {
-        onValue(
-            messagesRef,
-            (snapshot) => {
-                const data = snapshot.val();
-                const messageDataList = Object.values(data);
-                setMessagesData(messageDataList);
-            },
-            (error) => {
-                console.log('Error retrieving messages:', error);
-            }
-        );
-    }, []);
+        if (messagesData && id) {
+            onValue(
+                messagesRef,
+                (snapshot) => {
+                    const data = snapshot.val();
+                    const messageDataList = Object.values(data);
+                    setMessagesData(messageDataList);
+                },
+                (error) => {
+                    console.log('Error retrieving messages:', error);
+                }
+            );
+        }
+    }, [messagesData, id]);
     React.useEffect(() => {
-        if (messagesData.length > 0) {
+        if (messagesData.length > 0 && id) {
             boxRef.current.scrollTop = boxRef.current.scrollHeight;
         }
-    }, [messagesData]);
+    }, [messagesData, id]);
     return (
         <MessageBoxStyle>
             <div className="message-header">
                 <div className="message-header__top">
                     <Avatar
-                        src={dummyUser}
+                        src={dataUser?.data?.photo_url}
                         className="message-header__avatar"
                     />
                     <div className="message-header__right">
-                        <div className="message-tabs__name">Kyari Pamyu</div>
+                        <div className="message-tabs__name">
+                            {dataUser?.data?.name}
+                        </div>
                         <div className="message-tabs__chat">
-                            Lorem ipsum dolor sit, amet consectetur adipisicing
-                            elit. Animi voluptatum neque ad, ipsam laboriosam
-                            iste repellendus aliquid nemo exercitationem
-                            provident eum praesentium magnam et quod eveniet ex
-                            libero! Distinctio, ad.
+                            {messagesData[messagesData.length - 1]?.text}
                         </div>
                     </div>
                 </div>
@@ -168,19 +172,31 @@ const MessageData = ({
         </MessageBoxStyle>
     );
 };
-const MessageBox = ({ onDeleteMessage = () => {} }) => {
+const MessageBox = ({ onDeleteMessage = () => {}, id }) => {
     const { data: dataProfile } = useGetProfileQuery();
-    const messagesRef = ref(
-        database,
-        `messages/${dataProfile?.data?.id}/${274}/`
+    const [messagesRef, setMessagesRef] = React.useState(
+        ref(database, `messages/${dataProfile?.data?.id}/${id}/`)
     );
-    const messagesRefForCandidate = ref(
-        database,
-        `messages/${274}/${dataProfile?.data?.id}/`
-    );
+    const [messagesRefForCandidate, setMessagesRefForCandidate] =
+        React.useState(
+            ref(database, `messages/${id}/${dataProfile?.data?.id}/`)
+        );
+    React.useEffect(() => {
+        if (id) {
+            console.log('masuk', id);
+            setMessagesRef(
+                ref(database, `messages/${dataProfile?.data?.id}/${id}/`)
+            );
+            setMessagesRefForCandidate(
+                ref(database, `messages/${id}/${dataProfile?.data?.id}/`)
+            );
+        }
+    }, [id]);
     return (
-        dataProfile?.data && (
+        dataProfile?.data &&
+        id && (
             <MessageData
+                id={id}
                 dataProfile={dataProfile}
                 onDeleteMessage={onDeleteMessage}
                 messagesRef={messagesRef}
