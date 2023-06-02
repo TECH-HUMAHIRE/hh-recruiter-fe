@@ -31,7 +31,7 @@ const UserListMessage = ({ data, onTabMessage }) => {
                         )
                     ).format('HH:mm')}
                 </div>
-                <div className="message-tabs__read">12</div>
+                {/* <div className="message-tabs__read">12</div> */}
             </div>
         </div>
     );
