@@ -19,6 +19,7 @@ const RedirectPage = () => {
                 'refresh_token',
                 paramsUrl.get('refresh_token')
             );
+            localStorage.setItem('tlfb', paramsUrl.get('tlfb'));
             setToken(paramsUrl.get('token'));
         }
     }, [paramsUrl]);
