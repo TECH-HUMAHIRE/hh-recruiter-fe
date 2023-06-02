@@ -6,12 +6,12 @@ import dummyUser from '../../../../components/Assets/images/dummyuserchat.png';
 const UserListMessage = ({ data, onTabMessage }) => {
     const datausersChat = Object.values(data);
     const { data: dataUser, refetch } = useGetUserDetailQuery(
-        datausersChat[0]?.userId
+        datausersChat[0]?.uid
     );
     return (
         <div
             className="message-tabs"
-            onClick={() => onTabMessage(dataUser?.data?.id)}>
+            onClick={() => onTabMessage(dataUser?.data?.uid)}>
             <Avatar
                 src={dataUser?.data?.photo_url}
                 alt=""

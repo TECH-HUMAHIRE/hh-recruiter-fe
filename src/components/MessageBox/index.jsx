@@ -18,14 +18,14 @@ const MessageData = ({
     messagesRefForCandidate,
     onDeleteMessage = () => {},
     dataProfile,
-    id
+    uid
 }) => {
     const boxRef = React.useRef(null);
     const [messagesData, setMessagesData] = React.useState([]);
 
     const [form] = Form.useForm();
     const { data } = useGetProfileQuery();
-    const { data: dataUser } = useGetUserDetailQuery(id);
+    const { data: dataUser } = useGetUserDetailQuery(uid);
     const items = [
         {
             key: '2',
@@ -61,8 +61,8 @@ const MessageData = ({
         // const messagesRef = ref(database, 'messages');
         const messageSender = {
             text: form.getFieldValue('text_chat'),
-            sender: data?.data?.id,
-            userId: id,
+            sender: data?.data?.uid,
+            uid: uid,
             timestamp: Date.now()
         };
 
@@ -73,7 +73,7 @@ const MessageData = ({
     };
 
     React.useEffect(() => {
-        if (messagesData && id) {
+        if (messagesData && uid) {
             onValue(
                 messagesRef,
                 (snapshot) => {
@@ -86,12 +86,12 @@ const MessageData = ({
                 }
             );
         }
-    }, [messagesData, id]);
+    }, [messagesData, uid]);
     React.useEffect(() => {
-        if (messagesData.length > 0 && id) {
+        if (messagesData.length > 0 && uid) {
             boxRef.current.scrollTop = boxRef.current.scrollHeight;
         }
-    }, [messagesData, id]);
+    }, [messagesData, uid]);
     return (
         <MessageBoxStyle>
             <div className="message-header">
@@ -135,7 +135,7 @@ const MessageData = ({
                         <div
                             key={key}
                             className={`message-box  ${
-                                message.sender === dataProfile?.data?.id
+                                message.sender === dataProfile?.data?.uid
                                     ? 'message-box__sender'
                                     : 'message-box__for'
                             }`}>
@@ -172,31 +172,31 @@ const MessageData = ({
         </MessageBoxStyle>
     );
 };
-const MessageBox = ({ onDeleteMessage = () => {}, id }) => {
+const MessageBox = ({ onDeleteMessage = () => {}, uid }) => {
     const { data: dataProfile } = useGetProfileQuery();
     const [messagesRef, setMessagesRef] = React.useState(
-        ref(database, `messages/${dataProfile?.data?.id}/${id}/`)
+        ref(database, `messages/${dataProfile?.data?.uid}/${uid}/`)
     );
     const [messagesRefForCandidate, setMessagesRefForCandidate] =
         React.useState(
-            ref(database, `messages/${id}/${dataProfile?.data?.id}/`)
+            ref(database, `messages/${uid}/${dataProfile?.data?.uid}/`)
         );
     React.useEffect(() => {
-        if (id) {
-            console.log('masuk', id);
+        if (uid) {
+            console.log('masuk', uid);
             setMessagesRef(
-                ref(database, `messages/${dataProfile?.data?.id}/${id}/`)
+                ref(database, `messages/${dataProfile?.data?.uid}/${uid}/`)
             );
             setMessagesRefForCandidate(
-                ref(database, `messages/${id}/${dataProfile?.data?.id}/`)
+                ref(database, `messages/${uid}/${dataProfile?.data?.uid}/`)
             );
         }
-    }, [id]);
+    }, [uid]);
     return (
         dataProfile?.data &&
-        id && (
+        uid && (
             <MessageData
-                id={id}
+                uid={uid}
                 dataProfile={dataProfile}
                 onDeleteMessage={onDeleteMessage}
                 messagesRef={messagesRef}

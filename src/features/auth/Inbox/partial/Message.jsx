@@ -21,13 +21,13 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
     const onDeleteMessage = () => {
         setDelete(!isDelete);
     };
-    const onTabMessage = (id) => {
-        setChatAvtiveId(id);
-        navigate(`?message=${id}`);
-        paramsUrl.set('message', id);
+    const onTabMessage = (uid) => {
+        setChatAvtiveId(uid);
+        navigate(`?message=${uid}`);
+        paramsUrl.set('message', uid);
     };
     React.useEffect(() => {
-        const dataRef = ref(database, `messages/${dataProfile?.data?.id}`);
+        const dataRef = ref(database, `messages/${dataProfile?.data?.uid}`);
 
         onValue(
             dataRef,
@@ -98,7 +98,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                 <Col md={8}>
                     {chatActiveId ? (
                         <MessageBox
-                            id={chatActiveId}
+                            uid={chatActiveId}
                             onDeleteMessage={onDeleteMessage}
                         />
                     ) : (
