@@ -22,7 +22,6 @@ const MessageData = ({
     uid,
     chatActiveId
 }) => {
-    let ghg = uid;
     const boxRef = React.useRef(null);
     const [messagesData, setMessagesData] = React.useState([]);
     const [isScroll, setScroll] = React.useState(false);
