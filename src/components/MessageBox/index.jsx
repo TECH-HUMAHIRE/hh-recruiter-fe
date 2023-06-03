@@ -13,15 +13,19 @@ import { useGetProfileQuery } from '../../app/actions/profile';
 import { onValue, push, ref, set } from 'firebase/database';
 import moment from 'moment';
 import { useGetUserDetailQuery } from '../../app/actions/candidates';
+import { async } from '@firebase/util';
 const MessageData = ({
     messagesRef,
     messagesRefForCandidate,
     onDeleteMessage = () => {},
     dataProfile,
-    uid
+    uid,
+    chatActiveId
 }) => {
+    let ghg = uid;
     const boxRef = React.useRef(null);
     const [messagesData, setMessagesData] = React.useState([]);
+    const [messagesDataa, setMessagesDataa] = React.useState(messagesData);
     const [isScroll, setScroll] = React.useState(false);
     const [form] = Form.useForm();
     const { data } = useGetProfileQuery();
@@ -77,31 +81,69 @@ const MessageData = ({
             text_chat: ''
         });
     };
+    const getMessageData = () => {
+        onValue(
+            messagesRef,
+            (snapshot) => {
+                const data = snapshot.val();
+                const messageDataList = Object.values(data);
+                const groupedByTimestamp = messageDataList.reduce(
+                    (result, obj) => {
+                        const timestamp =
+                            moment(new Date(obj.timestamp)).format(
+                                'DD/MMM/YYYY'
+                            ) === moment(new Date()).format('DD/MMM/YYYY')
+                                ? 'Today'
+                                : moment(new Date(obj.timestamp)).format(
+                                      'DD/MMM/YYYY'
+                                  );
+                        if (!result[timestamp]) {
+                            result[timestamp] = [];
+                        }
+                        result[timestamp].push(obj);
 
+                        return result;
+                    },
+                    {}
+                );
+
+                setMessagesData(
+                    Object.keys(groupedByTimestamp).map((item) => {
+                        return {
+                            date: item,
+                            data: groupedByTimestamp[item]
+                        };
+                    })
+                );
+                setScroll(true);
+            },
+            (error) => {
+                console.log('Error retrieving messages:', error);
+            }
+        );
+    };
+    React.useEffect(async () => {
+        // if () {
+        setScroll(false);
+        await getMessageData();
+        // setMessagesDataa(messagesData);
+        // }
+    }, []);
     React.useEffect(() => {
-        if (messagesData && uid) {
+        if (messagesDataa === messagesData) {
             setScroll(false);
-            onValue(
-                messagesRef,
-                (snapshot) => {
-                    const data = snapshot.val();
-                    const messageDataList = Object.values(data);
-                    setMessagesData(messageDataList);
-                    setScroll(true);
-                },
-                (error) => {
-                    console.log('Error retrieving messages:', error);
-                }
-            );
+            getMessageData();
+            setMessagesDataa(messagesData);
         }
-    }, [messagesData, uid]);
+    }, [messagesDataa, messagesData]);
     React.useEffect(() => {
         if (isScroll || uid) {
             boxRef.current.scrollTop = boxRef.current.scrollHeight;
         }
     }, [isScroll, uid]);
     return (
-        <MessageBoxStyle>
+        <MessageBoxStyle
+            style={{ display: chatActiveId === uid ? 'block' : 'none' }}>
             <div className="message-header">
                 <div className="message-header__top">
                     <Avatar
@@ -113,7 +155,7 @@ const MessageData = ({
                             {dataUser?.data?.name}
                         </div>
                         <div className="message-tabs__chat">
-                            {messagesData[messagesData.length - 1]?.text}
+                            {/* {messagesData[messagesData.length - 1]?.text} */}
                         </div>
                     </div>
                 </div>
@@ -139,26 +181,36 @@ const MessageData = ({
                         cannot be seen by other users.
                     </div>
 
-                    {messagesData.map((message, key) => (
-                        <React.Fragment>
-                            <div
-                                key={key}
-                                className={`message-box  ${
-                                    message.sender === dataProfile?.data?.uid
-                                        ? 'message-box__sender'
-                                        : 'message-box__for'
-                                }`}>
-                                <div className="message-box__text">
-                                    {message.text}
+                    {messagesData &&
+                        messagesData.map((date, key) => (
+                            <React.Fragment>
+                                <div className="message-body__conversation">
+                                    {date.date}
                                 </div>
-                                <div className="message-box__time">
-                                    {moment(new Date(message.timestamp)).format(
-                                        'HH:mm'
-                                    )}
-                                </div>
-                            </div>
-                        </React.Fragment>
-                    ))}
+                                <div key={key}></div>
+                                {date.data.map((message, i) => {
+                                    return (
+                                        <div
+                                            key={i}
+                                            className={`message-box  ${
+                                                message.sender ===
+                                                dataProfile?.data?.uid
+                                                    ? 'message-box__sender'
+                                                    : 'message-box__for'
+                                            }`}>
+                                            <div className="message-box__text">
+                                                {message.text}
+                                            </div>
+                                            <div className="message-box__time">
+                                                {moment(
+                                                    new Date(message.timestamp)
+                                                ).format('HH:mm')}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </React.Fragment>
+                        ))}
                     {/* CHAT MESSAGE */}
                 </div>
             </div>
@@ -182,7 +234,7 @@ const MessageData = ({
         </MessageBoxStyle>
     );
 };
-const MessageBox = ({ onDeleteMessage = () => {}, uid }) => {
+const MessageBox = ({ onDeleteMessage = () => {}, uid, chatActiveId }) => {
     const { data: dataProfile } = useGetProfileQuery();
     const [messagesRef, setMessagesRef] = React.useState(
         ref(database, `messages/${dataProfile?.data?.uid}/${uid}/`)
@@ -202,16 +254,14 @@ const MessageBox = ({ onDeleteMessage = () => {}, uid }) => {
         }
     }, [uid]);
     return (
-        dataProfile?.data &&
-        uid && (
-            <MessageData
-                uid={uid}
-                dataProfile={dataProfile}
-                onDeleteMessage={onDeleteMessage}
-                messagesRef={messagesRef}
-                messagesRefForCandidate={messagesRefForCandidate}
-            />
-        )
+        <MessageData
+            chatActiveId={chatActiveId}
+            uid={uid}
+            dataProfile={dataProfile}
+            onDeleteMessage={onDeleteMessage}
+            messagesRef={messagesRef}
+            messagesRefForCandidate={messagesRefForCandidate}
+        />
     );
 };
 export default MessageBox;

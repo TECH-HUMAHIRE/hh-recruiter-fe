@@ -62,46 +62,60 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
             <Row>
                 <Col md={4}>
                     <Row>
-                        <Col md={10}>
-                            <Form.Item>
-                                <Input
-                                    prefix={<SearchOutlined />}
-                                    size="large"
-                                    type={'text'}
-                                    placeholder="Search by name"
-                                />
-                            </Form.Item>
+                        <Col onMouseDown={12}>
+                            <Row>
+                                <Col md={10}>
+                                    <Form.Item>
+                                        <Input
+                                            prefix={<SearchOutlined />}
+                                            size="large"
+                                            type={'text'}
+                                            placeholder="Search by name"
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col md={2} style={{ paddingLeft: 0 }}>
+                                    <Button
+                                        className="message-filter"
+                                        block
+                                        icon={<FilterOutlined />}></Button>
+                                </Col>
+                            </Row>
                         </Col>
-                        <Col md={2} style={{ paddingLeft: 0 }}>
-                            <Button
-                                className="message-filter"
-                                block
-                                icon={<FilterOutlined />}></Button>
-                        </Col>
+                        {dataUsers.length > 0 &&
+                            dataUsers.map((item, key) => {
+                                return (
+                                    <React.Fragment>
+                                        <Col md={12}>
+                                            <UserListMessage
+                                                key={key}
+                                                onTabMessage={onTabMessage}
+                                                data={item}
+                                            />
+                                        </Col>
+                                    </React.Fragment>
+                                );
+                            })}
                     </Row>
-                    {dataUsers.length > 0 &&
-                        dataUsers.map((item, key) => {
-                            return (
-                                <UserListMessage
-                                    onTabMessage={onTabMessage}
-                                    data={item}
-                                    key={key}
-                                />
-                            );
-                        })}
-
-                    {/* <TabMenu item={itemTabs} tabPosition="left" /> */}
                 </Col>
                 <Col md={8}>
-                    {chatActiveId ? (
-                        <MessageBox
-                            uid={chatActiveId}
-                            onDeleteMessage={onDeleteMessage}
-                        />
-                    ) : (
-                        <EmptyMessage />
-                    )}
+                    <Row>
+                        {dataUsers.length > 0 &&
+                            dataUsers.map((item, key) => {
+                                return (
+                                    <MessageBox
+                                        chatActiveId={chatActiveId}
+                                        uid={
+                                            Object.values(item)[key].userTarget
+                                        }
+                                        onDeleteMessage={onDeleteMessage}
+                                    />
+                                );
+                            })}
+                    </Row>
                 </Col>
+
+                {/* <TabMenu item={itemTabs} tabPosition="left" /> */}
             </Row>
             <DeleteMessage isOpen={isDelete} onClose={onDeleteMessage} />
         </div>
