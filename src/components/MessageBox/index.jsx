@@ -25,7 +25,6 @@ const MessageData = ({
     let ghg = uid;
     const boxRef = React.useRef(null);
     const [messagesData, setMessagesData] = React.useState([]);
-    const [messagesDataa, setMessagesDataa] = React.useState(messagesData);
     const [isScroll, setScroll] = React.useState(false);
     const [form] = Form.useForm();
     const { data } = useGetProfileQuery();
@@ -101,7 +100,7 @@ const MessageData = ({
                             result[timestamp] = [];
                         }
                         result[timestamp].push(obj);
-
+                        console.log('Hasil');
                         return result;
                     },
                     {}
@@ -129,13 +128,7 @@ const MessageData = ({
         // setMessagesDataa(messagesData);
         // }
     }, []);
-    React.useEffect(() => {
-        if (messagesDataa === messagesData) {
-            setScroll(false);
-            getMessageData();
-            setMessagesDataa(messagesData);
-        }
-    }, [messagesDataa, messagesData]);
+
     React.useEffect(() => {
         if (isScroll || uid) {
             boxRef.current.scrollTop = boxRef.current.scrollHeight;
