@@ -79,22 +79,52 @@ const MessageData = ({
     };
 
     React.useEffect(() => {
-        if (messagesData && uid) {
+        if (dataUser?.data?.uid !== messagesData[0]?.uid) {
             setScroll(false);
             onValue(
                 messagesRef,
                 (snapshot) => {
-                    const data = snapshot.val();
-                    const messageDataList = Object.values(data);
-                    setMessagesData(messageDataList);
-                    setScroll(true);
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        const messageDataList = Object.values(data);
+                        const groupedByTimestamp = messageDataList.reduce(
+                            (result, obj) => {
+                                const timestamp =
+                                    moment(new Date(obj.timestamp)).format(
+                                        'DD/MMM/YYYY'
+                                    ) ===
+                                    moment(new Date()).format('DD/MMM/YYYY')
+                                        ? 'Today'
+                                        : moment(
+                                              new Date(obj.timestamp)
+                                          ).format('DD/MMM/YYYY');
+                                if (!result[timestamp]) {
+                                    result[timestamp] = [];
+                                }
+                                result[timestamp].push(obj);
+                                return result;
+                            },
+                            {}
+                        );
+
+                        setMessagesData(
+                            Object.keys(groupedByTimestamp).map((item) => {
+                                return {
+                                    date: item,
+                                    data: groupedByTimestamp[item]
+                                };
+                            })
+                        );
+
+                        setScroll(true);
+                    }
                 },
                 (error) => {
                     console.log('Error retrieving messages:', error);
                 }
             );
         }
-    }, [messagesData, uid]);
+    }, [dataUser]);
     React.useEffect(() => {
         if (isScroll || uid) {
             boxRef.current.scrollTop = boxRef.current.scrollHeight;
@@ -139,24 +169,33 @@ const MessageData = ({
                         cannot be seen by other users.
                     </div>
 
-                    {messagesData.map((message, key) => (
+                    {messagesData.map((date, key) => (
                         <React.Fragment>
-                            <div
-                                key={key}
-                                className={`message-box  ${
-                                    message.sender === dataProfile?.data?.uid
-                                        ? 'message-box__sender'
-                                        : 'message-box__for'
-                                }`}>
-                                <div className="message-box__text">
-                                    {message.text}
-                                </div>
-                                <div className="message-box__time">
-                                    {moment(new Date(message.timestamp)).format(
-                                        'HH:mm'
-                                    )}
-                                </div>
+                            <div className="message-body__conversation">
+                                {date.date}
                             </div>
+                            <div key={key}></div>
+                            {date.data.map((message, i) => {
+                                return (
+                                    <div
+                                        key={i}
+                                        className={`message-box  ${
+                                            message.sender ===
+                                            dataProfile?.data?.uid
+                                                ? 'message-box__sender'
+                                                : 'message-box__for'
+                                        }`}>
+                                        <div className="message-box__text">
+                                            {message.text}
+                                        </div>
+                                        <div className="message-box__time">
+                                            {moment(
+                                                new Date(message.timestamp)
+                                            ).format('HH:mm')}
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </React.Fragment>
                     ))}
                     {/* CHAT MESSAGE */}
@@ -184,23 +223,14 @@ const MessageData = ({
 };
 const MessageBox = ({ onDeleteMessage = () => {}, uid }) => {
     const { data: dataProfile } = useGetProfileQuery();
-    const [messagesRef, setMessagesRef] = React.useState(
-        ref(database, `messages/${dataProfile?.data?.uid}/${uid}/`)
+    let messagesRef = ref(
+        database,
+        `messages/${dataProfile?.data?.uid}/${uid}/`
     );
-    const [messagesRefForCandidate, setMessagesRefForCandidate] =
-        React.useState(
-            ref(database, `messages/${uid}/${dataProfile?.data?.uid}/`)
-        );
-    React.useEffect(() => {
-        if (uid) {
-            setMessagesRef(
-                ref(database, `messages/${dataProfile?.data?.uid}/${uid}/`)
-            );
-            setMessagesRefForCandidate(
-                ref(database, `messages/${uid}/${dataProfile?.data?.uid}/`)
-            );
-        }
-    }, [uid]);
+    let messagesRefForCandidate = ref(
+        database,
+        `messages/${uid}/${dataProfile?.data?.uid}/`
+    );
     return (
         dataProfile?.data &&
         uid && (
