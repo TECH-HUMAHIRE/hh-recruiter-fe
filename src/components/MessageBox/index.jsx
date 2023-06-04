@@ -106,7 +106,6 @@ const MessageData = ({
                             },
                             {}
                         );
-
                         setMessagesData(
                             Object.keys(groupedByTimestamp).map((item) => {
                                 return {
@@ -126,10 +125,10 @@ const MessageData = ({
         }
     }, [dataUser]);
     React.useEffect(() => {
-        if (isScroll || uid) {
+        if (messagesData) {
             boxRef.current.scrollTop = boxRef.current.scrollHeight;
         }
-    }, [isScroll, uid]);
+    }, [messagesData]);
     return (
         <MessageBoxStyle>
             <div className="message-header">
