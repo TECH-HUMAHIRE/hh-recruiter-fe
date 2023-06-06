@@ -61,18 +61,17 @@ const MessageData = ({
             });
     };
     const hanldeSendMessage = async (value) => {
-        // const messagesRef = ref(database, 'messages');
         const messageSender = {
             text: form.getFieldValue('text_chat'),
             sender: data?.data?.uid,
             uid: uid,
             userTarget: uid,
-            read: false,
             timestamp: Date.now()
         };
         const messageSending = {
             text: form.getFieldValue('text_chat'),
             sender: data?.data?.uid,
+            read: false,
             uid: uid,
             userTarget: dataProfile?.data?.uid,
             timestamp: Date.now()
@@ -86,8 +85,19 @@ const MessageData = ({
     const listenForChat = () => {
         const chatRef = ref(database, `messages/${dataProfile?.data?.uid}/`);
         onValue(chatRef, (snapshot) => {
-            const chats = snapshot.val();
-            console.log('chats', chats);
+            let chats = snapshot.val();
+            let messageDataList = Object.values(chats);
+            let messageTargetList = messageDataList.map((item) => {
+                let getReadData = Object.values(item);
+
+                getReadData.forEach((chatTarget, chatTargetId) => {
+                    if (chatTarget.read === false) {
+                        // Update the chat message read status to true
+                    }
+                });
+                return Object.values(item);
+            });
+            return messageTargetList;
         });
     };
     const updateChatReadStatus = (chatTarget) => {
@@ -136,36 +146,27 @@ const MessageData = ({
                                 };
                             })
                         );
-                        Object.entries(groupedByTimestamp).forEach(
-                            ([chatId, chatData]) => {
-                                chatData.forEach((chatTarget, chatTargetId) => {
-                                    if (!chatTarget.read) {
-                                        console.log(
-                                            'chatTarget read',
-                                            chatTarget
-                                        );
-                                        // Update the chat message read status to true
-                                        updateChatReadStatus(chatTarget);
-                                    }
-                                });
-                            }
-                        );
-                        console.log('groupedByTimestamp', groupedByTimestamp);
-                        // groupedByTimestamp.forEach((chatId, key) => {
-                        //     console.log('chatId', chatId);
-                        //     chatId.forEach((chatTarget) => {
-                        //         console.log('Asdasdas', chatTarget);
-                        //         // if (!chatTarget.read) {
-                        //         //     // Update the chat message read status to true
-                        //         //     updateChatReadStatus(chatId);
-                        //         //   }
-                        //     });
-                        // chatId.
-                        // if (!chatData.read) {
-                        //     // Update the chat message read status to true
-                        //     updateChatReadStatus(chatId);
-                        // }
-                        // });
+                        // Object.keys(groupedByTimestamp).forEach(
+                        //     (chatId, chatData) => {
+                        //         console.log('chatId', chatId);
+                        //         console.log('chatData', chatData);
+                        //     }
+                        // );
+                        // Object.entries(groupedByTimestamp).forEach(
+                        //     ([chatId, chatData]) => {
+                        //         chatData.forEach((chatTarget, chatTargetId) => {
+                        //             if (!chatTarget.read) {
+                        //                 console.log(
+                        //                     'chatTarget read',
+                        //                     chatTarget
+                        //                 );
+                        //                 // Update the chat message read status to true
+                        //                 updateChatReadStatus(chatTarget);
+                        //             }
+                        //         });
+                        //     }
+                        // );
+
                         setScroll(true);
                     }
                 },

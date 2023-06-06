@@ -8,7 +8,7 @@ import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import Button from '../../../../components/Button';
 import MessageBox from '../../../../components/MessageBox';
 import DeleteMessage from '../../../../components/Modal/DeleteMessage';
-import { onValue, push, ref, remove, set } from 'firebase/database';
+import { onValue, push, ref, remove, set, update } from 'firebase/database';
 import { database } from '../../../../firebase';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -17,6 +17,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
     const [paramsUrl, _] = useSearchParams();
     const [messageDeleteTarget, setMessageDeleteTarget] = React.useState('');
     const [isDelete, setDelete] = React.useState(false);
+    const [totalDataMessage, setTotalDataMessage] = React.useState([]);
     const [chatActiveId, setChatAvtiveId] = React.useState(null);
     const [dataUsers, setDataUsers] = React.useState([]);
     const handleDeleteMassage = () => {
@@ -38,6 +39,47 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
         navigate(`?message=${uid}`);
         paramsUrl.set('message', uid);
     };
+    const updateStatusReadMessage = () => {
+        const chatRef = ref(
+            database,
+            `messages/${dataProfile?.data?.uid}/${paramsUrl.get('message')}`
+        );
+        onValue(chatRef, (snapshot) => {
+            let chats = snapshot.val();
+            let getKey = Object.keys(chats);
+            getKey.map((item) => {
+                const chatRefKey = ref(
+                    database,
+                    `messages/${dataProfile?.data?.uid}/${paramsUrl.get(
+                        'message'
+                    )}/${item}`
+                );
+                if (chats[item].read === false) {
+                    update(chatRefKey, { ...chats[item], read: true });
+                }
+            });
+        });
+    };
+    const listenForChat = () => {
+        const chatRef = ref(database, `messages/${dataProfile?.data?.uid}/`);
+        onValue(chatRef, (snapshot) => {
+            let chats = snapshot.val();
+            let messageDataList = Object.values(chats);
+
+            let groupChat = Object.keys(chats);
+            let arr = [];
+            groupChat.map((item) => {
+                return arr.push({
+                    uid: item,
+                    dataUnread: Object.values(chats[item]).filter(
+                        (item) => item.read === false
+                    ).length
+                });
+            });
+            setTotalDataMessage(arr);
+            // return messageTargetList;
+        });
+    };
     React.useEffect(() => {
         const dataRef = ref(database, `messages/${dataProfile?.data?.uid}`);
         onValue(
@@ -58,6 +100,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                 );
             }
         );
+        listenForChat();
     }, []);
     React.useEffect(() => {
         if (dataUsers.length > 0 && !paramsUrl.get('message')) {
@@ -67,6 +110,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
     React.useEffect(() => {
         if (paramsUrl.get('message')) {
             setChatAvtiveId(paramsUrl.get('message'));
+            updateStatusReadMessage();
         }
     }, [paramsUrl]);
     return (
@@ -95,6 +139,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                         dataUsers.map((item, key) => {
                             return (
                                 <UserListMessage
+                                    totalDataMessage={totalDataMessage}
                                     onTabMessage={onTabMessage}
                                     data={item}
                                     key={key}

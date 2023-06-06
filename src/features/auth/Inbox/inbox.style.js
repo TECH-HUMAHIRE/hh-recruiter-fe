@@ -77,6 +77,17 @@ const Style = styled.div`
                 padding: 4px 0px;
                 text-align: center;
             }
+            &__unread {
+                width: 20px;
+                height: 20px;
+                color: #fff;
+                background-color: ${color.employee.primary};
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
         }
         &-filter {
             color: #444444;
