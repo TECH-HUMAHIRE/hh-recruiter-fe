@@ -4,7 +4,11 @@ import Button from '../../Button';
 import { Col, Row } from '../../Grid';
 import DeleteJobIcon from '../../Assets/icon/delete_job.png';
 
-const DeleteMessage = ({ onClose = () => {}, isOpen = true }) => {
+const DeleteMessage = ({
+    onClose = () => {},
+    isOpen = true,
+    onAction = () => {}
+}) => {
     return (
         <Modal open={isOpen} footer={null} onCancel={onClose}>
             <div>
@@ -25,7 +29,7 @@ const DeleteMessage = ({ onClose = () => {}, isOpen = true }) => {
                     </Button>
                 </Col>
                 <Col md={6}>
-                    <Button block color="primary">
+                    <Button block color="primary" onClick={onAction}>
                         Delete
                     </Button>
                 </Col>

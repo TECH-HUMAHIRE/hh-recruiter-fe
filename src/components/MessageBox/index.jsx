@@ -10,7 +10,7 @@ import DeleteIcon from '../Assets/icon/Trash.png';
 import { CardMenu } from '../Card/card.style';
 import { database } from '../../firebase';
 import { useGetProfileQuery } from '../../app/actions/profile';
-import { onValue, push, ref, set } from 'firebase/database';
+import { onValue, push, ref, set, update } from 'firebase/database';
 import moment from 'moment';
 import { useGetUserDetailQuery } from '../../app/actions/candidates';
 const MessageData = ({
@@ -30,7 +30,12 @@ const MessageData = ({
         {
             key: '2',
             label: (
-                <CardMenu onClick={onDeleteMessage}>
+                <CardMenu
+                    onClick={() =>
+                        onDeleteMessage(
+                            `messages/${dataProfile?.data?.uid}/${uid}/`
+                        )
+                    }>
                     <img src={DeleteIcon} alt="" />
                     Delete message
                 </CardMenu>
@@ -62,6 +67,7 @@ const MessageData = ({
             sender: data?.data?.uid,
             uid: uid,
             userTarget: uid,
+            read: false,
             timestamp: Date.now()
         };
         const messageSending = {
@@ -77,7 +83,22 @@ const MessageData = ({
             text_chat: ''
         });
     };
-
+    const listenForChat = () => {
+        const chatRef = ref(database, `messages/${dataProfile?.data?.uid}/`);
+        onValue(chatRef, (snapshot) => {
+            const chats = snapshot.val();
+            console.log('chats', chats);
+        });
+    };
+    const updateChatReadStatus = (chatTarget) => {
+        const chatRef = ref(database, messagesRef);
+        update(chatRef, { read: true });
+    };
+    React.useEffect(() => {
+        return () => {
+            // Clean up any listeners if needed
+        };
+    }, []);
     React.useEffect(() => {
         if (dataUser?.data?.uid !== messagesData[0]?.uid) {
             setScroll(false);
@@ -87,7 +108,7 @@ const MessageData = ({
                     if (snapshot.exists()) {
                         const data = snapshot.val();
                         const messageDataList = Object.values(data);
-                        const groupedByTimestamp = messageDataList.reduce(
+                        let groupedByTimestamp = messageDataList.reduce(
                             (result, obj) => {
                                 const timestamp =
                                     moment(new Date(obj.timestamp)).format(
@@ -106,6 +127,7 @@ const MessageData = ({
                             },
                             {}
                         );
+
                         setMessagesData(
                             Object.keys(groupedByTimestamp).map((item) => {
                                 return {
@@ -114,7 +136,36 @@ const MessageData = ({
                                 };
                             })
                         );
-
+                        Object.entries(groupedByTimestamp).forEach(
+                            ([chatId, chatData]) => {
+                                chatData.forEach((chatTarget, chatTargetId) => {
+                                    if (!chatTarget.read) {
+                                        console.log(
+                                            'chatTarget read',
+                                            chatTarget
+                                        );
+                                        // Update the chat message read status to true
+                                        updateChatReadStatus(chatTarget);
+                                    }
+                                });
+                            }
+                        );
+                        console.log('groupedByTimestamp', groupedByTimestamp);
+                        // groupedByTimestamp.forEach((chatId, key) => {
+                        //     console.log('chatId', chatId);
+                        //     chatId.forEach((chatTarget) => {
+                        //         console.log('Asdasdas', chatTarget);
+                        //         // if (!chatTarget.read) {
+                        //         //     // Update the chat message read status to true
+                        //         //     updateChatReadStatus(chatId);
+                        //         //   }
+                        //     });
+                        // chatId.
+                        // if (!chatData.read) {
+                        //     // Update the chat message read status to true
+                        //     updateChatReadStatus(chatId);
+                        // }
+                        // });
                         setScroll(true);
                     }
                 },
@@ -122,6 +173,7 @@ const MessageData = ({
                     console.log('Error retrieving messages:', error);
                 }
             );
+            listenForChat();
         }
     }, [dataUser]);
     React.useEffect(() => {

@@ -8,17 +8,29 @@ import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import Button from '../../../../components/Button';
 import MessageBox from '../../../../components/MessageBox';
 import DeleteMessage from '../../../../components/Modal/DeleteMessage';
-import { onValue, push, ref, set } from 'firebase/database';
+import { onValue, push, ref, remove, set } from 'firebase/database';
 import { database } from '../../../../firebase';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const MessageTab = ({ message = [1, 2], dataProfile }) => {
     let navigate = useNavigate();
     const [paramsUrl, _] = useSearchParams();
+    const [messageDeleteTarget, setMessageDeleteTarget] = React.useState('');
     const [isDelete, setDelete] = React.useState(false);
     const [chatActiveId, setChatAvtiveId] = React.useState(null);
     const [dataUsers, setDataUsers] = React.useState([]);
-    const onDeleteMessage = () => {
+    const handleDeleteMassage = () => {
+        const messageRef = ref(database, messageDeleteTarget);
+        remove(messageRef)
+            .then(() => {
+                setDelete(false);
+            })
+            .catch((error) => {
+                console.error('Error deleting message:', error);
+            });
+    };
+    const onDeleteMessage = (messageTarget) => {
+        setMessageDeleteTarget(messageTarget);
         setDelete(!isDelete);
     };
     const onTabMessage = (uid) => {
@@ -103,7 +115,11 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                     )}
                 </Col>
             </Row>
-            <DeleteMessage isOpen={isDelete} onClose={onDeleteMessage} />
+            <DeleteMessage
+                isOpen={isDelete}
+                onClose={onDeleteMessage}
+                onAction={handleDeleteMassage}
+            />
         </div>
     );
 };
