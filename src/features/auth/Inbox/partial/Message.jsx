@@ -54,7 +54,10 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                         'message'
                     )}/${item}`
                 );
-                if (chats[item].read === false) {
+                if (
+                    chats[item].sender !== dataProfile?.data?.uid &&
+                    chats[item].read === false
+                ) {
                     update(chatRefKey, { ...chats[item], read: true });
                 }
             });
@@ -64,16 +67,17 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
         const chatRef = ref(database, `messages/${dataProfile?.data?.uid}/`);
         onValue(chatRef, (snapshot) => {
             let chats = snapshot.val();
-            let messageDataList = Object.values(chats);
 
             let groupChat = Object.keys(chats);
             let arr = [];
             groupChat.map((item) => {
                 return arr.push({
                     uid: item,
-                    dataUnread: Object.values(chats[item]).filter(
-                        (item) => item.read === false
-                    ).length
+                    dataUnread: Object.values(chats[item])
+                        .filter(
+                            (item) => item.sender !== dataProfile?.data?.uid
+                        )
+                        .filter((item) => item.read === false).length
                 });
             });
             setTotalDataMessage(arr);

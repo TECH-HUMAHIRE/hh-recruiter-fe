@@ -1,4 +1,4 @@
-import { LockOutlined, MoreOutlined } from '@ant-design/icons';
+import { CheckOutlined, LockOutlined, MoreOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, Form, Input } from 'antd';
 import React from 'react';
 import dummyUser from '../Assets/images/dummyuserchat.png';
@@ -13,6 +13,7 @@ import { useGetProfileQuery } from '../../app/actions/profile';
 import { onValue, push, ref, set, update } from 'firebase/database';
 import moment from 'moment';
 import { useGetUserDetailQuery } from '../../app/actions/candidates';
+import { useNavigate } from 'react-router-dom';
 const MessageData = ({
     messagesRef,
     messagesRefForCandidate,
@@ -20,6 +21,7 @@ const MessageData = ({
     dataProfile,
     uid
 }) => {
+    const navigate = useNavigate();
     const boxRef = React.useRef(null);
     const [messagesData, setMessagesData] = React.useState([]);
     const [isScroll, setScroll] = React.useState(false);
@@ -65,6 +67,7 @@ const MessageData = ({
             text: form.getFieldValue('text_chat'),
             sender: data?.data?.uid,
             uid: uid,
+            read: false,
             userTarget: uid,
             timestamp: Date.now()
         };
@@ -243,7 +246,21 @@ const MessageData = ({
                                         <div className="message-box__time">
                                             {moment(
                                                 new Date(message.timestamp)
-                                            ).format('HH:mm')}
+                                            ).format('HH:mm')}{' '}
+                                            {message.sender ===
+                                                dataProfile?.data?.uid && (
+                                                <span>
+                                                    {' '}
+                                                    <CheckOutlined
+                                                        style={{
+                                                            color: message.read
+                                                                ? '#20C1AA'
+                                                                : '#666666',
+                                                            fontSize: 12
+                                                        }}
+                                                    />
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                 );
@@ -260,6 +277,7 @@ const MessageData = ({
                     </Button>
                     <Form.Item name="text_chat" className="form-input">
                         <Input
+                            onFocus={() => navigate(`/Inbox?message=${uid}`)}
                             type={'text'}
                             size="large"
                             width={'max-context'}

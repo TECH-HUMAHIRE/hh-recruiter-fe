@@ -32,12 +32,7 @@ const UserListMessage = ({ data, onTabMessage, totalDataMessage }) => {
             </div>
             <div className="message-tabs__time">
                 <div className="message-tabs__hour">
-                    {totalDataMessage && getUnreadMessage() > 0 && (
-                        <div className="message-tabs__unread">
-                            {getUnreadMessage() > 9 ? '9+' : getUnreadMessage()}
-                        </div>
-                    )}
-                    <div>
+                    <div style={{ marginBottom: 5 }}>
                         {moment(
                             new Date(
                                 datausersChat[
@@ -46,6 +41,11 @@ const UserListMessage = ({ data, onTabMessage, totalDataMessage }) => {
                             )
                         ).format('HH:mm')}
                     </div>
+                    {totalDataMessage && getUnreadMessage() > 0 && (
+                        <div className="message-tabs__unread">
+                            {getUnreadMessage() > 9 ? '9+' : getUnreadMessage()}
+                        </div>
+                    )}
                 </div>
                 {/* <div className="message-tabs__read">12</div> */}
             </div>
