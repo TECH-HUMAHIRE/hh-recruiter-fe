@@ -253,9 +253,11 @@ const MessageData = ({
                                                     {' '}
                                                     <CheckOutlined
                                                         style={{
-                                                            color: message.read
-                                                                ? '#20C1AA'
-                                                                : '#666666',
+                                                            color:
+                                                                message.read ===
+                                                                true
+                                                                    ? '#20C1AA'
+                                                                    : '#666666',
                                                             fontSize: 12
                                                         }}
                                                     />
