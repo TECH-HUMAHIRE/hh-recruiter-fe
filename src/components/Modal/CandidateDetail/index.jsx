@@ -46,7 +46,7 @@ const CandidateDetail = ({
     const onDownloadCv = () => {
         window.open(
             import.meta.env.VITE_BASE_URL_API +
-                `/download/file?file_link=${data?.cv_url}`
+                `/download?file_link=${data?.cv_url}`
         );
     };
     React.useEffect(() => {
