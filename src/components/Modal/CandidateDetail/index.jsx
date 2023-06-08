@@ -24,6 +24,7 @@ import {
     useGetEducationCandidateQuery
 } from '../../../app/actions/profile';
 import Certification from './Certification';
+import { useDownloadCvMutation } from '../../../app/actions/candidates';
 const CandidateDetail = ({
     open = false,
     data,
@@ -42,7 +43,19 @@ const CandidateDetail = ({
         profileAuth.endpoints.getExperienceCandidate.useLazyQuery();
     const [getCertificateCandidate, { data: certificateList }] =
         profileAuth.endpoints.getCertificate.useLazyQuery();
+    const [downloadCvCandidate, { data: dataDownload }] =
+        useDownloadCvMutation();
     // function
+
+    const onDownloadCv = () => {
+        let body = {
+            file_link: data?.cv_url,
+            file_extension: 'pdf',
+            file_name: data?.name
+        };
+        downloadCvCandidate(body);
+        console.log(body);
+    };
     React.useEffect(() => {
         if (data?.id) {
             getCertificateCandidate(data.id);
@@ -253,7 +266,10 @@ const CandidateDetail = ({
                         </Button>
                     </Col>
                     <Col md={isAssign ? 4 : 3}>
-                        <Button color="outline-primary" block>
+                        <Button
+                            color="outline-primary"
+                            block
+                            onClick={onDownloadCv}>
                             Download
                         </Button>
                     </Col>
