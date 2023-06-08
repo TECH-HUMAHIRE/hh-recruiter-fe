@@ -19,12 +19,9 @@ import { color } from '../../Utils/variable';
 import ChattingIcon from '../../Icon/Chatting';
 import Education from './Education';
 import { formatMoney } from '../../Utils/formatMoney';
-import {
-    profileAuth,
-    useGetEducationCandidateQuery
-} from '../../../app/actions/profile';
+import { profileAuth } from '../../../app/actions/profile';
 import Certification from './Certification';
-import { useDownloadCvMutation } from '../../../app/actions/candidates';
+import { downloadCv } from '../../../app/actions/downloadcv';
 const CandidateDetail = ({
     open = false,
     data,
@@ -43,18 +40,14 @@ const CandidateDetail = ({
         profileAuth.endpoints.getExperienceCandidate.useLazyQuery();
     const [getCertificateCandidate, { data: certificateList }] =
         profileAuth.endpoints.getCertificate.useLazyQuery();
-    const [downloadCvCandidate, { data: dataDownload }] =
-        useDownloadCvMutation();
+    const [getCvCandidate] = downloadCv.endpoints.downloadCv.useLazyQuery();
     // function
 
     const onDownloadCv = () => {
         let body = {
-            file_link: data?.cv_url,
-            file_extension: 'pdf',
-            file_name: data?.name
+            file_link: data?.cv_url
         };
-        downloadCvCandidate(body);
-        console.log(body);
+        getCvCandidate(body);
     };
     React.useEffect(() => {
         if (data?.id) {

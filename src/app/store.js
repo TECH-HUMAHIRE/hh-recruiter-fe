@@ -6,11 +6,13 @@ import { jobApi } from './actions/jobApi';
 import { walletApi } from './actions/walletApi';
 import { profileAuth } from './actions/profile';
 import { userAuth } from './actions/userAuth';
+import { downloadCv } from './actions/downloadcv';
 
 export const store = configureStore({
     reducer: {
         // Add the generated reducer as a specific top-level slice
         [userAuth.reducerPath]: userAuth.reducer,
+        [downloadCv.reducerPath]: downloadCv.reducer,
         [profileAuth.reducerPath]: profileAuth.reducer,
         [jobApi.reducerPath]: jobApi.reducer,
         [candidates.reducerPath]: candidates.reducer,
@@ -20,6 +22,7 @@ export const store = configureStore({
     // and other useful features of `rtk-query`.
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
+            downloadCv.middleware,
             userAuth.middleware,
             profileAuth.middleware,
             jobApi.middleware,

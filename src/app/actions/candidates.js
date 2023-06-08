@@ -141,15 +141,6 @@ export const candidates = createApi({
                     method: 'GET'
                 };
             }
-        }),
-        downloadCv: builder.mutation({
-            query: (body) => {
-                return {
-                    url: `/download`,
-                    method: 'POST',
-                    body
-                };
-            }
         })
     })
 });
@@ -167,6 +158,5 @@ export const {
     useCountJobQuery,
     useReferCandidateMutation,
     useGetJobCandidatesQuery,
-    useGetUserDetailQuery,
-    useDownloadCvMutation
+    useGetUserDetailQuery
 } = candidates;
