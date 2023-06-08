@@ -1,4 +1,4 @@
-import { LockOutlined, MoreOutlined } from '@ant-design/icons';
+import { CheckOutlined, LockOutlined, MoreOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, Form, Input } from 'antd';
 import React from 'react';
 import dummyUser from '../Assets/images/dummyuserchat.png';
@@ -10,9 +10,10 @@ import DeleteIcon from '../Assets/icon/Trash.png';
 import { CardMenu } from '../Card/card.style';
 import { database } from '../../firebase';
 import { useGetProfileQuery } from '../../app/actions/profile';
-import { onValue, push, ref, set } from 'firebase/database';
+import { onValue, push, ref, set, update } from 'firebase/database';
 import moment from 'moment';
 import { useGetUserDetailQuery } from '../../app/actions/candidates';
+import { useNavigate } from 'react-router-dom';
 const MessageData = ({
     messagesRef,
     messagesRefForCandidate,
@@ -20,6 +21,7 @@ const MessageData = ({
     dataProfile,
     uid
 }) => {
+    const navigate = useNavigate();
     const boxRef = React.useRef(null);
     const [messagesData, setMessagesData] = React.useState([]);
     const [isScroll, setScroll] = React.useState(false);
@@ -30,7 +32,12 @@ const MessageData = ({
         {
             key: '2',
             label: (
-                <CardMenu onClick={onDeleteMessage}>
+                <CardMenu
+                    onClick={() =>
+                        onDeleteMessage(
+                            `messages/${dataProfile?.data?.uid}/${uid}/`
+                        )
+                    }>
                     <img src={DeleteIcon} alt="" />
                     Delete message
                 </CardMenu>
@@ -56,17 +63,18 @@ const MessageData = ({
             });
     };
     const hanldeSendMessage = async (value) => {
-        // const messagesRef = ref(database, 'messages');
         const messageSender = {
             text: form.getFieldValue('text_chat'),
             sender: data?.data?.uid,
             uid: uid,
+            read: false,
             userTarget: uid,
             timestamp: Date.now()
         };
         const messageSending = {
             text: form.getFieldValue('text_chat'),
             sender: data?.data?.uid,
+            read: false,
             uid: uid,
             userTarget: dataProfile?.data?.uid,
             timestamp: Date.now()
@@ -77,7 +85,33 @@ const MessageData = ({
             text_chat: ''
         });
     };
+    const listenForChat = () => {
+        const chatRef = ref(database, `messages/${dataProfile?.data?.uid}/`);
+        onValue(chatRef, (snapshot) => {
+            let chats = snapshot.val();
+            let messageDataList = Object.values(chats);
+            let messageTargetList = messageDataList.map((item) => {
+                let getReadData = Object.values(item);
 
+                getReadData.forEach((chatTarget, chatTargetId) => {
+                    if (chatTarget.read === false) {
+                        // Update the chat message read status to true
+                    }
+                });
+                return Object.values(item);
+            });
+            return messageTargetList;
+        });
+    };
+    const updateChatReadStatus = (chatTarget) => {
+        const chatRef = ref(database, messagesRef);
+        update(chatRef, { read: true });
+    };
+    React.useEffect(() => {
+        return () => {
+            // Clean up any listeners if needed
+        };
+    }, []);
     React.useEffect(() => {
         if (dataUser?.data?.uid !== messagesData[0]?.uid) {
             setScroll(false);
@@ -87,7 +121,7 @@ const MessageData = ({
                     if (snapshot.exists()) {
                         const data = snapshot.val();
                         const messageDataList = Object.values(data);
-                        const groupedByTimestamp = messageDataList.reduce(
+                        let groupedByTimestamp = messageDataList.reduce(
                             (result, obj) => {
                                 const timestamp =
                                     moment(new Date(obj.timestamp)).format(
@@ -106,6 +140,7 @@ const MessageData = ({
                             },
                             {}
                         );
+
                         setMessagesData(
                             Object.keys(groupedByTimestamp).map((item) => {
                                 return {
@@ -114,6 +149,26 @@ const MessageData = ({
                                 };
                             })
                         );
+                        // Object.keys(groupedByTimestamp).forEach(
+                        //     (chatId, chatData) => {
+                        //         console.log('chatId', chatId);
+                        //         console.log('chatData', chatData);
+                        //     }
+                        // );
+                        // Object.entries(groupedByTimestamp).forEach(
+                        //     ([chatId, chatData]) => {
+                        //         chatData.forEach((chatTarget, chatTargetId) => {
+                        //             if (!chatTarget.read) {
+                        //                 console.log(
+                        //                     'chatTarget read',
+                        //                     chatTarget
+                        //                 );
+                        //                 // Update the chat message read status to true
+                        //                 updateChatReadStatus(chatTarget);
+                        //             }
+                        //         });
+                        //     }
+                        // );
 
                         setScroll(true);
                     }
@@ -122,6 +177,7 @@ const MessageData = ({
                     console.log('Error retrieving messages:', error);
                 }
             );
+            listenForChat();
         }
     }, [dataUser]);
     React.useEffect(() => {
@@ -190,7 +246,23 @@ const MessageData = ({
                                         <div className="message-box__time">
                                             {moment(
                                                 new Date(message.timestamp)
-                                            ).format('HH:mm')}
+                                            ).format('HH:mm')}{' '}
+                                            {message.sender ===
+                                                dataProfile?.data?.uid && (
+                                                <span>
+                                                    {' '}
+                                                    <CheckOutlined
+                                                        style={{
+                                                            color:
+                                                                message.read ===
+                                                                true
+                                                                    ? '#20C1AA'
+                                                                    : '#666666',
+                                                            fontSize: 12
+                                                        }}
+                                                    />
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                 );
@@ -207,6 +279,7 @@ const MessageData = ({
                     </Button>
                     <Form.Item name="text_chat" className="form-input">
                         <Input
+                            onFocus={() => navigate(`/Inbox?message=${uid}`)}
                             type={'text'}
                             size="large"
                             width={'max-context'}

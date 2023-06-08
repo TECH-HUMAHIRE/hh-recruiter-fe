@@ -39,7 +39,7 @@ const Style = styled.div`
                 font-weight: 600;
                 font-size: 12px;
                 color: #444444;
-                margin-bottom: 5px;
+                margin-bottom: 8px;
             }
             &__chat {
                 font-weight: 400;
@@ -76,6 +76,16 @@ const Style = styled.div`
                 margin: 0 0 0 auto;
                 padding: 4px 0px;
                 text-align: center;
+            }
+            &__unread {
+                width: 20px;
+                height: 20px;
+                color: #fff;
+                background-color: ${color.employee.primary};
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
         &-filter {
