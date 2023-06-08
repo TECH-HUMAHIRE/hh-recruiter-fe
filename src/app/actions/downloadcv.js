@@ -8,6 +8,10 @@ export const downloadCv = createApi({
         prepareHeaders(headers) {
             headers.set('Access-Control-Allow-Origin', '*');
             // headers.set('Content-Type', 'application/pdf');
+            headers.set(
+                'Content-Disposition',
+                'attachment; filename=' + 'Example.pdf'
+            );
             return headers;
         }
     }),

@@ -44,10 +44,10 @@ const CandidateDetail = ({
     // function
 
     const onDownloadCv = () => {
-        let body = {
-            file_link: data?.cv_url
-        };
-        getCvCandidate(body);
+        window.open(
+            import.meta.env.VITE_BASE_URL_API +
+                `/download/file?file_link=${data?.cv_url}`
+        );
     };
     React.useEffect(() => {
         if (data?.id) {
