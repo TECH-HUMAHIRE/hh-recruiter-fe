@@ -14,10 +14,7 @@ if ('serviceWorker' in navigator) {
                 console.log('Service worker registered:', registration);
             })
             .catch((err) => {
-                console.log(
-                    'Service worker is not register, REGISTER ERROR:',
-                    err
-                );
+                console.log('Service worker is not register error:', err);
             });
     });
 }

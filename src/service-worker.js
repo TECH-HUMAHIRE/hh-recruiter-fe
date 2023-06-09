@@ -6,7 +6,8 @@ self.addEventListener('install', (event) => {
                 '/',
                 '/index.html',
                 '/path/to/asset1',
-                '/path/to/asset2'
+                '/path/to/asset2',
+                '/path/to/asset3'
             ]);
         })
     );
