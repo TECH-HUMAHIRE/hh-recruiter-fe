@@ -18,8 +18,8 @@
     ],
     "rewrites": [
         {
-            "source": "/(.*)",
-            "destination": "/",
+            "source": "/service-worker.js",
+            "destination": "/service-worker.js",
             "headers": {
                 "content-type": "application/javascript"
             }
