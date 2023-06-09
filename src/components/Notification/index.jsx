@@ -20,7 +20,7 @@ const NotificationComponent = () => {
         getDeviceToken();
     }, []);
 
-    return <div>Notification Component</div>;
+    return <div></div>;
 };
 
 export default NotificationComponent;
