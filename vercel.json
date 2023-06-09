@@ -16,13 +16,5 @@
             ]
         }
     ],
-    "rewrites": [
-        {
-            "source": "/service-worker.js",
-            "destination": "/service-worker.js",
-            "headers": {
-                "content-type": "application/javascript"
-            }
-        }
-    ]
+    "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
