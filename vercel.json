@@ -19,10 +19,7 @@
     "rewrites": [
         {
             "source": "/(.*)",
-            "destination": "/",
-            "headers": {
-                "content-type": "application/javascript"
-            }
+            "destination": "/"
         }
     ]
 }
