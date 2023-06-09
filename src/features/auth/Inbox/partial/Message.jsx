@@ -17,6 +17,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
     let navigate = useNavigate();
     const location = useLocation();
     const [paramsUrl, _] = useSearchParams();
+    const [searchName, setSearchName] = React.useState('');
     const [messageDeleteTarget, setMessageDeleteTarget] = React.useState('');
     const [isDelete, setDelete] = React.useState(false);
     const [totalDataMessage, setTotalDataMessage] = React.useState([]);
@@ -140,6 +141,10 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
             // return messageTargetList;
         });
     };
+    const onSearchMessage = (e) => {
+        let value = e.target.value;
+        setSearchName(value.toLowerCase());
+    };
     const getDatamessage = () => {
         const dataRef = ref(database, `messages/${dataProfile?.data?.uid}`);
         onValue(
@@ -194,6 +199,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                         <Col md={10}>
                             <Form.Item>
                                 <Input
+                                    onChange={onSearchMessage}
                                     prefix={<SearchOutlined />}
                                     size="large"
                                     type={'text'}
@@ -220,6 +226,7 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                         dataUsers?.map((item, key) => {
                             return (
                                 <UserListMessage
+                                    searchName={searchName}
                                     totalDataMessage={totalDataMessage}
                                     onTabMessage={onTabMessage}
                                     data={item.data}
