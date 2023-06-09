@@ -3,7 +3,7 @@ self.addEventListener('install', (event) => {
         caches.open('app-cache').then((cache) => {
             return cache.addAll([
                 // Add the URLs of the static assets you want to cache
-                '/src/main.jsx',
+                '/',
                 '/index.html',
                 '/path/to/asset1',
                 '/path/to/asset2'
