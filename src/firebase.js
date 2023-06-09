@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get } from 'firebase/database';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth, signInWithCustomToken } from 'firebase/auth';
+import { getMessaging, getToken } from 'firebase/messaging';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyBKXYoTKmo4ZlVcoUbJR95yxp10IuzlqsE',
@@ -15,8 +16,10 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-signInWithCustomToken(auth, localStorage.getItem('tlfb'));
 
+const messaging = getMessaging(app);
+signInWithCustomToken(auth, localStorage.getItem('tlfb'));
 const database = getDatabase(app);
 const firestore = getFirestore(app);
-export { database, auth, firestore };
+
+export { database, auth, firestore, app, getToken, messaging };

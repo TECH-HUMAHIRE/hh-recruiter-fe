@@ -7,11 +7,13 @@ import HeaderStyle from './header.style';
 import ModalHeader from '../Modal/ModalHeader';
 import ChangePassword from '../Modal/ModalHeader/ChangePassword';
 import EmailVerification from '../Modal/ModalHeader/EmailVerification';
-import { message, notification } from 'antd';
+import { message } from 'antd';
 import {
     useChangePasswordMutation,
     useGetProfileQuery
 } from '../../app/actions/profile';
+import NotificationComponent from '../Notification';
+
 const Header = () => {
     const [isOpen, setOpen] = React.useState(false);
     const [messageApi, contextHolder] = message.useMessage();
@@ -59,6 +61,7 @@ const Header = () => {
     return (
         <HeaderStyle>
             {contextHolder}
+            <NotificationComponent />
             <Row justify="space-between">
                 <Col sm={2}>
                     <Link to={'/'}>
