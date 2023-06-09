@@ -1,6 +1,8 @@
 import { Card } from 'antd';
 import styled from 'styled-components';
+import { color } from '../Utils/variable';
 const MessageBoxStyle = styled(Card)`
+    position: relative;
     .ant-card-body {
         padding: 16px 0 0;
     }
@@ -49,7 +51,7 @@ const MessageBoxStyle = styled(Card)`
         }
         &-box {
             padding: 8px 16px;
-
+            position: relative;
             font-size: 16px;
             color: #666666;
             display: flex;
@@ -72,6 +74,9 @@ const MessageBoxStyle = styled(Card)`
             }
             &__text {
                 margin-right: 15px;
+                p {
+                    margin: 0px;
+                }
             }
             &__time {
                 font-size: 10px;
@@ -89,6 +94,46 @@ const MessageBoxStyle = styled(Card)`
                 margin: 0 15px;
                 width: 100%;
             }
+        }
+        &-upload {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            z-index: 99;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img {
+                width: 50px;
+                margin: 0px auto 15px;
+            }
+            &__name {
+                color: ${color.employee.primary};
+                font-weight: 500;
+                font-size: 18px;
+            }
+            &__cancel {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                cursor: pointer;
+            }
+        }
+    }
+    .btn-download {
+        cursor: pointer;
+        position: absolute;
+        right: 36px;
+        top: 20px;
+    }
+    .ql-container.ql-snow {
+        border-radius: 8px;
+        .ql-editor {
+            font-size: 16px;
+            padding: 10px 15px;
         }
     }
 `;

@@ -123,6 +123,14 @@ export const profileAuth = createApi({
                 method: 'POST',
                 body
             })
+        }),
+        uploadeFile: builder.mutation({
+            query: (body) => ({
+                url: '/upload/file',
+                method: 'POST',
+                body
+            }),
+            invalidatesTags: ['upload_file']
         })
     })
 });
@@ -143,5 +151,6 @@ export const {
     useGetBankListNameQuery,
     useGetCertificateQuery,
     useUpdatePhotoProfileMutation,
-    useRefreshTokenMutation
+    useRefreshTokenMutation,
+    useUploadeFileMutation
 } = profileAuth;

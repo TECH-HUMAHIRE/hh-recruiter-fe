@@ -1,4 +1,9 @@
-import { CheckOutlined, LockOutlined, MoreOutlined } from '@ant-design/icons';
+import {
+    CheckOutlined,
+    CloseOutlined,
+    LockOutlined,
+    MoreOutlined
+} from '@ant-design/icons';
 import { Avatar, Dropdown, Form, Input } from 'antd';
 import React from 'react';
 import dummyUser from '../Assets/images/dummyuserchat.png';
@@ -9,11 +14,19 @@ import AttachIcon from '../Assets/icon/attach.png';
 import DeleteIcon from '../Assets/icon/Trash.png';
 import { CardMenu } from '../Card/card.style';
 import { database } from '../../firebase';
-import { useGetProfileQuery } from '../../app/actions/profile';
+import {
+    useGetProfileQuery,
+    useUploadeFileMutation
+} from '../../app/actions/profile';
 import { onValue, push, ref, set, update } from 'firebase/database';
 import moment from 'moment';
 import { useGetUserDetailQuery } from '../../app/actions/candidates';
 import { useNavigate } from 'react-router-dom';
+import pdf_icon from '../Assets/icon/cvIcon.png';
+import ReactQuill from 'react-quill';
+import CloseIcon from '../Icon/Close';
+import DownloadIcon from '../Icon/Download';
+const { TextArea } = Input;
 const MessageData = ({
     messagesRef,
     messagesRefForCandidate,
@@ -23,11 +36,19 @@ const MessageData = ({
 }) => {
     const navigate = useNavigate();
     const boxRef = React.useRef(null);
+    const uploadRef = React.useRef(null);
     const [messagesData, setMessagesData] = React.useState([]);
+    const [inputValue, setInputValue] = React.useState('');
+    const [isUpload, setUpload] = React.useState(false);
+    const [fileValue, setFileValue] = React.useState('');
     const [isScroll, setScroll] = React.useState(false);
     const [form] = Form.useForm();
     const { data } = useGetProfileQuery();
     const { data: dataUser } = useGetUserDetailQuery(uid);
+    const [uploadFile, { data: responseUpload, isSuccess, reset, error }] =
+        useUploadeFileMutation({
+            fixedCacheKey: 'upload_cv'
+        });
     const items = [
         {
             key: '2',
@@ -48,6 +69,8 @@ const MessageData = ({
         const newMessageRef = push(messagesRef);
         set(newMessageRef, messageSender)
             .then(() => {
+                setInputValue('');
+                setUpload(false);
                 boxRef.current.scrollTop = boxRef.current.scrollHeight;
             })
             .catch((error) => {
@@ -56,6 +79,8 @@ const MessageData = ({
         const newMessageRefCandidate = push(messagesRefForCandidate);
         set(newMessageRefCandidate, messageSending)
             .then(() => {
+                setInputValue('');
+                setUpload(false);
                 boxRef.current.scrollTop = boxRef.current.scrollHeight;
             })
             .catch((error) => {
@@ -64,16 +89,20 @@ const MessageData = ({
     };
     const hanldeSendMessage = async (value) => {
         const messageSender = {
-            text: form.getFieldValue('text_chat'),
+            text: inputValue,
             sender: data?.data?.uid,
+            name: dataUser?.data?.name,
             uid: uid,
+            link: fileValue,
             read: false,
             userTarget: uid,
             timestamp: Date.now()
         };
         const messageSending = {
-            text: form.getFieldValue('text_chat'),
+            text: inputValue,
             sender: data?.data?.uid,
+            name: data?.data?.name,
+            link: fileValue,
             read: false,
             uid: uid,
             userTarget: dataProfile?.data?.uid,
@@ -103,9 +132,31 @@ const MessageData = ({
             return messageTargetList;
         });
     };
-    const updateChatReadStatus = (chatTarget) => {
-        const chatRef = ref(database, messagesRef);
-        update(chatRef, { read: true });
+    const onRefUpload = () => {
+        uploadRef.current.click();
+    };
+    const onUploadFile = (e) => {
+        let value = e.target.files;
+        if (value.length > 0) {
+            const formData = new FormData();
+            formData.append('file', value[0]);
+            formData.append('type', 'message');
+            // setNameUpload(name);
+            uploadFile(formData);
+        }
+    };
+    const onCancelUpload = () => {
+        setUpload(false);
+        setInputValue('');
+        setFileValue('');
+    };
+    const onChangeMessage = (value) => {
+        setInputValue(value);
+    };
+    const onDownloadFile = (value) => {
+        window.open(
+            import.meta.env.VITE_BASE_URL_API + `/download?file_link=${value}`
+        );
     };
     React.useEffect(() => {
         return () => {
@@ -185,6 +236,15 @@ const MessageData = ({
             boxRef.current.scrollTop = boxRef.current.scrollHeight;
         }
     }, [messagesData]);
+    React.useEffect(() => {
+        if (isSuccess) {
+            let textValue = responseUpload.data.split('message/');
+            setInputValue(textValue[1]);
+            setUpload(true);
+            setFileValue(responseUpload.data);
+            reset();
+        }
+    }, [isSuccess]);
     return (
         <MessageBoxStyle>
             <div className="message-header">
@@ -240,8 +300,42 @@ const MessageData = ({
                                                 ? 'message-box__sender'
                                                 : 'message-box__for'
                                         }`}>
-                                        <div className="message-box__text">
-                                            {message.text}
+                                        <div
+                                            style={{
+                                                display: 'block'
+                                            }}>
+                                            {message?.link?.length > 0 && (
+                                                <div
+                                                    className="btn-download"
+                                                    onClick={() =>
+                                                        onDownloadFile(
+                                                            message.link
+                                                        )
+                                                    }>
+                                                    <DownloadIcon color="#4d63e2" />
+                                                </div>
+                                            )}
+
+                                            {message?.link?.length > 0 && (
+                                                <div
+                                                    style={{
+                                                        margin: '0px auto 10px'
+                                                    }}>
+                                                    <img
+                                                        style={{
+                                                            width: 30,
+                                                            margin: '0px auto 10px'
+                                                        }}
+                                                        src={pdf_icon}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                            )}
+                                            <div
+                                                className="message-box__text"
+                                                dangerouslySetInnerHTML={{
+                                                    __html: message.text
+                                                }}></div>
                                         </div>
                                         <div className="message-box__time">
                                             {moment(
@@ -273,22 +367,55 @@ const MessageData = ({
                 </div>
             </div>
             <Form form={form} onFinish={hanldeSendMessage}>
-                <div className="message-bottom">
-                    <Button className="message-bottom__attach">
-                        <img src={AttachIcon} alt="" />
-                    </Button>
-                    <Form.Item name="text_chat" className="form-input">
-                        <Input
-                            onFocus={() => navigate(`/Inbox?message=${uid}`)}
-                            type={'text'}
-                            size="large"
-                            width={'max-context'}
+                {isUpload ? (
+                    <div className="message-upload">
+                        <div className="text-center">
+                            <div
+                                className="message-upload__cancel"
+                                onClick={onCancelUpload}>
+                                {' '}
+                                <CloseIcon />
+                            </div>
+                            <img src={pdf_icon} alt="" />
+                            <p className="message-upload__name">{inputValue}</p>
+                            <Button color="primary" htmlType="submit">
+                                Send
+                            </Button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="message-bottom">
+                        <Button
+                            className="message-bottom__attach"
+                            onClick={onRefUpload}>
+                            <img src={AttachIcon} alt="" />
+                        </Button>
+                        <input
+                            type={'file'}
+                            style={{ display: 'none' }}
+                            ref={uploadRef}
+                            onChange={onUploadFile}
                         />
-                    </Form.Item>
-                    <Button color="outline-primary" htmlType="submit">
-                        Send
-                    </Button>
-                </div>
+                        <Form.Item name="text_chat" className="form-input">
+                            <ReactQuill
+                                value={inputValue}
+                                onChange={onChangeMessage}
+                                style={{ borderRadius: 8 }}
+                                onFocus={() =>
+                                    navigate(`/Inbox?message=${uid}`)
+                                }
+                                formats={[]}
+                                modules={{
+                                    toolbar: false
+                                }}
+                                width={'max-context'}
+                            />
+                        </Form.Item>
+                        <Button color="outline-primary" htmlType="submit">
+                            Send
+                        </Button>
+                    </div>
+                )}
             </Form>
         </MessageBoxStyle>
     );
