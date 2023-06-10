@@ -22,7 +22,7 @@ const UserListMessage = ({
         );
     };
     return (
-        name.split(searchName).length > 1 && (
+        name?.split(searchName).length > 1 && (
             <div
                 className="message-tabs"
                 onClick={() => onTabMessage(dataUser?.data?.uid)}>
