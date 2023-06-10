@@ -69,6 +69,7 @@ const MessageData = ({
         const newMessageRef = push(messagesRef);
         set(newMessageRef, messageSender)
             .then(() => {
+                setFileValue('');
                 setInputValue('');
                 setUpload(false);
                 boxRef.current.scrollTop = boxRef.current.scrollHeight;
@@ -79,6 +80,7 @@ const MessageData = ({
         const newMessageRefCandidate = push(messagesRefForCandidate);
         set(newMessageRefCandidate, messageSending)
             .then(() => {
+                setFileValue('');
                 setInputValue('');
                 setUpload(false);
                 boxRef.current.scrollTop = boxRef.current.scrollHeight;
