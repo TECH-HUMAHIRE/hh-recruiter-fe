@@ -56,7 +56,8 @@ const MessageData = ({
                 <CardMenu
                     onClick={() =>
                         onDeleteMessage(
-                            `messages/${dataProfile?.data?.uid}/${uid}/`
+                            `messages/${dataProfile?.data?.uid}/${uid}/`,
+                            `messages/${dataProfile?.data?.uid}`
                         )
                     }>
                     <img src={DeleteIcon} alt="" />
