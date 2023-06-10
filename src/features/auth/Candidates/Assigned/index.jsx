@@ -36,7 +36,7 @@ const CandidatesAssigned = ({ status }) => {
     const onFilterCandidates = () => {
         setFilter(!isFilter);
     };
-    const onReferJobList = () => {
+    const onReferJobList = (value) => {
         setReferJobList(!isReferJobList);
         setDetail(false);
     };
