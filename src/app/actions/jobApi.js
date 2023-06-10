@@ -103,6 +103,16 @@ export const jobApi = createApi({
                 };
             },
             invalidatesTags: [{ type: 'Post', id: 2 }]
+        }),
+        sendReferEmail: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/task/send-referral`,
+                    method: 'POST',
+                    body
+                };
+            },
+            invalidatesTags: ['refer_email']
         })
     })
 });
@@ -117,5 +127,6 @@ export const {
     useGetTaskListQuery,
     useDeleteTaskMutation,
     useGetCompanyNameQuery,
-    useUpdateStatusJobCandidatesMutation
+    useUpdateStatusJobCandidatesMutation,
+    useSendReferEmailMutation
 } = jobApi;

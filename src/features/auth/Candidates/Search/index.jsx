@@ -85,7 +85,7 @@ const CandidatesSearch = ({ status }) => {
             job_title: value
         });
     }, 750);
-    const onReferJobList = () => {
+    const onReferJobList = (value) => {
         setReferJobList(!isReferJobList);
         setDetail(false);
     };

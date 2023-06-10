@@ -1,20 +1,70 @@
-import { Form, Input } from 'antd';
+import { Form, Input, message } from 'antd';
 import React from 'react';
+import { useSendReferEmailMutation } from '../../../app/actions/jobApi';
 import Button from '../../Button';
 import { Row, Col } from '../../Grid';
 
-const EmailTab = ({ onClose = () => {} }) => {
+const EmailTab = ({ onClose = () => {}, data }) => {
+    const [messageApi, contextHolder] = message.useMessage();
+    // state
     const [form] = Form.useForm();
     const [, forceUpdate] = React.useState({});
+    // fetch api
+    const [
+        sendReferEmail,
+        { isSuccess, reset, isError, data: response, error }
+    ] = useSendReferEmailMutation();
+
+    const onSubmit = (values) => {
+        let body = {
+            job_id: data?.job_id,
+            ...values
+        };
+        sendReferEmail(body);
+    };
     React.useEffect(() => {
         forceUpdate({});
     }, []);
+    React.useEffect(() => {
+        if (isSuccess) {
+            messageApi.open({
+                type: 'success',
+                content: response.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 3
+            });
+            form.setFieldsValue({
+                candidate_full_name: '',
+                candidate_email: '',
+                recruiter_message: ''
+            });
+            reset();
+        }
+        if (isError) {
+            messageApi.open({
+                type: 'error',
+                content: error.data.meta.message,
+                style: {
+                    marginTop: '16vh'
+                },
+                duration: 2
+            });
+            reset();
+        }
+    }, [isSuccess, isError]);
     return (
-        <Form requiredMark={'optional'} layout="vertical" form={form}>
+        <Form
+            requiredMark={'optional'}
+            layout="vertical"
+            form={form}
+            onFinish={onSubmit}>
+            {contextHolder}
             <Row>
                 <Col md={6}>
                     <Form.Item
-                        name="name"
+                        name="candidate_full_name"
                         label="Full name"
                         rules={[
                             {
@@ -31,7 +81,7 @@ const EmailTab = ({ onClose = () => {} }) => {
                 </Col>
                 <Col md={6}>
                     <Form.Item
-                        name="email"
+                        name="candidate_email"
                         label="Email"
                         rules={[
                             {
@@ -48,7 +98,7 @@ const EmailTab = ({ onClose = () => {} }) => {
                 </Col>
                 <Col md={12}>
                     <Form.Item
-                        name="message"
+                        name="recruiter_message"
                         label="Message"
                         rules={[
                             {

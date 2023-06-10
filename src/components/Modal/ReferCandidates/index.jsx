@@ -45,7 +45,7 @@ const ReferCandidates = ({ isRefer = false, onClose = () => {}, data }) => {
                     {
                         label: `Email`,
                         key: 'email',
-                        children: <EmailTab onClose={onClose} />
+                        children: <EmailTab data={data} onClose={onClose} />
                     },
                     {
                         label: `Referral Link`,
