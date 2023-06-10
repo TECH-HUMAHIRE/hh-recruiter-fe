@@ -12,7 +12,7 @@ const EmailTab = ({ onClose = () => {}, data }) => {
     // fetch api
     const [
         sendReferEmail,
-        { isSuccess, reset, isError, data: response, error }
+        { isSuccess, reset, isError, data: response, error, isLoading }
     ] = useSendReferEmailMutation();
 
     const onSubmit = (values) => {
@@ -40,6 +40,7 @@ const EmailTab = ({ onClose = () => {}, data }) => {
                 candidate_email: '',
                 recruiter_message: ''
             });
+            onClose();
             reset();
         }
         if (isError) {
@@ -120,6 +121,7 @@ const EmailTab = ({ onClose = () => {}, data }) => {
                         <Form.Item shouldUpdate>
                             {() => (
                                 <Button
+                                    loading={isLoading}
                                     color="primary"
                                     htmlType="submit"
                                     disabled={
