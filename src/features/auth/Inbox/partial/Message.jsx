@@ -57,8 +57,10 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
     const handleDeleteMassage = () => {
         const messageRef = ref(database, messageDeleteTarget);
         remove(messageRef)
-            .then(() => {
+            .then(async () => {
+                await getDatamessage();
                 setDelete(false);
+                setChatAvtiveId(dataUsers[0]?.uid || '');
             })
             .catch((error) => {
                 console.error('Error deleting message:', error);
