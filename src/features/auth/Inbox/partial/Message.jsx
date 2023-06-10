@@ -60,17 +60,19 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
             .then(async () => {
                 await getDatamessage();
                 setDelete(false);
-                setChatAvtiveId(dataUsers[0]?.uid || '');
+                setChatAvtiveId(dataUsers.length > 1 ? dataUsers[0]?.uid : '');
                 navigate(
-                    dataUsers[0]?.uid ? `?message=${dataUsers[0]?.uid}` : ''
+                    dataUsers.length > 1 ? `?message=${dataUsers[0]?.uid}` : ''
                 );
             })
             .catch((error) => {
                 console.error('Error deleting message:', error);
             });
     };
-    const onDeleteMessage = (messageTarget) => {
-        setMessageDeleteTarget(messageTarget);
+    const onDeleteMessage = (messageTarget, emptyMessage) => {
+        setMessageDeleteTarget(
+            dataUsers.length > 1 ? messageTarget : emptyMessage
+        );
         setDelete(!isDelete);
     };
     const onTabMessage = (uid) => {
@@ -151,22 +153,49 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
         setSearchName(value.toLowerCase());
     };
     const getDatamessage = () => {
-        const dataRef = ref(database, `messages/${dataProfile?.data?.uid}`);
+        const dataRefMessage = ref(database, `messages/`);
         onValue(
-            dataRef,
+            dataRefMessage,
             (snapshot) => {
                 // Handle the data changes here
                 const data = snapshot.val();
                 let groupChat = Object.keys(data);
-                let arr = [];
-                groupChat.map((item) => {
-                    return arr.push({
-                        uid: item,
-                        data: Object.values(data[item])
-                    });
-                });
-                // setMessagesData(messageDataList);
-                setDataUsers(arr);
+                let checkDataMessage = groupChat.filter(
+                    (item) => item === dataProfile?.data?.uid
+                ).length;
+                if (checkDataMessage > 0) {
+                    const dataRef = ref(
+                        database,
+                        `messages/${dataProfile?.data?.uid}`
+                    );
+                    onValue(
+                        dataRef,
+                        (snapshot) => {
+                            // Handle the data changes here
+                            const data = snapshot.val();
+                            let groupChat = Object.keys(data);
+                            let arr = [];
+                            groupChat.map((item) => {
+                                return arr.push({
+                                    uid: item,
+                                    data: Object.values(data[item])
+                                });
+                            });
+
+                            // setMessagesData(messageDataList);
+                            setDataUsers(arr);
+                        },
+                        (error) => {
+                            console.log(
+                                'Error retrieving real-time data:',
+                                error.code,
+                                error.message
+                            );
+                        }
+                    );
+                } else {
+                    setDataUsers([]);
+                }
             },
             (error) => {
                 console.log(
