@@ -43,7 +43,7 @@ const Registration = () => {
     React.useEffect(() => {
         if (response?.isSuccess) {
             response.reset();
-            navigate('/');
+            refetch();
         }
         if (response?.isError) {
             response.reset();
@@ -71,6 +71,13 @@ const Registration = () => {
             reset();
         }
     }, [isSuccess]);
+    React.useEffect(() => {
+        if (profile?.data) {
+            if (profile?.data.email_verified) {
+                navigate('/');
+            }
+        }
+    }, [profile]);
     return (
         <Style>
             {contextHolder}
