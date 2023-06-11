@@ -18,6 +18,7 @@ import GuestLayout from '../layout/guestLayout';
 import Registration from '../features/auth/Registration';
 import HelpPage from '../features/auth/Help';
 import HumaHireJob from '../features/guest/HumaHireJob';
+import ForgorPassword from '../features/guest/ForgorPassword';
 const App = () => {
     return (
         <AuthProvider>
@@ -124,6 +125,10 @@ const App = () => {
                                 <Registration />
                             </RequireAuth>
                         }
+                    />
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgorPassword />}
                     />
                     <Route path="/huma-hire-job" element={<HumaHireJob />} />
                 </Route>
