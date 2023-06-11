@@ -1,11 +1,24 @@
 import styled from 'styled-components';
 import { color } from '../../../components/Utils/variable';
 const Style = styled.div`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 830px;
     .registration {
         color: #fff;
         background: ${color.employee.primary};
         padding: 80px;
         position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .title {
+            color: #fff;
+        }
         .icon-top {
             top: 0;
             left: 0;

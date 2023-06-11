@@ -12,60 +12,30 @@ import { LockOutlined } from '@ant-design/icons';
 const ForgorPassword = () => {
     return (
         <Style>
-            <Row>
+            <Row style={{ height: '100%' }}>
                 <Col md={4}>
                     <div className="registration">
-                        <img className="icon-top" src={IconTop} alt="" />
-                        <img className="icon-bottom" src={IconBottom} alt="" />
-                        <img
-                            className="icon-top__right"
-                            src={IconTopRight}
-                            alt=""
-                        />
-                        <div className="registration-logo">
-                            <img src={Logo} alt="HumaHire" />
-                        </div>
-                        <h1 className="title">New Password</h1>
-                        <div className="registration-desc">
-                            <div>
-                                <img
-                                    src={DescIcon}
-                                    alt=""
-                                    className="registration-desc__icon"
-                                />
+                        <div>
+                            <img className="icon-top" src={IconTop} alt="" />
+                            <img
+                                className="icon-bottom"
+                                src={IconBottom}
+                                alt=""
+                            />
+                            <img
+                                className="icon-top__right"
+                                src={IconTopRight}
+                                alt=""
+                            />
+                            <div className="registration-logo">
+                                <img src={Logo} alt="HumaHire" />
                             </div>
-                            <h2 className="title">Lorem</h2>
-                            <div>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Lorem ipsum dolor sit amet,
-                            </div>
-                        </div>
-                        <div className="registration-desc">
-                            <div>
-                                <img
-                                    src={DescIcon}
-                                    alt=""
-                                    className="registration-desc__icon"
-                                />
-                            </div>
-                            <h2 className="title">Lorem</h2>
-                            <div>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Lorem ipsum dolor sit amet,
-                            </div>
-                        </div>
-                        <div className="registration-desc">
-                            <div>
-                                <img
-                                    src={DescIcon}
-                                    alt=""
-                                    className="registration-desc__icon"
-                                />
-                            </div>
-                            <h2 className="title">Lorem</h2>
-                            <div>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Lorem ipsum dolor sit amet,
+                            <h1 className="title">New Password</h1>
+                            <div className="registration-desc">
+                                <div>
+                                    Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit. Lorem ipsum dolor sit amet,
+                                </div>
                             </div>
                         </div>
                     </div>
