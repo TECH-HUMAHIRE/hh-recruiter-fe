@@ -7,7 +7,7 @@ let AuthContext = React.createContext(null);
 
 // eslint-disable-next-line react/prop-types
 export function AuthProvider({ children }) {
-    let [user, setUser] = React.useState(null);
+    const [user, setUser] = React.useState(null);
 
     let signin = (newUser, callback) => {
         return fakeAuthProvider.signin(() => {
