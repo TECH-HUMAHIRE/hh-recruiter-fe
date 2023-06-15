@@ -24,10 +24,21 @@ export const userAuth = createApi({
                 url: `/job/public/${refferal_code}`,
                 method: 'GET'
             })
+        }),
+        forgotPassword: builder.mutation({
+            query: (body) => ({
+                url: `/auth/forgot-password`,
+                method: 'POST',
+                body
+            })
         })
     })
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useUserLoginMutation, useGetHumaHireJobQuery } = userAuth;
+export const {
+    useUserLoginMutation,
+    useGetHumaHireJobQuery,
+    useForgotPasswordMutation
+} = userAuth;

@@ -7,11 +7,59 @@ import IconTop from '../../../components/Assets/icon/background-icon.png';
 import IconBottom from '../../../components/Assets/icon/resgistration-icon-bottom.png';
 import IconTopRight from '../../../components/Assets/icon/registration-top-right.png';
 import Button from '../../../components/Button';
-import { Form, Input } from 'antd';
+import { Form, Input, message } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useForgotPasswordMutation } from '../../../app/actions/userAuth';
 const ForgorPassword = () => {
+    const [paramsUrl, _] = useSearchParams();
+    const [messageApi, contextHolder] = message.useMessage();
+    let navigate = useNavigate();
+
+    const [forgotPassword, { data, isSuccess, isError, error, isLoading }] =
+        useForgotPasswordMutation();
+
+    const onSubmitForm = (values) => {
+        let token = paramsUrl.get('token');
+        let body = {
+            ...values,
+            token: token.replace(/ /g, '+')
+        };
+        forgotPassword({ ...body });
+    };
+    React.useEffect(() => {
+        if (!paramsUrl.get('token') || paramsUrl.get('token')?.length < 20) {
+            navigate('/');
+        }
+    }, [paramsUrl]);
+    React.useEffect(() => {
+        if (isSuccess) {
+            messageApi.open({
+                type: 'success',
+                content: data.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
+        }
+        if (isError) {
+            messageApi.open({
+                type: 'error',
+                content: error.data.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+        }
+    }, [isSuccess, isError]);
     return (
         <Style>
+            {contextHolder}
             <Row style={{ height: '100%' }}>
                 <Col md={4}>
                     <div className="registration">
@@ -44,7 +92,7 @@ const ForgorPassword = () => {
                     <div className="form-verification">
                         <Row justify="center" align="center">
                             <Col md={12}>
-                                <Form layout="vertical">
+                                <Form layout="vertical" onFinish={onSubmitForm}>
                                     <h1 className="title">
                                         Create new password
                                     </h1>
@@ -93,7 +141,11 @@ const ForgorPassword = () => {
                                         </Form.Item>
                                     </div>
 
-                                    <Button color="primary" block>
+                                    <Button
+                                        loading={isLoading}
+                                        color="primary"
+                                        block
+                                        htmlType="submit">
                                         Submit
                                     </Button>
                                 </Form>
