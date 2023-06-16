@@ -44,6 +44,9 @@ const HeaderStyle = styled.header`
     }
     .img-user {
         border-radius: 50%;
+        object-fit: cover;
+        width: 43px;
+        height: 43px;
     }
 `;
 export default HeaderStyle;

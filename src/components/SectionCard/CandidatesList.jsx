@@ -51,7 +51,7 @@ const CandidatesList = ({
     }, [code]);
     return (
         <div style={{ minHeight: 300 }}>
-            <Row>
+            <Row style={{ marginTop: -64 }}>
                 <Col md={12}>
                     <Form.Item>
                         <Input
