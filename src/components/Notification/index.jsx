@@ -1,7 +1,26 @@
+import axios from 'axios';
+import { getMessaging } from 'firebase/messaging';
 import { useEffect } from 'react';
-import { getToken, messaging } from '../../firebase';
-
+import { getToken } from '../../firebase';
+import Button from '../Button';
 const NotificationComponent = () => {
+    const messaging = getMessaging();
+    const requestNotificationPermission = async () => {
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                const token = await getToken(messaging);
+                console.log('Notification permission granted.');
+            } else {
+                console.log('Notification permission denied.');
+            }
+        } catch (error) {
+            console.log('Unable to get permission to notify.', error);
+        }
+    };
+
+    requestNotificationPermission();
+
     useEffect(() => {
         const getDeviceToken = async () => {
             try {
@@ -18,8 +37,6 @@ const NotificationComponent = () => {
 
         getDeviceToken();
     }, []);
-
-    return <div></div>;
 };
 
 export default NotificationComponent;

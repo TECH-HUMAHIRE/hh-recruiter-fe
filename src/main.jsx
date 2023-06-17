@@ -6,6 +6,8 @@ import 'react-quill/dist/quill.snow.css';
 import App from './routes/RouteApp';
 import './index.less';
 import { store } from './app/store';
+import { onMessage } from 'firebase/messaging';
+import { messaging } from './firebase';
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker
@@ -18,6 +20,11 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+onMessage(messaging, (payload) => {
+    console.log('Received foreground message:', payload);
+    // Handle the notification data and display it to the user
+});
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <>
         {/* <FirebaseDatabaseProvider firebase={firebase} {...firebaseConfig}> */}

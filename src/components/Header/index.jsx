@@ -45,6 +45,7 @@ const Header = () => {
         setVerifyEmail(false);
         setOpen(!isOpen);
     };
+
     React.useEffect(() => {
         if (isSuccess) {
             setChangePass(false);
