@@ -135,7 +135,7 @@ const CandidatesSearch = ({ status }) => {
             {contextHolder}
             <Row justify="space-between">
                 <Col md={4}>
-                    <Form.Item>
+                    <Form.Item name={'job_title'}>
                         <Input
                             onChange={handleSearchCandidate}
                             prefix={<SearchOutlined />}
@@ -145,7 +145,7 @@ const CandidatesSearch = ({ status }) => {
                         />
                     </Form.Item>
                 </Col>
-                {/* <Col md={2} className="text-right">
+                <Col md={2} className="text-right">
                     <Button
                         onClick={onFilterCandidates}
                         style={{ color: '#444444', borderColor: '#444444' }}
@@ -153,7 +153,7 @@ const CandidatesSearch = ({ status }) => {
                         icon={<FilterOutlined />}>
                         Filter
                     </Button>
-                </Col> */}
+                </Col>
             </Row>
             <Row>
                 {data?.data?.map((item, key) => {

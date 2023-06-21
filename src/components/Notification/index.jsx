@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { getMessaging } from 'firebase/messaging';
 import { useEffect } from 'react';
 import { getToken } from '../../firebase';
-import Button from '../Button';
 const NotificationComponent = () => {
     const messaging = getMessaging();
     const requestNotificationPermission = async () => {
