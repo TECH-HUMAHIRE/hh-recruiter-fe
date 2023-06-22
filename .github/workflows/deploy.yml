@@ -110,6 +110,8 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY_DEV }}
           script: |
             cd /home/ubuntu/admin/recruiter/tmp
+            node -v
+            npm -v
             npm install
             pm2 delete admin-recruiter
             pm2 start npm --name "admin-recuiter" -- dev:live
