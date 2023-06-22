@@ -36,7 +36,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build
+        run: npm run build:live
 
       - name: Delete Previous Next.js on Develop
         if: github.ref == 'refs/heads/create-workflow' #Temporary
