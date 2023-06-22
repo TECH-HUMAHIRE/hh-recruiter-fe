@@ -87,12 +87,14 @@ jobs:
       - name: Copy build files to Develop EC2 instance
         if: github.ref == 'refs/heads/create-workflow' #Temporary
         run: |
-          scp -i EC2_KEY.pem -r ./* ${{ secrets.EC2_USERNAME_DEV }}@${{ secrets.EC2_HOST_DEV }}:/home/ubuntu/admin/recruiter/tmp/
+          scp -i EC2_KEY.pem -r dist ${{ secrets.EC2_USERNAME_DEV }}@${{ secrets.EC2_HOST_DEV }}:/home/ubuntu/admin/recruiter/tmp/dist
+          scp -i EC2_KEY.pem package.json ${{ secrets.EC2_USERNAME_DEV }}@${{ secrets.EC2_HOST_DEV }}:/home/ubuntu/admin/recruiter/tmp/package.json
 
       - name: Copy build files to Production EC2 instance
         if: github.event_name == 'create' && github.event.ref_type == 'tag'
         run: |
-          scp -i EC2_KEY.pem -r ./* ${{ secrets.EC2_USERNAME_DEV }}@${{ secrets.EC2_HOST_DEV }}:/home/ubuntu/admin/recruiter/tmp/
+          scp -i EC2_KEY.pem -r dist ${{ secrets.EC2_USERNAME_DEV }}@${{ secrets.EC2_HOST_DEV }}:/home/ubuntu/admin/recruiter/tmp/dist
+          scp -i EC2_KEY.pem package.json ${{ secrets.EC2_USERNAME_DEV }}@${{ secrets.EC2_HOST_DEV }}:/home/ubuntu/admin/recruiter/tmp/package.json
       #^^^^^^^^^^^^^^^^^Temporary^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   DeployOnDev:
     needs: Build
@@ -109,10 +111,9 @@ jobs:
           script: |
             export PATH=/usr/local/nodejs/bin:$PATH
             cd /home/ubuntu/admin/recruiter/tmp
-            ls -liah
             npm install
             pm2 delete admin-recruiter
-            pm2 start npm --name "admin-recruiter" -- run preview
+            pm2 start npm --name "admin-recruiter" -- dev:live
 
   DeployOnTagCreation:
     needs: Build
