@@ -112,7 +112,7 @@ jobs:
             cd /home/ubuntu/admin/recruiter/tmp
             npm install
             pm2 delete admin-recruiter
-            pm2 start npm --name "admin-recuiter" -- start
+            pm2 start npm --name "admin-recuiter" -- dev:live
 
   DeployOnTagCreation:
     needs: Build
@@ -130,4 +130,4 @@ jobs:
             cd /home/ubuntu/admin/recruiter/tmp
             npm install
             pm2 delete admin-recuiter
-            pm2 start npm --name "admin-recuiter" -- start
+            pm2 start npm --name "admin-recuiter" -- dev:live
