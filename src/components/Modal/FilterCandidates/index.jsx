@@ -15,23 +15,23 @@ const FilterCandidates = ({
     onClose = () => {}
 }) => {
     const [form] = useForm();
-    const [filterJobApi, { data, isSuccess }] = useFilterJobMutation({
+    const [filterJobApi, { isLoading }] = useFilterJobMutation({
         fixedCacheKey: 'filterJob'
     });
     const onSubmit = (values) => {
-        console.log('values', values);
-        // filterJobApi(values);
+        filterJobApi(values);
     };
     const onResetFilter = () => {
         form.setFieldsValue({
             start_salary: null,
             end_salary: null,
             education: '',
-            start_work_of_experience: 0,
+            start_work_of_experience: '',
             page: 1,
             pageSize: 10,
             job_title: ''
         });
+        filterJobApi();
     };
     return (
         <FilterCandidatesStyle
@@ -185,7 +185,10 @@ const FilterCandidates = ({
                         style={{ marginRight: 10 }}>
                         Reset
                     </Button>
-                    <Button color="primary" htmlType="submit">
+                    <Button
+                        color="primary"
+                        htmlType="submit"
+                        loading={isLoading}>
                         Apply
                     </Button>
                 </div>
