@@ -109,6 +109,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME_DEV }}
           key: ${{ secrets.EC2_PRIVATE_KEY_DEV }}
           script: |
+            export PATH=/usr/local/nodejs/bin:$PATH
             cd /home/ubuntu/admin/recruiter/tmp
             node -v
             npm -v
