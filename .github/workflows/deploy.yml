@@ -38,6 +38,11 @@ jobs:
       - name: Build
         run: npm run build:live
 
+      - name: Check
+        run: |
+          pwd
+          ls -liah
+
       - name: Delete Previous Next.js on Develop
         if: github.ref == 'refs/heads/create-workflow' #Temporary
         uses: appleboy/ssh-action@master
