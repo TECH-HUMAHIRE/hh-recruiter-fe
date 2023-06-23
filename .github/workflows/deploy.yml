@@ -132,4 +132,4 @@ jobs:
             cd /home/ubuntu/admin/recruiter/tmp
             npm install
             pm2 delete admin-recruiter
-            pm2 start npm --name "admin-recruiter" -- dev:live
+            pm2 start npm --name "admin-recruiter" -- run serve
