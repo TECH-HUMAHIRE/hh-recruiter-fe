@@ -32,6 +32,5 @@ export default defineConfig(({ mode }) => {
                 plugins: [esbuildCommonjs(['midtrans-client'])]
             }
         },
-        base: '/dist/'
     };
 });
