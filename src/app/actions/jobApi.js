@@ -113,6 +113,24 @@ export const jobApi = createApi({
                 };
             },
             invalidatesTags: ['refer_email']
+        }),
+        saveFcmToken: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/notification/store`,
+                    method: 'POST',
+                    body
+                };
+            }
+        }),
+        sendNotification: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/notification/send`,
+                    method: 'POST',
+                    body
+                };
+            }
         })
     })
 });
@@ -128,5 +146,7 @@ export const {
     useDeleteTaskMutation,
     useGetCompanyNameQuery,
     useUpdateStatusJobCandidatesMutation,
-    useSendReferEmailMutation
+    useSendReferEmailMutation,
+    useSaveFcmTokenMutation,
+    useSendNotificationMutation
 } = jobApi;

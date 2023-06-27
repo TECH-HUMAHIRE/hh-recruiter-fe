@@ -13,6 +13,7 @@ import {
     useGetProfileQuery
 } from '../../app/actions/profile';
 import NotificationComponent from '../Notification';
+import { getNotification } from '../../helper';
 
 const Header = () => {
     const [isOpen, setOpen] = React.useState(false);
@@ -59,6 +60,10 @@ const Header = () => {
             });
         }
     }, [isSuccess]);
+    React.useEffect(() => {
+        // Create a new Broadcast Channel
+        getNotification();
+    }, []);
     return (
         <HeaderStyle>
             {contextHolder}

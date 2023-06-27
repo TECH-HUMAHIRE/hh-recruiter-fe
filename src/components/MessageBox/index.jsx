@@ -26,6 +26,7 @@ import pdf_icon from '../Assets/icon/cvIcon.png';
 import ReactQuill from 'react-quill';
 import CloseIcon from '../Icon/Close';
 import DownloadIcon from '../Icon/Download';
+import { useSendNotificationMutation } from '../../app/actions/jobApi';
 const { TextArea } = Input;
 const MessageData = ({
     messagesRef,
@@ -37,6 +38,7 @@ const MessageData = ({
     const navigate = useNavigate();
     const boxRef = React.useRef(null);
     const uploadRef = React.useRef(null);
+    const [sendNotification] = useSendNotificationMutation();
     const [messagesData, setMessagesData] = React.useState([]);
     const [inputValue, setInputValue] = React.useState('');
     const [isUpload, setUpload] = React.useState(false);
@@ -70,6 +72,11 @@ const MessageData = ({
         const newMessageRef = push(messagesRef);
         set(newMessageRef, messageSender)
             .then(() => {
+                sendNotification({
+                    uid: dataProfile?.data?.uid,
+                    title: 'New Message',
+                    body: inputValue
+                });
                 setFileValue('');
                 setInputValue('');
                 setUpload(false);
