@@ -53,7 +53,7 @@ const Inbox = () => {
                     {
                         label: `Notification`,
                         key: 'notification',
-                        children: <NotificationTab />
+                        children: <NotificationTab dataProfile={dataProfile} />
                     }
                 ]}
             />

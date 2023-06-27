@@ -210,26 +210,6 @@ const MessageData = ({
                                 };
                             })
                         );
-                        // Object.keys(groupedByTimestamp).forEach(
-                        //     (chatId, chatData) => {
-                        //         console.log('chatId', chatId);
-                        //         console.log('chatData', chatData);
-                        //     }
-                        // );
-                        // Object.entries(groupedByTimestamp).forEach(
-                        //     ([chatId, chatData]) => {
-                        //         chatData.forEach((chatTarget, chatTargetId) => {
-                        //             if (!chatTarget.read) {
-                        //                 console.log(
-                        //                     'chatTarget read',
-                        //                     chatTarget
-                        //                 );
-                        //                 // Update the chat message read status to true
-                        //                 updateChatReadStatus(chatTarget);
-                        //             }
-                        //         });
-                        //     }
-                        // );
 
                         setScroll(true);
                     }

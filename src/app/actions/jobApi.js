@@ -131,6 +131,15 @@ export const jobApi = createApi({
                     body
                 };
             }
+        }),
+        getNotification: builder.query({
+            query: (prams) => {
+                return {
+                    url: `/notification`,
+                    method: 'GET',
+                    prams
+                };
+            }
         })
     })
 });
@@ -148,5 +157,6 @@ export const {
     useUpdateStatusJobCandidatesMutation,
     useSendReferEmailMutation,
     useSaveFcmTokenMutation,
-    useSendNotificationMutation
+    useSendNotificationMutation,
+    useGetNotificationQuery
 } = jobApi;
