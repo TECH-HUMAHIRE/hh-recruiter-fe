@@ -133,11 +133,11 @@ export const jobApi = createApi({
             }
         }),
         getNotification: builder.query({
-            query: (prams) => {
+            query: (params) => {
                 return {
                     url: `/notification`,
                     method: 'GET',
-                    prams
+                    params
                 };
             }
         })

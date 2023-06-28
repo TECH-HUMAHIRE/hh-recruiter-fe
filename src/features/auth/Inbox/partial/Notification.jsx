@@ -8,8 +8,13 @@ import { Col, Row } from '../../../../components/Grid';
 import { database } from '../../../../firebase';
 import { useGetNotificationQuery } from '../../../../app/actions/jobApi';
 import { onValue, ref } from 'firebase/database';
+import PaginationTable from '../../../../components/PaginationTable';
 
 const NotificationTab = ({ dataProfile }) => {
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 12
+    });
     const items = [
         {
             key: '1',
@@ -30,7 +35,12 @@ const NotificationTab = ({ dataProfile }) => {
             )
         }
     ];
-    const { data, refetch } = useGetNotificationQuery();
+    const { data, refetch } = useGetNotificationQuery(params);
+
+    const onRefetchCandidates = async (updateParams) => {
+        await setParams(updateParams);
+        refetch();
+    };
     const getDatamessage = () => {
         const dataRefMessage = ref(database, `messages/`);
         onValue(
@@ -78,32 +88,46 @@ const NotificationTab = ({ dataProfile }) => {
         getDatamessage();
     }, []);
     return (
-        <Row>
-            <Col md={11}>
-                <List itemLayout="horizontal">
-                    <List.Item
-                        extra={
-                            <Dropdown
-                                menu={{ items }}
-                                placement="bottomCenter"
-                                trigger="click">
-                                <MoreOutlined />
-                            </Dropdown>
-                        }>
-                        <List.Item.Meta
-                            avatar={
-                                <div className="inbox-notification__icon">
-                                    <SettingIcon color="#AAAAAA" />
-                                </div>
-                            }
-                            title={<a href="https://ant.design">lorem ipsum</a>}
-                            description="Dear All, Due to scheduled maintenance activity. Will not be available on 8th May 2022 from 02:00 AM to 05:00 AM. Regret inconvenience 
+        <>
+            <Row>
+                <Col md={11}>
+                    <List itemLayout="horizontal">
+                        <List.Item
+                            extra={
+                                <Dropdown
+                                    menu={{ items }}
+                                    placement="bottomCenter"
+                                    trigger="click">
+                                    <MoreOutlined />
+                                </Dropdown>
+                            }>
+                            <List.Item.Meta
+                                avatar={
+                                    <div className="inbox-notification__icon">
+                                        <SettingIcon color="#AAAAAA" />
+                                    </div>
+                                }
+                                title={
+                                    <a href="https://ant.design">lorem ipsum</a>
+                                }
+                                description="Dear All, Due to scheduled maintenance activity. Will not be available on 8th May 2022 from 02:00 AM to 05:00 AM. Regret inconvenience 
                         caused. Warm Regards, HumaHire"
-                        />
-                    </List.Item>
-                </List>
-            </Col>
-        </Row>
+                            />
+                        </List.Item>
+                    </List>
+                </Col>
+            </Row>
+            {data?.meta?.info?.count > 0 && (
+                <div className="job-pagination">
+                    <PaginationTable
+                        showSizeChanger={false}
+                        data={data}
+                        refetch={onRefetchCandidates}
+                        params={params}
+                    />
+                </div>
+            )}
+        </>
     );
 };
 export default NotificationTab;

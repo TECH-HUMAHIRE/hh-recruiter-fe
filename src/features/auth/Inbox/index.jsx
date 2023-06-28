@@ -5,8 +5,6 @@ import Style from './inbox.style';
 import MessageTab from './partial/Message';
 import NotificationTab from './partial/Notification';
 
-import { getDatabase, ref, get, onValue } from 'firebase/database';
-import { database } from '../../../firebase';
 import { useGetProfileQuery } from '../../../app/actions/profile';
 import { Skeleton } from 'antd';
 
@@ -14,19 +12,10 @@ const Inbox = () => {
     const { data: dataProfile } = useGetProfileQuery();
     const [activeTab, setActiveTab] = useActiveTab('message');
 
-    // console.log(firebase.database())
-    // console.log('Asdasdasd', firebase);
-
-    // React.useEffect(async () => {
-    //     const dataRef = ref(database, 'test/');
-    //     await signInWithEmailAndPassword(
-    //         auth,
-    //         'recruiter_texting_1@gmail.com',
-    //         '123456'
-    //     ).then((userCredential) => {
-    //         // User signed in successfully
-    //     });
-    // }, []);
+    const [totalDataUnread, setTotalDataUnread] = React.useState(0);
+    const getDataUnreadMessage = (total) => {
+        setTotalDataUnread(total);
+    };
 
     return (
         <Style>
@@ -42,10 +31,15 @@ const Inbox = () => {
                 onChange={setActiveTab}
                 item={[
                     {
-                        label: `Message`,
+                        label: `Message${
+                            totalDataUnread > 0 ? ` (${totalDataUnread})` : ''
+                        }`,
                         key: 'message',
                         children: dataProfile?.data ? (
-                            <MessageTab dataProfile={dataProfile} />
+                            <MessageTab
+                                dataProfile={dataProfile}
+                                getDataUnreadMessage={getDataUnreadMessage}
+                            />
                         ) : (
                             <Skeleton />
                         )

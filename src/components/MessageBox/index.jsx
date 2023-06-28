@@ -75,7 +75,8 @@ const MessageData = ({
                 sendNotification({
                     uid: dataProfile?.data?.uid,
                     title: 'New Message',
-                    body: inputValue
+                    body: inputValue,
+                    category: 'message'
                 });
                 setFileValue('');
                 setInputValue('');
