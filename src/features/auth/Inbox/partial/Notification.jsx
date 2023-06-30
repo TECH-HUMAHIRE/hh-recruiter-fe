@@ -86,38 +86,49 @@ const NotificationTab = ({ dataProfile }) => {
     };
     React.useEffect(() => {
         getDatamessage();
+        refetch();
     }, []);
     return (
         <>
             <Row>
-                <Col md={11}>
-                    <List itemLayout="horizontal">
-                        <List.Item
-                            extra={
-                                <Dropdown
-                                    menu={{ items }}
-                                    placement="bottomCenter"
-                                    trigger="click">
-                                    <MoreOutlined />
-                                </Dropdown>
-                            }>
-                            <List.Item.Meta
-                                avatar={
-                                    <div className="inbox-notification__icon">
-                                        <SettingIcon color="#AAAAAA" />
-                                    </div>
-                                }
-                                title={
-                                    <a href="https://ant.design">lorem ipsum</a>
-                                }
-                                description="Dear All, Due to scheduled maintenance activity. Will not be available on 8th May 2022 from 02:00 AM to 05:00 AM. Regret inconvenience 
-                        caused. Warm Regards, HumaHire"
-                            />
-                        </List.Item>
-                    </List>
-                </Col>
+                {data?.data?.notifications?.map((notification, key) => {
+                    return (
+                        <Col md={11} key={key}>
+                            <List itemLayout="horizontal">
+                                <List.Item
+                                    extra={
+                                        <Dropdown
+                                            menu={{ items }}
+                                            placement="bottomCenter"
+                                            trigger="click">
+                                            <MoreOutlined />
+                                        </Dropdown>
+                                    }>
+                                    <List.Item.Meta
+                                        avatar={
+                                            <div className="inbox-notification__icon">
+                                                <SettingIcon color="#AAAAAA" />
+                                            </div>
+                                        }
+                                        title={
+                                            <a href="https://ant.design">
+                                                {notification.title}
+                                            </a>
+                                        }
+                                        description={
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: notification.body
+                                                }}></div>
+                                        }
+                                    />
+                                </List.Item>
+                            </List>
+                        </Col>
+                    );
+                })}
             </Row>
-            {data?.meta?.info?.count > 0 && (
+            {data?.meta?.info?.count > 1 && (
                 <div className="job-pagination">
                     <PaginationTable
                         showSizeChanger={false}
