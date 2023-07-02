@@ -7,6 +7,7 @@ import NotificationTab from './partial/Notification';
 
 import { useGetProfileQuery } from '../../../app/actions/profile';
 import { Skeleton } from 'antd';
+import { useGetNotificationQuery } from '../../../app/actions/jobApi';
 
 const Inbox = () => {
     const { data: dataProfile } = useGetProfileQuery();
@@ -16,6 +17,12 @@ const Inbox = () => {
     const getDataUnreadMessage = (total) => {
         setTotalDataUnread(total);
     };
+    const [params, _] = React.useState({
+        page: 1,
+        page_size: 12,
+        category: 'job,dashboard'
+    });
+    const { data } = useGetNotificationQuery(params);
 
     return (
         <Style>
@@ -45,7 +52,11 @@ const Inbox = () => {
                         )
                     },
                     {
-                        label: `Notification`,
+                        label: `Notification ${
+                            data?.data?.unread_count > 0
+                                ? `(${data?.data?.unread_count})`
+                                : ''
+                        }`,
                         key: 'notification',
                         children: <NotificationTab dataProfile={dataProfile} />
                     }

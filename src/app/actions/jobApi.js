@@ -14,7 +14,7 @@ export const jobApi = createApi({
             return headers;
         }
     }),
-    tagTypes: ['Post', 'counTask'],
+    tagTypes: ['Post', 'counTask', 'notification'],
     endpoints: (builder) => ({
         getJobsList: builder.query({
             query: (params) => {
@@ -139,7 +139,26 @@ export const jobApi = createApi({
                     method: 'GET',
                     params
                 };
-            }
+            },
+            providesTags: ['notification']
+        }),
+        updateNotification: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/notification/${id}`,
+                    method: 'PUT'
+                };
+            },
+            invalidatesTags: ['notification']
+        }),
+        deleteNotification: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/notification/${id}`,
+                    method: 'DELETE'
+                };
+            },
+            invalidatesTags: ['notification']
         })
     })
 });
@@ -158,5 +177,7 @@ export const {
     useSendReferEmailMutation,
     useSaveFcmTokenMutation,
     useSendNotificationMutation,
-    useGetNotificationQuery
+    useGetNotificationQuery,
+    useUpdateNotificationMutation,
+    useDeleteNotificationMutation
 } = jobApi;
