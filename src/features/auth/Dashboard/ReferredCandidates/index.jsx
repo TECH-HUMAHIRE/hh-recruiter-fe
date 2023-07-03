@@ -22,6 +22,8 @@ const ReferredCandidates = () => {
     const [itemTabs, setItemTabs] = React.useState([]);
 
     const [isDetailInfo, setDetailInfo] = React.useState(false);
+    const [fullInfoStatusCandidates, setFullInfoCandidateStatus] =
+        React.useState(null);
     const [candidateInfo, setCandidateInfo] = React.useState(null);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
     const [params, setParams] = React.useState({
@@ -62,8 +64,9 @@ const ReferredCandidates = () => {
         getJobInvitation(newParams);
         setParams(newParams);
     }, 750);
-    const onCancelInvitation = (candidates) => {
+    const onCancelInvitation = (candidates, fullInfo) => {
         setCancelInvitation(!isCancelInvitation);
+        setFullInfoCandidateStatus(fullInfo);
     };
     React.useEffect(() => {
         getJobInvitation(params);

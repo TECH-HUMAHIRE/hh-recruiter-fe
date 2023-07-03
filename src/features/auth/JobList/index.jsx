@@ -24,7 +24,8 @@ import FilterJobList from '../../../components/Modal/FilterJobList';
 import {
     useAddTaskMutation,
     useGetJobsListQuery,
-    useGetTaskListQuery
+    useGetTaskListQuery,
+    useUpdateStatusJobCandidatesMutation
 } from '../../../app/actions/jobApi';
 import moment from 'moment';
 import convertEmployeType from '../../../components/Utils/convertEmployeType';
@@ -68,12 +69,19 @@ const Jobist = () => {
     const [itemTabs, setItemTabs] = React.useState([]);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [isCancelInvitation, setCancelInvitation] = React.useState(false);
+    const [fullInfoStatusCandidates, setFullInfoCandidateStatus] =
+        React.useState(null);
 
     // fetch api
     const { data: jobList } = useGetJobsListQuery(params);
     const { refetch } = useGetTaskListQuery(paramsTask);
     const [addMyTask, response] = useAddTaskMutation();
-
+    const [
+        updateStatusCandidate,
+        { isSuccess: successUpdateStatus, reset, isLoading: loadingButton }
+    ] = useUpdateStatusJobCandidatesMutation({
+        fixedCacheKey: 'statusJobCandidates'
+    });
     // function
     const onViewDetail = () => {
         setDetailInfo(!isDetailInfo);
@@ -81,8 +89,16 @@ const Jobist = () => {
     const onOpenFilter = () => {
         setFilter(!isFilter);
     };
-    const onCancelInvitation = () => {
+    const onActionCancel = () => {
+        let code = fullInfoStatusCandidates.code;
+        const data = {
+            status: 'cancelled'
+        };
+        updateStatusCandidate({ code, ...data });
+    };
+    const onCancelInvitation = (candidates, fullInfo) => {
         setCancelInvitation(!isCancelInvitation);
+        setFullInfoCandidateStatus(fullInfo);
     };
     const handleAddTask = (id) => {
         addMyTask({
@@ -224,7 +240,14 @@ const Jobist = () => {
             });
         }
     }, [response]);
+    React.useEffect(() => {
+        if (successUpdateStatus) {
+            getJobInvitation(params);
+            setCancelInvitation(!isCancelInvitation);
 
+            reset();
+        }
+    }, [successUpdateStatus]);
     return (
         <DashboardCandidatesStyle>
             {contextHolder}
@@ -298,6 +321,7 @@ const Jobist = () => {
 
             <CandidateDetail open={isDetailInfo} onClose={onViewDetail} />
             <CancelInvitation
+                onActionCancel={onActionCancel}
                 isOpen={isCancelInvitation}
                 onClose={onCancelInvitation}
             />
