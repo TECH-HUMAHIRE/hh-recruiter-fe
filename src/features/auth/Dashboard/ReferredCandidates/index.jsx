@@ -9,7 +9,10 @@ import { formatMoney } from '../../../../components/Utils/formatMoney';
 import { SearchOutlined } from '@ant-design/icons';
 import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../../components/Modal/CancelInvitation';
-import { jobApi } from '../../../../app/actions/jobApi';
+import {
+    jobApi,
+    useUpdateStatusJobCandidatesMutation
+} from '../../../../app/actions/jobApi';
 import moment from 'moment';
 import debounce from '../../../../components/Utils/debounce';
 import PaginationTable from '../../../../components/PaginationTable';
@@ -27,6 +30,12 @@ const ReferredCandidates = () => {
         status: 'accepted'
     });
     // fetch api
+    const [
+        updateStatusCandidate,
+        { isSuccess: successUpdateStatus, reset, isLoading: loadingButton }
+    ] = useUpdateStatusJobCandidatesMutation({
+        fixedCacheKey: 'statusJobCandidates'
+    });
     const [getJobInvitation, { data: jobInvitation, isSuccess }] =
         jobApi.endpoints.getTaskInvitation.useLazyQuery();
     // function
@@ -37,6 +46,13 @@ const ReferredCandidates = () => {
     const onRefetchCandidates = async (updateParams) => {
         await setParams(updateParams);
         getJobInvitation(updateParams);
+    };
+    const onActionCancel = () => {
+        let code = fullInfoStatusCandidates.code;
+        const data = {
+            status: 'cancelled'
+        };
+        updateStatusCandidate({ code, ...data });
     };
     const onSearchJob = debounce((e) => {
         let newParams = {
@@ -52,7 +68,14 @@ const ReferredCandidates = () => {
     React.useEffect(() => {
         getJobInvitation(params);
     }, []);
+    React.useEffect(() => {
+        if (successUpdateStatus) {
+            getJobInvitation(params);
+            setCancelInvitation(!isCancelInvitation);
 
+            reset();
+        }
+    }, [successUpdateStatus]);
     React.useEffect(() => {
         if (jobInvitation) {
             setItemTabs(
@@ -170,6 +193,7 @@ const ReferredCandidates = () => {
                 onClose={onViewDetail}
             />
             <CancelInvitation
+                onActionCancel={onActionCancel}
                 isOpen={isCancelInvitation}
                 onClose={onCancelInvitation}
             />
