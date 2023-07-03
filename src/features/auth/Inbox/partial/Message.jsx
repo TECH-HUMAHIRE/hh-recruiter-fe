@@ -13,7 +13,11 @@ import { database } from '../../../../firebase';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { CardMenu } from '../../../../components/Card/card.style';
 
-const MessageTab = ({ message = [1, 2], dataProfile }) => {
+const MessageTab = ({
+    message = [1, 2],
+    dataProfile,
+    getDataUnreadMessage = () => {}
+}) => {
     let navigate = useNavigate();
     const location = useLocation();
     const [paramsUrl, _] = useSearchParams();
@@ -260,6 +264,8 @@ const MessageTab = ({ message = [1, 2], dataProfile }) => {
                         dataUsers?.map((item, key) => {
                             return (
                                 <UserListMessage
+                                    getDataUnreadMessage={getDataUnreadMessage}
+                                    dataUsers={dataUsers}
                                     searchName={searchName}
                                     totalDataMessage={totalDataMessage}
                                     onTabMessage={onTabMessage}

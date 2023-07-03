@@ -127,15 +127,15 @@ const MyTask = () => {
                         <SelectCompany onChange={onSearchJobByCompany} />
                     </Col>
                     {/* <Col md={2} className="text-right">
-                            <Button
-                                block
-                                size="large"
-                                onClick={onOpenFilter}
-                                className="message-filter"
-                                icon={<FilterOutlined />}>
-                                Filter
-                            </Button>
-                        </Col> */}
+                        <Button
+                            block
+                            size="large"
+                            // onClick={onOpenFilter}
+                            className="message-filter"
+                            icon={<FilterOutlined />}>
+                            Filter
+                        </Button>
+                    </Col> */}
                 </Row>
             </div>
             <Row>

@@ -1,7 +1,28 @@
-import { useEffect } from 'react';
-import { getToken, messaging } from '../../firebase';
-
+import { getMessaging } from 'firebase/messaging';
+import { useEffect, useState } from 'react';
+import { useSaveFcmTokenMutation } from '../../app/actions/jobApi';
+import { getToken } from '../../firebase';
 const NotificationComponent = () => {
+    const messaging = getMessaging();
+    const [fcmToken, setFcmToken] = useState(null);
+    const [saveFcmToken] = useSaveFcmTokenMutation();
+    const requestNotificationPermission = async () => {
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                const token = await getToken(messaging);
+
+                console.log('Notification permission granted.');
+            } else {
+                console.log('Notification permission denied.');
+            }
+        } catch (error) {
+            console.log('Unable to get permission to notify.', error);
+        }
+    };
+
+    requestNotificationPermission();
+
     useEffect(() => {
         const getDeviceToken = async () => {
             try {
@@ -11,6 +32,7 @@ const NotificationComponent = () => {
                         'BEvc8zyx2Gvo_qRKhF4WTEHKW7eBzfhZJE6nIRJz2muxstfHTcUYfCIgnnka575si_jJKr1xwqpyjkidvLfPkZY'
                 });
                 console.log('FCM token Successfully!');
+                setFcmToken(token);
             } catch (error) {
                 console.log('Error retrieving device token firebase:', error);
             }
@@ -18,8 +40,13 @@ const NotificationComponent = () => {
 
         getDeviceToken();
     }, []);
-
-    return <div></div>;
+    useEffect(() => {
+        if (fcmToken) {
+            saveFcmToken({
+                fcm_token: fcmToken
+            });
+        }
+    }, [fcmToken]);
 };
 
 export default NotificationComponent;

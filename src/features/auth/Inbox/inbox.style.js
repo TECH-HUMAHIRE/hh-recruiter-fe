@@ -3,6 +3,12 @@ import { color } from '../../../components/Utils/variable';
 const Style = styled.div`
     .inbox {
         &-notification {
+            padding: 0 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            &.unread {
+                background-color: rgb(254 173 167);
+            }
             &__icon {
                 margin-right: 10px;
                 padding: 10px 11px;

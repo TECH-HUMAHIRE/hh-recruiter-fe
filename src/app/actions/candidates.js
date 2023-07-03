@@ -141,6 +141,16 @@ export const candidates = createApi({
                     method: 'GET'
                 };
             }
+        }),
+        filterJob: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/user/candidate/filter`,
+                    body,
+                    method: 'POST'
+                };
+            },
+            invalidatesTags: ['saveCandidate', 'candidates', 'counTask']
         })
     })
 });
@@ -158,5 +168,6 @@ export const {
     useCountJobQuery,
     useReferCandidateMutation,
     useGetJobCandidatesQuery,
-    useGetUserDetailQuery
+    useGetUserDetailQuery,
+    useFilterJobMutation
 } = candidates;

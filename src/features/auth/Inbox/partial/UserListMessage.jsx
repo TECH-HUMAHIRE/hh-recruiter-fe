@@ -7,7 +7,9 @@ const UserListMessage = ({
     data,
     onTabMessage,
     totalDataMessage,
-    searchName = ''
+    searchName = '',
+    dataUsers,
+    getDataUnreadMessage = () => {}
 }) => {
     const datausersChat = Object.values(data);
     const { data: dataUser } = useGetUserDetailQuery(
@@ -15,11 +17,22 @@ const UserListMessage = ({
     );
     let name = dataUser?.data?.name.toLowerCase();
     const getUnreadMessage = () => {
-        return (
+        let dataUnreadMessage =
             totalDataMessage.filter(
                 (item) => item.uid === datausersChat[0]?.userTarget
-            )[0].dataUnread || 0
-        );
+            )[0].dataUnread || 0;
+        const filterData = dataUsers.map((user) => {
+            return {
+                total_data: user.data.filter((value) => value.read === false)
+                    .length
+            };
+        });
+        let sum = 0;
+        for (let i = 0; i < filterData.length; i++) {
+            sum += filterData[i].total_data;
+        }
+        getDataUnreadMessage(sum);
+        return dataUnreadMessage;
     };
     return (
         name?.split(searchName).length > 1 && (

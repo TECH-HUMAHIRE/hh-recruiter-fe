@@ -2,6 +2,7 @@ import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import { Form, Input, message } from 'antd';
 import React from 'react';
 import {
+    useFilterJobMutation,
     useGetCandidatesListQuery,
     useReferCandidateMutation,
     useSaveCandidateMutation,
@@ -24,12 +25,19 @@ const CandidatesSearch = ({ status }) => {
         page: 1,
         page_size: 12
     });
+    const [dataCandidates, setDataCandidates] = React.useState([]);
     const [isReffered, setReffered] = React.useState(false);
     const [isFilter, setFilter] = React.useState(false);
     const [isDetail, setDetail] = React.useState(false);
     const [isSave, setSave] = React.useState(false);
     const [isReferJobList, setReferJobList] = React.useState(false);
     const [isUnlock, setUnlock] = React.useState(false);
+    const [
+        __,
+        { data: filterData, isSuccess: successFilter, reset: resetResponse }
+    ] = useFilterJobMutation({
+        fixedCacheKey: 'filterJob'
+    });
     const [candidateDetail, setCandidateDetail] = React.useState(null);
     const { data, refetch } = useGetCandidatesListQuery(params);
     const [saveCandidate, { isSuccess, reset, isLoading, data: response }] =
@@ -53,6 +61,9 @@ const CandidatesSearch = ({ status }) => {
     ] = useReferCandidateMutation({ fixedCacheKey: 'refer_candidate' });
     const onFilterCandidates = () => {
         setFilter(!isFilter);
+    };
+    const handleFilter = (dataFilter) => {
+        setDataCandidates(dataFilter);
     };
     const onSaveCandidate = (data) => {
         setCandidateDetail(data);
@@ -130,12 +141,24 @@ const CandidatesSearch = ({ status }) => {
             resetResponseRefer();
         }
     }, [successRefer]);
+    React.useEffect(() => {
+        if (data) {
+            setDataCandidates(data);
+        }
+    }, [data]);
+    React.useEffect(() => {
+        if (successFilter) {
+            setFilter(false);
+            setDataCandidates(filterData);
+            resetResponse();
+        }
+    }, [successFilter]);
     return (
         <div>
             {contextHolder}
             <Row justify="space-between">
                 <Col md={4}>
-                    <Form.Item>
+                    <Form.Item name={'job_title'}>
                         <Input
                             onChange={handleSearchCandidate}
                             prefix={<SearchOutlined />}
@@ -145,7 +168,7 @@ const CandidatesSearch = ({ status }) => {
                         />
                     </Form.Item>
                 </Col>
-                {/* <Col md={2} className="text-right">
+                <Col md={2} className="text-right">
                     <Button
                         onClick={onFilterCandidates}
                         style={{ color: '#444444', borderColor: '#444444' }}
@@ -153,10 +176,10 @@ const CandidatesSearch = ({ status }) => {
                         icon={<FilterOutlined />}>
                         Filter
                     </Button>
-                </Col> */}
+                </Col>
             </Row>
             <Row>
-                {data?.data?.map((item, key) => {
+                {dataCandidates?.data?.map((item, key) => {
                     return (
                         <Col
                             xl={4}

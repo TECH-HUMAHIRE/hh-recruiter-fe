@@ -2,17 +2,22 @@ import { Card, Form, Input, message, Skeleton, Checkbox } from 'antd';
 import React from 'react';
 import companyDummy from '../../../components/Assets/images/defaultImage.png';
 import Style from './refer-candidates-job.style';
-import { useGetTaskListQuery } from '../../../app/actions/jobApi';
+import {
+    useGetTaskListQuery,
+    useSendNotificationMutation
+} from '../../../app/actions/jobApi';
 import { Col, Row } from '../../Grid';
 import Button from '../../Button';
 import PaginationTable from '../../PaginationTable';
 import { useReferCandidateMutation } from '../../../app/actions/candidates';
+import { useForm } from 'antd/es/form/Form';
 
 const ReferCandidatesJobs = ({
     onClose = () => {},
     isOpen = false,
     candidate = null
 }) => {
+    const [form] = useForm();
     const [messageApi, contextHolder] = message.useMessage();
     // state
     const [params, setParams] = React.useState({
@@ -30,6 +35,8 @@ const ReferCandidatesJobs = ({
         refetch: refetchJobList,
         isLoading
     } = useGetTaskListQuery(params);
+
+    const [sendNotification] = useSendNotificationMutation();
     const [
         referCandidate,
         { reset, isLoading: loadingRefer, isError, error, isSuccess }
@@ -78,7 +85,17 @@ const ReferCandidatesJobs = ({
             });
             reset();
         }
+        if (isSuccess) {
+            sendNotification({
+                uid: candidate?.uid,
+                title: 'Inviting Job',
+                body: form.getFieldValue('message'),
+                category: 'dashboard'
+            });
+            reset();
+        }
     }, [isError, isSuccess]);
+    console.log('candidate', candidate);
     return (
         <Style
             title="Refer Candidates"
@@ -87,7 +104,7 @@ const ReferCandidatesJobs = ({
             onCancel={onClose}
             width={720}>
             {contextHolder}
-            <Form onFinish={handleSendRefer}>
+            <Form onFinish={handleSendRefer} form={form}>
                 <Card style={{ marginBottom: 15 }}>
                     <div className="job">
                         {isLoading ? (
