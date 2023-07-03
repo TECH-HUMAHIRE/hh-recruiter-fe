@@ -73,7 +73,7 @@ const MessageData = ({
         set(newMessageRef, messageSender)
             .then(() => {
                 sendNotification({
-                    uid: dataProfile?.data?.uid,
+                    uid: uid,
                     title: 'New Message',
                     body: inputValue,
                     category: 'message'
