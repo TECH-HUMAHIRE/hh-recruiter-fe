@@ -11,7 +11,8 @@ const CandidatesList = ({
     onCancelInvitation = () => {},
     onRefer = () => {},
     code = '',
-    status = ''
+    status = '',
+    jobDetail
 }) => {
     // state
     const [params, setParams] = React.useState({
@@ -68,6 +69,7 @@ const CandidatesList = ({
                     return (
                         <Col xl={6} md={6} sm={6} key={key}>
                             <CardCandidates
+                                jobDetail={jobDetail}
                                 onRefer={onRefer}
                                 status={status}
                                 dataParent={item}

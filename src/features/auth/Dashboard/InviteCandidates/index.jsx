@@ -11,6 +11,7 @@ import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../../components/Modal/CancelInvitation';
 import {
     jobApi,
+    useSendNotificationMutation,
     useUpdateStatusJobCandidatesMutation
 } from '../../../../app/actions/jobApi';
 import moment from 'moment';
@@ -20,7 +21,7 @@ import PaginationTable from '../../../../components/PaginationTable';
 const InviteCandidates = () => {
     // state
     const [itemTabs, setItemTabs] = React.useState([]);
-
+    const [jobInfo, setJobInfo] = React.useState(null);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [fullInfoStatusCandidates, setFullInfoCandidateStatus] =
         React.useState(null);
@@ -32,6 +33,7 @@ const InviteCandidates = () => {
         status: 'invited'
     });
     // fetch api
+    const [sendNotification] = useSendNotificationMutation();
     const [getJobInvitation, { data: jobInvitation, isSuccess }] =
         jobApi.endpoints.getTaskInvitation.useLazyQuery();
     const [
@@ -57,9 +59,10 @@ const InviteCandidates = () => {
         getJobInvitation(newParams);
         setParams(newParams);
     }, 750);
-    const onCancelInvitation = (candidates, fullInfo) => {
+    const onCancelInvitation = (candidates, fullInfo, jobDetail) => {
         setCancelInvitation(!isCancelInvitation);
         setFullInfoCandidateStatus(fullInfo);
+        setJobInfo(jobDetail);
     };
     const onActionCancel = () => {
         let code = fullInfoStatusCandidates.code;
@@ -75,6 +78,12 @@ const InviteCandidates = () => {
         if (successUpdateStatus) {
             getJobInvitation(params);
             setCancelInvitation(!isCancelInvitation);
+            sendNotification({
+                uid: fullInfoStatusCandidates.jobseeker.uid,
+                title: 'Cancelled Job',
+                body: `You have Cancelled job as ${jobInfo.title} at ${jobInfo.company.name}`,
+                category: 'dashboard'
+            });
 
             reset();
         }
@@ -136,6 +145,7 @@ const InviteCandidates = () => {
                         children: (
                             <CandidatesList
                                 status="invited"
+                                jobDetail={item}
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}
                                 code={item.code}

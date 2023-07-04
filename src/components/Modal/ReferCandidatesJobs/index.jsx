@@ -95,7 +95,6 @@ const ReferCandidatesJobs = ({
             reset();
         }
     }, [isError, isSuccess]);
-    console.log('candidate', candidate);
     return (
         <Style
             title="Refer Candidates"

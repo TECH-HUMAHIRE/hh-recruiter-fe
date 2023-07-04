@@ -20,7 +20,8 @@ const CardCandidates = ({
     onRevomeCandidate = () => {},
     data,
     dataParent,
-    status = false
+    status = false,
+    jobDetail
 }) => {
     // state
     const [initialName, setInitialName] = React.useState('');
@@ -83,7 +84,10 @@ const CardCandidates = ({
         {
             key: '6',
             label: (
-                <CardMenu onClick={() => onCancelInvitation(data, dataParent)}>
+                <CardMenu
+                    onClick={() =>
+                        onCancelInvitation(data, dataParent, jobDetail)
+                    }>
                     <CloseOutlined />
                     Cancel Invitation
                 </CardMenu>
@@ -92,7 +96,10 @@ const CardCandidates = ({
         {
             key: '7',
             label: (
-                <CardMenu onClick={() => onCancelInvitation(data, dataParent)}>
+                <CardMenu
+                    onClick={() =>
+                        onCancelInvitation(data, dataParent, jobDetail)
+                    }>
                     <CloseOutlined />
                     Cancel Reffered
                 </CardMenu>

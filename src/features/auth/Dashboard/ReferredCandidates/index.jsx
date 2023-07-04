@@ -11,6 +11,7 @@ import CandidateDetail from '../../../../components/Modal/CandidateDetail';
 import CancelInvitation from '../../../../components/Modal/CancelInvitation';
 import {
     jobApi,
+    useSendNotificationMutation,
     useUpdateStatusJobCandidatesMutation
 } from '../../../../app/actions/jobApi';
 import moment from 'moment';
@@ -20,7 +21,7 @@ import PaginationTable from '../../../../components/PaginationTable';
 const ReferredCandidates = () => {
     // state
     const [itemTabs, setItemTabs] = React.useState([]);
-
+    const [jobInfo, setJobInfo] = React.useState(null);
     const [isDetailInfo, setDetailInfo] = React.useState(false);
     const [fullInfoStatusCandidates, setFullInfoCandidateStatus] =
         React.useState(null);
@@ -32,6 +33,7 @@ const ReferredCandidates = () => {
         status: 'accepted'
     });
     // fetch api
+    const [sendNotification] = useSendNotificationMutation();
     const [
         updateStatusCandidate,
         { isSuccess: successUpdateStatus, reset, isLoading: loadingButton }
@@ -64,9 +66,10 @@ const ReferredCandidates = () => {
         getJobInvitation(newParams);
         setParams(newParams);
     }, 750);
-    const onCancelInvitation = (candidates, fullInfo) => {
+    const onCancelInvitation = (candidates, fullInfo, jobDetail) => {
         setCancelInvitation(!isCancelInvitation);
         setFullInfoCandidateStatus(fullInfo);
+        setJobInfo(jobDetail);
     };
     React.useEffect(() => {
         getJobInvitation(params);
@@ -75,7 +78,18 @@ const ReferredCandidates = () => {
         if (successUpdateStatus) {
             getJobInvitation(params);
             setCancelInvitation(!isCancelInvitation);
-
+            sendNotification({
+                uid: fullInfoStatusCandidates.jobseeker.uid,
+                title: 'Cancelled Job',
+                body: `You have Cancelled job as ${jobInfo.title} at ${jobInfo.company.name}`,
+                category: 'dashboard'
+            });
+            sendNotification({
+                uid: jobInfo.uid,
+                title: 'Cancelled Job',
+                body: `You have cancelled Job by ${fullInfoStatusCandidates.recruiter.name} for someone candidate`,
+                category: 'dashboard'
+            });
             reset();
         }
     }, [successUpdateStatus]);
@@ -134,6 +148,7 @@ const ReferredCandidates = () => {
                         key: item.id,
                         children: (
                             <CandidatesList
+                                jobDetail={item}
                                 status="accepted"
                                 onViewDetail={onViewDetail}
                                 onCancelInvitation={onCancelInvitation}
