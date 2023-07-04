@@ -85,7 +85,7 @@ const ReferredCandidates = () => {
                 category: 'dashboard'
             });
             sendNotification({
-                uid: jobInfo.uid,
+                uid: jobInfo.employer_uid,
                 title: 'Cancelled Job',
                 body: `You have cancelled Job by ${fullInfoStatusCandidates.recruiter.name} for someone candidate`,
                 category: 'dashboard'
