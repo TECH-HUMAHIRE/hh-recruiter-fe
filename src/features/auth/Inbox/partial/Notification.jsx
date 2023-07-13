@@ -192,7 +192,7 @@ const NotificationTab = ({ dataProfile }) => {
                     </div>
                 )}
             </Row>
-            {data?.meta?.info?.count > 1 && (
+            {data?.meta?.info?.total_page > 1 && (
                 <div className="job-pagination">
                     <PaginationTable
                         showSizeChanger={false}
