@@ -92,7 +92,7 @@ const NotificationTab = ({ dataProfile }) => {
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 12,
-        category: 'job,dashboard'
+        category: 'job,dashboard,status_job'
     });
 
     const items = [
