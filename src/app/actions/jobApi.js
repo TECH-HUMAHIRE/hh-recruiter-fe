@@ -14,7 +14,7 @@ export const jobApi = createApi({
             return headers;
         }
     }),
-    tagTypes: ['Post', 'counTask'],
+    tagTypes: ['Post', 'counTask', 'notification'],
     endpoints: (builder) => ({
         getJobsList: builder.query({
             query: (params) => {
@@ -113,6 +113,52 @@ export const jobApi = createApi({
                 };
             },
             invalidatesTags: ['refer_email']
+        }),
+        saveFcmToken: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/notification/store`,
+                    method: 'POST',
+                    body
+                };
+            }
+        }),
+        sendNotification: builder.mutation({
+            query: (body) => {
+                return {
+                    url: `/notification/send`,
+                    method: 'POST',
+                    body
+                };
+            }
+        }),
+        getNotification: builder.query({
+            query: (params) => {
+                return {
+                    url: `/notification`,
+                    method: 'GET',
+                    params
+                };
+            },
+            providesTags: ['notification']
+        }),
+        updateNotification: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/notification/${id}`,
+                    method: 'PUT'
+                };
+            },
+            invalidatesTags: ['notification']
+        }),
+        deleteNotification: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/notification/${id}`,
+                    method: 'DELETE'
+                };
+            },
+            invalidatesTags: ['notification']
         })
     })
 });
@@ -128,5 +174,10 @@ export const {
     useDeleteTaskMutation,
     useGetCompanyNameQuery,
     useUpdateStatusJobCandidatesMutation,
-    useSendReferEmailMutation
+    useSendReferEmailMutation,
+    useSaveFcmTokenMutation,
+    useSendNotificationMutation,
+    useGetNotificationQuery,
+    useUpdateNotificationMutation,
+    useDeleteNotificationMutation
 } = jobApi;

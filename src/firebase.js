@@ -3,7 +3,6 @@ import { getDatabase, ref, get } from 'firebase/database';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth, signInWithCustomToken } from 'firebase/auth';
 import { getMessaging, getToken } from 'firebase/messaging';
-
 const firebaseConfig = {
     apiKey: 'AIzaSyBKXYoTKmo4ZlVcoUbJR95yxp10IuzlqsE',
     authDomain: 'humahire-71b60.firebaseapp.com',
