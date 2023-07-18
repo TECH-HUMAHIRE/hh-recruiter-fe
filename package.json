@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "fix-styles": "npx stylelint 'src/**/*.{css,less}' --fix"
+    "fix-styles": "npx stylelint 'src/**/*.{css,less}' --fix",
+    "serve": "serve -s dist -l tcp://127.0.0.1:3001"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
