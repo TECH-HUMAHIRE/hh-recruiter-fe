@@ -19,9 +19,15 @@ export const userAuth = createApi({
                 body
             })
         }),
-        sendOTPEmail: builder.mutation({
-            query: ({ uid, ...body }) => ({
-                url: `/user/${uid}/verified_email`,
+        getHumaHireJob: builder.query({
+            query: (refferal_code) => ({
+                url: `/job/public/${refferal_code}`,
+                method: 'GET'
+            })
+        }),
+        forgotPassword: builder.mutation({
+            query: (body) => ({
+                url: `/auth/forgot-password`,
                 method: 'POST',
                 body
             })
@@ -31,4 +37,8 @@ export const userAuth = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useUserLoginMutation, useSendOTPEmailMutation } = userAuth;
+export const {
+    useUserLoginMutation,
+    useGetHumaHireJobQuery,
+    useForgotPasswordMutation
+} = userAuth;

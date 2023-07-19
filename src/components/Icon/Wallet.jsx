@@ -1,16 +1,21 @@
 import React from 'react';
 
 // eslint-disable-next-line react/prop-types
-const WalletIcon = ({ active = false, color = '#444444' }) => {
+const WalletIcon = ({
+    active = false,
+    color = '#444444',
+    width = '24',
+    height = '24'
+}) => {
     return (
         <span
             role="img"
             aria-label="container"
             className="anticon anticon-container ant-menu-item-icon">
             <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
+                width={width}
+                height={height}
+                viewBox={`0 0 ${width} ${height}`}
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_2654_37604)">
@@ -24,8 +29,8 @@ const WalletIcon = ({ active = false, color = '#444444' }) => {
                 <defs>
                     <clipPath id="clip0_2654_37604">
                         <rect
-                            width="20"
-                            height="20"
+                            width={width}
+                            height={height}
                             fill="white"
                             transform="translate(2 2)"
                         />

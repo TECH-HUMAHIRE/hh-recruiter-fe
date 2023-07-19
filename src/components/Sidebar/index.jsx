@@ -9,14 +9,16 @@ import CommunicationIcon from '../Icon/Communication';
 import InfoIcon from '../Icon/Info';
 import CompanyIcon from '../Icon/Company';
 import HomeIcon from '../Icon/Home';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import { color } from '../Utils/variable';
 import { useLocation } from 'react-router-dom';
 import UsersIcon from '../Icon/Users';
 import StarIcon from '../Icon/Star';
 
 const Sidebar = (props) => {
+    const navigate = useNavigate();
     const location = useLocation();
+    const [paramsUrl, _] = useSearchParams();
     // eslint-disable-next-line react/prop-types
     const { toggleCollapsed = () => {}, collapsed } = props;
     const [activeIcon, setActiveIcon] = React.useState('dashboard');
@@ -69,6 +71,10 @@ const Sidebar = (props) => {
         }
     ];
     const onActiveIcon = (key) => {
+        if (location.pathname === '/Inbox') {
+            navigate({ message: searchParams.toString() });
+        }
+        //
         setActiveIcon(key);
     };
 
@@ -126,7 +132,10 @@ const Sidebar = (props) => {
                                 return (
                                     <NavLink
                                         onClick={() =>
-                                            onActiveIcon(item.uniqName)
+                                            onActiveIcon(
+                                                item.uniqName,
+                                                item.path
+                                            )
                                         }
                                         to={item.path}
                                         className={({ isActive }) =>

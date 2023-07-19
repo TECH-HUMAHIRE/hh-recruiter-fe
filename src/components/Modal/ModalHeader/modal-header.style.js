@@ -35,6 +35,12 @@ const Style = styled(Modal)`
         display: block;
         margin: auto;
         margin-bottom: 25px;
+        border-radius: 50%;
+        height: 170px;
+        width: 170px;
+        .ant-upload-list-item-info {
+            border-radius: 50%;
+        }
     }
     .mailto {
         display: flex;
@@ -101,6 +107,17 @@ const Style = styled(Modal)`
         span {
             color: #444444;
             font-weight: normal;
+        }
+    }
+    .account {
+        &-list {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            .title {
+                margin-bottom: 7px;
+            }
         }
     }
 `;

@@ -6,7 +6,7 @@ import TabMenu from '../../Tabs';
 import EmailTab from './EmailTab';
 import ReferralLinkTab from './ReferralLinkTab';
 
-const ReferCandidates = ({ isRefer = false, onClose = () => {} }) => {
+const ReferCandidates = ({ isRefer = false, onClose = () => {}, data }) => {
     return (
         <ReferCandidatesStyle
             open={isRefer}
@@ -17,17 +17,25 @@ const ReferCandidates = ({ isRefer = false, onClose = () => {} }) => {
             <Card style={{ marginBottom: 32 }}>
                 <div className="refer-company">
                     <img
-                        src={defaultImage}
+                        src={data?.job?.company?.logo_url || defaultImage}
                         alt=""
                         className="refer-company__logo"
                     />
                     <div>
-                        <h3 className="title">Scrum Master</h3>
+                        <h3 className="title">{data?.job?.title}</h3>
                         <div className="refer-company__name">
-                            PT. Solusi Transportasi Indonesia
+                            {data?.job?.company?.name}
                         </div>
                         <div className="refer-company__city">
-                            Jakarta, Indonesia
+                            {
+                                data?.job?.sub_district?.district?.city
+                                    ?.province?.name
+                            }
+                            ,{' '}
+                            {
+                                data?.job?.sub_district?.district?.city
+                                    ?.province?.country?.name
+                            }
                         </div>
                     </div>
                 </div>
@@ -37,12 +45,14 @@ const ReferCandidates = ({ isRefer = false, onClose = () => {} }) => {
                     {
                         label: `Email`,
                         key: 'email',
-                        children: <EmailTab onClose={onClose} />
+                        children: <EmailTab data={data} onClose={onClose} />
                     },
                     {
                         label: `Referral Link`,
                         key: 'referral',
-                        children: <ReferralLinkTab onClose={onClose} />
+                        children: (
+                            <ReferralLinkTab data={data} onClose={onClose} />
+                        )
                     }
                 ]}
             />

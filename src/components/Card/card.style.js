@@ -48,6 +48,7 @@ export const CardJobStyle = styled(Card)`
             justify-content: space-between;
             align-items: center;
             width: 90%;
+            cursor: pointer;
             &__info {
                 &-location {
                     font-weight: 400;
@@ -164,8 +165,11 @@ export const CardReferredStyle = styled(Card)`
                 font-weight: 700;
                 margin-right: 10px;
                 color: #fff;
-                background-color: ${randomColor()};
+                background-color: ${(props) => randomColor(props.keyColor - 9)};
+                border-color: ${(props) => randomColor(props.keyColor)};
                 border-radius: 8px;
+                min-width: 46px;
+                text-align: center;
             }
 
             &__left {

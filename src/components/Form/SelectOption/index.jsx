@@ -12,19 +12,26 @@ const SelectOption = (props) => {
         options = [],
         allowClear = true,
         onChange = () => {},
-        value
+        value,
+        defaultValue = '',
+        className = '',
+        showSearch = true
     } = props;
     const onGetValue = (value) => {
         onChange(value);
     };
     return (
-        <SelectStyle frontIcon={frontIcon} multiple={multiple}>
+        <SelectStyle
+            frontIcon={frontIcon}
+            multiple={multiple}
+            className={className}>
             {frontIcon && <div className="prefix-icon">{frontIcon}</div>}
             <Select
                 disabled={disabled}
                 value={value}
                 onChange={onGetValue}
-                showSearch
+                showSearch={showSearch}
+                defaultValue={defaultValue}
                 style={{
                     width: '100%'
                 }}

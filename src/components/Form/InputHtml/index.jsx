@@ -43,7 +43,6 @@ const FormHTML = ({
                 value={value}
                 formats={format}
                 modules={module}
-                l
                 onChange={handleEditorChange}
             />
             {maxLength && (

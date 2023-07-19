@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs';
 import { ViteEjsPlugin } from 'vite-plugin-ejs';
+import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 
@@ -13,10 +14,12 @@ export default defineConfig(({ mode }) => {
         // vite config
         plugins: [
             react(),
+            VitePWA(),
             ViteEjsPlugin({
                 VITE_GTM_KEY: env.VITE_GTM_KEY,
                 VITE_BASE_URL_API: env.VITE_BASE_URL_API,
-                VITE_REDIRECT_URL: env.VITE_REDIRECT_URL
+                VITE_REDIRECT_URL: env.VITE_REDIRECT_URL,
+                VITE_JOBSEEKER_LANDING_PAGE: env.VITE_JOBSEEKER_LANDING_PAGE
             })
         ],
         css: {

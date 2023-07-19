@@ -4,8 +4,28 @@ import ArrowLeft from '../../Assets/icon/arrow-left.png';
 import InputVerification from '../../InputVerification';
 import { Row } from '../../Grid';
 import { Col } from '../../Grid';
+import { useResendOTPEmailMutation } from '../../../app/actions/profile';
+import { message } from 'antd';
 
 const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const [resetOtp, { data, isLoading, isSuccess }] =
+        useResendOTPEmailMutation();
+    const handleResendOtp = () => {
+        resetOtp();
+    };
+    React.useEffect(() => {
+        if (isSuccess) {
+            messageApi.open({
+                type: 'success',
+                content: data.meta.message,
+                style: {
+                    marginTop: '15vh'
+                },
+                duration: 2
+            });
+        }
+    }, [isSuccess]);
     return (
         <Style
             open={isOpen}
@@ -29,6 +49,7 @@ const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
                     </div>
                 </div>
             }>
+            {contextHolder}
             <div className="modal-body">
                 <Row justify="flex-end">
                     <Col md={12}>
@@ -36,7 +57,17 @@ const EmailVerification = ({ isOpen = false, onClose = () => {} }) => {
                             <InputVerification />
                         </div>
                         <div>Haven't received the verification code yet?</div>
-                        <div className="code-resend">Resending Code</div>
+                        {isLoading ? (
+                            <div style={{ marginBottom: 40 }}>
+                                Sending OTP...
+                            </div>
+                        ) : (
+                            <div
+                                className="code-resend"
+                                onClick={handleResendOtp}>
+                                Resending Code
+                            </div>
+                        )}
                     </Col>
                 </Row>
             </div>

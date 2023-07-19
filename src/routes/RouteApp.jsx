@@ -9,7 +9,16 @@ import InviteCandidates from '../features/auth/Dashboard/InviteCandidates';
 import ReferredCandidates from '../features/auth/Dashboard/ReferredCandidates';
 import ShortlistedCandidates from '../features/auth/Dashboard/ShortlistedCandidates';
 import Archived from '../features/auth/Dashboard/Archived';
-
+import JobList from '../features/auth/JobList';
+import CandidatesLayout from '../features/auth/Candidates';
+import Wallet from '../features/auth/Wallet';
+import HumaPoint from '../features/auth/HumaPoint';
+import RedirectPage from '../features/guest/Redirect';
+import GuestLayout from '../layout/guestLayout';
+import Registration from '../features/auth/Registration';
+import HelpPage from '../features/auth/Help';
+import HumaHireJob from '../features/guest/HumaHireJob';
+import ForgorPassword from '../features/guest/ForgorPassword';
 const App = () => {
     return (
         <AuthProvider>
@@ -66,10 +75,51 @@ const App = () => {
                             </RequireAuth>
                         }
                     />
-                </Route>
-                {/* <Route element={<GuestLayout />}>
                     <Route
-                        path="/registration"
+                        path="/job-list"
+                        element={
+                            <RequireAuth>
+                                <JobList />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/candidates"
+                        element={
+                            <RequireAuth>
+                                <CandidatesLayout />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/wallet"
+                        element={
+                            <RequireAuth>
+                                <Wallet />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/huma-point"
+                        element={
+                            <RequireAuth>
+                                <HumaPoint />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/help"
+                        element={
+                            <RequireAuth>
+                                <HelpPage />
+                            </RequireAuth>
+                        }
+                    />
+                </Route>
+                <Route element={<GuestLayout />}>
+                    <Route path="/redirect" element={<RedirectPage />} />
+                    <Route
+                        path="/verification"
                         element={
                             <RequireAuth>
                                 <Registration />
@@ -77,16 +127,11 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="/verification"
-                        element={
-                            <RequireAuth>
-                                <Verification />
-                            </RequireAuth>
-                        }
+                        path="/forgot-password"
+                        element={<ForgorPassword />}
                     />
-                    <Route path="/redirect" element={<Redirect />} />
-                   
-                </Route> */}
+                    <Route path="/huma-hire-job" element={<HumaHireJob />} />
+                </Route>
             </Routes>
         </AuthProvider>
     );

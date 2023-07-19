@@ -4,10 +4,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../Button';
 
-const ReferralLinkTab = ({ onClose = () => {} }) => {
+const ReferralLinkTab = ({ onClose = () => {}, data }) => {
     const [form] = Form.useForm();
     const [messageApi, contextHolder] = message.useMessage();
-    const onCopyLink = (e) => {
+    const onCopyLink = (link) => {
         messageApi.open({
             type: 'success',
             content: 'Copied!',
@@ -16,7 +16,7 @@ const ReferralLinkTab = ({ onClose = () => {} }) => {
             },
             duration: 1
         });
-        return navigator.clipboard.writeText(`asdasdasda`);
+        return navigator.clipboard.writeText(link);
     };
     return (
         <Form layout="vertical" form={form}>
@@ -25,18 +25,34 @@ const ReferralLinkTab = ({ onClose = () => {} }) => {
                     <Input
                         readOnly
                         size="large"
-                        value={'https://youtube.com'}
+                        value={
+                            window.location.origin +
+                            `/huma-hire-job?ref=${data?.job?.referral_code}`
+                        }
                     />
                     {contextHolder}
-                    <Button color="primary" onClick={onCopyLink}>
+                    <Button
+                        color="primary"
+                        onClick={() =>
+                            onCopyLink(
+                                window.location.origin +
+                                    `//huma-hire-job?ref=${data?.job?.referral_code}`
+                            )
+                        }>
                         Copy
                     </Button>
                 </div>
             </Form.Item>
             <div>
-                <Link className="refer-link">
-                    <a href="">Preview link in new tab</a>
-                </Link>
+                <a
+                    className="refer-link"
+                    href={
+                        window.location.origin +
+                        `/huma-hire-job?ref=${data?.job?.referral_code}`
+                    }
+                    target="_blank">
+                    Preview link in new tab
+                </a>
             </div>
             <div className="refer-email__action">
                 <Form.Item style={{ marginRight: 10 }}>
