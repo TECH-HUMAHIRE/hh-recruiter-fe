@@ -130,7 +130,7 @@ const AccountNumber = ({ onClose = () => {} }) => {
                                     <Input
                                         size="large"
                                         type="number"
-                                        placeholder="Phone number"
+                                        placeholder="Account Number"
                                     />
                                 </Form.Item>
                             </Col>
