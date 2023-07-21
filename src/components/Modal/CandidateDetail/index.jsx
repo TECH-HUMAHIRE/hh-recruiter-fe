@@ -268,7 +268,7 @@ const CandidateDetail = ({
                         <Button
                             color="outline-primary"
                             block
-                            disable={data?.cv_url?.length > 1 ? false : true}
+                            disabled={data?.cv_url ? false : true}
                             onClick={onDownloadCv}>
                             Download
                         </Button>
