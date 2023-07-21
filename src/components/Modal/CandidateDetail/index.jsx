@@ -91,7 +91,9 @@ const CandidateDetail = ({
                         </div>
                     </div>
                     <div className="modal-header__left">
-                        <Button color="outline-primary">
+                        <Button
+                            color="outline-primary"
+                            onClick={() => window.print()}>
                             <PrintIcon />
                         </Button>
                         <Button color="outline-primary">
@@ -254,7 +256,10 @@ const CandidateDetail = ({
                         </Button>
                     </Col>
                     <Col md={isAssign ? 4 : 3}>
-                        <Button color="outline-primary" block>
+                        <Button
+                            color="outline-primary"
+                            block
+                            onClick={() => window.print()}>
                             Print
                         </Button>
                     </Col>
@@ -262,6 +267,7 @@ const CandidateDetail = ({
                         <Button
                             color="outline-primary"
                             block
+                            disable={data?.cv_url ? false : true}
                             onClick={onDownloadCv}>
                             Download
                         </Button>
