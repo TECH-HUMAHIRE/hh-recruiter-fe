@@ -31,6 +31,7 @@ const CandidateDetail = ({
     handlerLockCandidates = () => {},
     handlerReferCandidates = () => {}
 }) => {
+    console.log('data', data);
     // state
     const [initialName, setInitialName] = React.useState('');
     // fetchapi
@@ -267,7 +268,7 @@ const CandidateDetail = ({
                         <Button
                             color="outline-primary"
                             block
-                            disable={data?.cv_url ? false : true}
+                            disable={data?.cv_url?.length > 1 ? false : true}
                             onClick={onDownloadCv}>
                             Download
                         </Button>
