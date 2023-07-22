@@ -7,15 +7,14 @@ importScripts(
 
 const firebaseConfig = {
     // Add your Firebase project configuration here
-    apiKey: 'AIzaSyAd34vq0jS2A34RXo-wQLbR9y1xyXZrQz8',
-    authDomain: 'humahire-prod.firebaseapp.com',
-    databaseURL:
-        'https://humahire-prod-default-rtdb.asia-southeast1.firebasedatabase.app',
-    projectId: 'humahire-prod',
-    storageBucket: 'humahire-prod.appspot.com',
-    messagingSenderId: '550416658166',
-    appId: '1:550416658166:web:f373a441a0a9c4f8b146d7',
-    measurementId: 'G-E7CHKX8HY8'
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
