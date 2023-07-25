@@ -28,8 +28,7 @@ const NotificationComponent = () => {
             try {
                 await Notification.requestPermission();
                 const token = await await getToken(messaging, {
-                    vapidKey:
-                        'BEvc8zyx2Gvo_qRKhF4WTEHKW7eBzfhZJE6nIRJz2muxstfHTcUYfCIgnnka575si_jJKr1xwqpyjkidvLfPkZY'
+                    vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
                 });
                 console.log('FCM token Successfully!');
                 setFcmToken(token);
