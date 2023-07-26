@@ -51,6 +51,9 @@ export const Style = styled.div`
     .table {
         &-header {
             margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
         }
         &-history {
             .credit {
