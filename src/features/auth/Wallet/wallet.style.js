@@ -2,6 +2,19 @@ import { Modal } from 'antd';
 import styled from 'styled-components';
 import { color } from '../../../components/Utils/variable';
 export const Style = styled.div`
+    .section {
+        &-tab {
+            position: relative;
+            .ant-tabs-nav {
+                margin-bottom: 30px;
+            }
+            &__datepicker {
+                position: absolute;
+                top: 10px;
+                right: 0;
+            }
+        }
+    }
     .wallet {
         &-top {
             display: flex;
