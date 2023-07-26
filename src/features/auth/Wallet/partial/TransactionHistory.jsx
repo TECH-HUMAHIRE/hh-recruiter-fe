@@ -7,18 +7,29 @@ import { formatMoney } from '../../../../components/Utils/formatMoney';
 import { useGetWithdrawQuery } from '../../../../app/actions/walletApi';
 import PaginationTable from '../../../../components/PaginationTable';
 
-const TransactionHistory = ({ onShowDetail = () => {} }) => {
+const TransactionHistory = ({ onShowDetail = () => {}, dateParams = [] }) => {
     // STATE
     const [params, setParams] = React.useState({
         page: 1,
         page_size: 10
     });
     // FETCH API
-    const { data: dataTable, isSuccess } = useGetWithdrawQuery();
+    const { data: dataTable, refetch } = useGetWithdrawQuery(params);
     // FUNCTION
     const onRefetchCandidates = (updateParams) => {
         setParams(updateParams);
+        refetch();
     };
+    React.useEffect(() => {
+        if (dateParams) {
+            setParams({
+                ...params,
+                start_date: dateParams.length > 0 ? dateParams[0] : '',
+                end_date: dateParams.length > 0 ? dateParams[1] : ''
+            });
+            refetch();
+        }
+    }, [dateParams]);
     return (
         <div>
             <Table

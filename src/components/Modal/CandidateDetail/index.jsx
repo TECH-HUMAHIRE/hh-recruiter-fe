@@ -22,6 +22,7 @@ import { formatMoney } from '../../Utils/formatMoney';
 import { profileAuth } from '../../../app/actions/profile';
 import Certification from './Certification';
 import { downloadCv } from '../../../app/actions/downloadcv';
+import { useNavigate } from 'react-router-dom';
 const CandidateDetail = ({
     open = false,
     data,
@@ -31,7 +32,7 @@ const CandidateDetail = ({
     handlerLockCandidates = () => {},
     handlerReferCandidates = () => {}
 }) => {
-    console.log('data', data);
+    const navigate = useNavigate();
     // state
     const [initialName, setInitialName] = React.useState('');
     // fetchapi
@@ -97,7 +98,7 @@ const CandidateDetail = ({
                             onClick={() => window.print()}>
                             <PrintIcon />
                         </Button>
-                        <Button color="outline-primary">
+                        <Button color="outline-primary" onClick={onDownloadCv}>
                             <DownloadOutlined />
                         </Button>
                     </div>
@@ -105,7 +106,7 @@ const CandidateDetail = ({
             }
             open={open}
             footer={null}
-            width={730}
+            width={830}
             closable={false}>
             <div className="modal-body">
                 <h2 className="title">About</h2>
@@ -243,20 +244,76 @@ const CandidateDetail = ({
                 />
             </div>
             <div className="hr"></div>
-            <div className="modal-body">
-                <div style={{ marginBottom: 25 }}>
-                    <h3 style={{ fontWeight: 'bold' }}>Candidate Note:</h3>
-                    <div>{data?.about || '-'}</div>
-                    <div className="hr"></div>
+            {data?.is_unlocked === true && (
+                <div className="modal-body">
+                    <div style={{ marginBottom: 25 }}>
+                        <div className="referred-information__contact">
+                            <div className="referred-information__user border">
+                                <div className="referred-information__profile ">
+                                    <div>
+                                        <img
+                                            className="referred-information__avatar"
+                                            src={data?.photo_url}
+                                            alt="user_name"
+                                        />
+                                    </div>
+                                    <div>
+                                        <div className="referred-information__name">
+                                            {data?.name}
+                                        </div>
+                                        <div>
+                                            <span className="referred-information__rating">
+                                                <StarFilled
+                                                    style={{ color: '#F57F17' }}
+                                                />{' '}
+                                                4.8 (9 Reviews)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    className="referred-information__chat"
+                                    onClick={() =>
+                                        navigate(`/Inbox?message=${data?.uid}`)
+                                    }>
+                                    <ChattingIcon
+                                        color={color.employee.primary}
+                                    />{' '}
+                                    Chat
+                                </div>
+                            </div>
+                            <div className="referred-information__phone border">
+                                <PhoneIcon color="#444444" /> {data?.phone}
+                            </div>
+                            <div className="referred-information__email">
+                                <a href={`mailto:${data?.email}`}>
+                                    <MessegerIcon /> {data?.email}
+                                </a>
+                            </div>
+                        </div>
+                        <Row>
+                            <Col md={12}>{data?.about}</Col>
+                        </Row>
+                    </div>
                 </div>
+            )}
+
+            <div className="modal-body">
+                {!data?.is_unlocked && (
+                    <div style={{ marginBottom: 25 }}>
+                        <h3 style={{ fontWeight: 'bold' }}>Candidate Note:</h3>
+                        <div>{data?.about || '-'}</div>
+                        <div className="hr"></div>
+                    </div>
+                )}
 
                 <Row>
-                    <Col md={isAssign ? 4 : 3}>
+                    <Col md={isAssign || !data?.is_unlocked ? 4 : 3}>
                         <Button color="outline-primary" onClick={onClose} block>
                             Back
                         </Button>
                     </Col>
-                    <Col md={isAssign ? 4 : 3}>
+                    <Col md={isAssign || !data?.is_unlocked ? 4 : 3}>
                         <Button
                             color="outline-primary"
                             block
@@ -264,19 +321,22 @@ const CandidateDetail = ({
                             Print
                         </Button>
                     </Col>
-                    <Col md={isAssign ? 4 : 3}>
-                        <Button
-                            color="outline-primary"
-                            block
-                            disabled={data?.cv_url ? false : true}
-                            onClick={onDownloadCv}>
-                            Download
-                        </Button>
-                    </Col>
+                    {data?.is_unlocked && (
+                        <Col md={isAssign ? 4 : 3}>
+                            <Button
+                                color="outline-primary"
+                                block
+                                disabled={data?.cv_url ? false : true}
+                                onClick={onDownloadCv}>
+                                Download CV
+                            </Button>
+                        </Col>
+                    )}
+
                     {isAssign ? (
                         <></>
                     ) : data?.is_unlocked || isReffered ? (
-                        <Col md={3}>
+                        <Col md={!data?.is_unlocked ? 4 : 3}>
                             <Button
                                 onClick={() => handlerReferCandidates(data)}
                                 color="primary"
@@ -285,7 +345,7 @@ const CandidateDetail = ({
                             </Button>
                         </Col>
                     ) : (
-                        <Col md={3}>
+                        <Col md={!data?.is_unlocked ? 4 : 3}>
                             <Button
                                 onClick={() => handlerLockCandidates(data)}
                                 icon={<LockIcon />}

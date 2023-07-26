@@ -1,4 +1,4 @@
-import { Card, message } from 'antd';
+import { Card, DatePicker, message } from 'antd';
 import React from 'react';
 import { Row, Col } from '../../../components/Grid';
 import { Style } from './wallet.style';
@@ -15,7 +15,10 @@ import {
     walletApi
 } from '../../../app/actions/walletApi';
 import DetailTransasction from '../../../components/Modal/DetailTransasction';
+import CalendarIcon from '../../../components/Icon/CalendarIcon';
+import moment from 'moment';
 
+const { RangePicker } = DatePicker;
 const Wallet = () => {
     const [messageApi, contextHolder] = message.useMessage();
     // STATE
@@ -23,6 +26,8 @@ const Wallet = () => {
         fakeAuthProvider: 'myCompany'
     });
     const [isWithdraw, setWithdraw] = React.useState(false);
+    const [dateParams, setDateParams] = React.useState([]);
+    const [dateRangeValue, setDateRangeValue] = React.useState([]);
     const [isDetail, setDetail] = React.useState(false);
     const [transactionDetail, setTransactionDetail] = React.useState(null);
     const [valueForm, setFalueForm] = React.useState(null);
@@ -63,6 +68,18 @@ const Wallet = () => {
         setWithdrawNext(!isWithdrawNext);
         setVerifyEmail(false);
     };
+    const onChangeFilterDate = (dates) => {
+        if (dates) {
+            setDateParams([
+                moment(dates[0]).format('YYYYMMDD'),
+                moment(dates[1]).format('YYYYMMDD')
+            ]);
+            setDateRangeValue(dates);
+        } else {
+            setDateParams([]);
+            setDateRangeValue([]);
+        }
+    };
     const onShowVerify = () => {
         let data = {
             amount: valueForm.withdraw_nominal,
@@ -99,22 +116,43 @@ const Wallet = () => {
                     </Col>
                 </Row>
             </Card>
-            <TabMenu
-                item={[
-                    {
-                        label: `Credit history`,
-                        key: '1',
-                        children: <CreditHistory />
-                    },
-                    {
-                        label: `Transaction history`,
-                        key: '2',
-                        children: (
-                            <TransactionHistory onShowDetail={onShowDetail} />
-                        )
-                    }
-                ]}
-            />
+            <div className="section-tab">
+                <TabMenu
+                    onChange={() => {
+                        setDateRangeValue([]);
+                        setDateParams([]);
+                    }}
+                    item={[
+                        {
+                            label: `Credit history`,
+                            key: '1',
+                            children: <CreditHistory dateParams={dateParams} />
+                        },
+                        {
+                            label: `Transaction history`,
+                            key: '2',
+                            children: (
+                                <TransactionHistory
+                                    dateParams={dateParams}
+                                    onShowDetail={onShowDetail}
+                                />
+                            )
+                        }
+                    ]}
+                />
+                <div className="section-tab__datepicker">
+                    <RangePicker
+                        suffixIcon={<CalendarIcon />}
+                        size="large"
+                        value={dateRangeValue}
+                        style={{ width: 400 }}
+                        format={'YYYY-MM-DD'}
+                        onChange={(dates, dateStrings) =>
+                            onChangeFilterDate(dates)
+                        }
+                    />
+                </div>
+            </div>
             <WalletCredit
                 data={data?.data}
                 open={isWithdraw}

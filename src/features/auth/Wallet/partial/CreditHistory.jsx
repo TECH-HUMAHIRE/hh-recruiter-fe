@@ -4,9 +4,32 @@ import ArrowIcon from '../../../../components/Icon/Arrow';
 import moment from 'moment';
 import { useGetCreditHistoryQuery } from '../../../../app/actions/walletApi';
 import { formatMoney } from '../../../../components/Utils/formatMoney';
+import PaginationTable from '../../../../components/PaginationTable';
 
-const CreditHistory = () => {
-    const { data } = useGetCreditHistoryQuery();
+const CreditHistory = ({ dateParams = [] }) => {
+    const [params, setParams] = React.useState({
+        page: 1,
+        page_size: 10
+    });
+    const { data, refetch } = useGetCreditHistoryQuery(params);
+    const onRefetchCandidates = (updateParams) => {
+        setParams(updateParams);
+        refetch();
+    };
+
+    React.useEffect(() => {
+        refetch();
+    }, []);
+    React.useEffect(() => {
+        if (dateParams) {
+            setParams({
+                ...params,
+                start_date: dateParams.length > 0 ? dateParams[0] : '',
+                end_date: dateParams.length > 0 ? dateParams[1] : ''
+            });
+            refetch();
+        }
+    }, [dateParams]);
     return (
         <div className="table-history">
             <Table
@@ -69,6 +92,16 @@ const CreditHistory = () => {
                     y: 500
                 }}
             />
+            {data?.meta?.info?.count > 0 && (
+                <div style={{ marginTop: 20 }}>
+                    <PaginationTable
+                        data={data}
+                        showSizeChanger={false}
+                        refetch={onRefetchCandidates}
+                        params={params}
+                    />
+                </div>
+            )}
         </div>
     );
 };
